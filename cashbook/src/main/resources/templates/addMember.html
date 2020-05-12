@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 let helperInit = function(){
 	$('#idHelper').text("");
@@ -26,25 +27,25 @@ $(document).ready(function(){
 	$('#btn').click(function(){
 		helperInit();
 		if($('#memberId').val().length < 4) {
-			$('#idHelper').text("ID는 4자 이상");
+			$('#idHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> ID는 4자 이상");
 			$('#memberId').focus();
 		} else if($('#memberPw').val().length < 4) {
-			$('#pwHelper').text("PW는 4자 이상");
+			$('#pwHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> PW는 4자 이상");
 			$('#memberPw').focus();
 		} else if($('#memberPw').val() != $('#memberPw2').val()) {
-			$('#pwHelper').text("PW를 확인하세요");
+			$('#pw2Helper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> PW를 확인하세요");
 			$('#memberPw2').focus();
 		} else if($('#memberName').val().length === 0) {
-			$('#nameHelper').text("이름을 입력하세요");
+			$('#nameHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이름을 입력하세요");
 			$('#memberName').focus();
 		} else if($('#memberAddr').val().length === 0) {
-			$('#addrHelper').text("주소를 입력하세요");
+			$('#addrHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 주소를 입력하세요");
 			$('#memberAddr').focus();
 		} else if($('#memberPhone').val().length === 0) {
-			$('#phoneHelper').text("번호를 입력하세요");
+			$('#phoneHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 번호를 입력하세요");
 			$('#memberPhone').focus();
 		} else if($('#memberEmail').val().length === 0) {
-			$('#EmailHelper').text("이메일을 입력하세요");
+			$('#emailHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이메일을 입력하세요");
 			$('#memberEmail').focus();
 		} else {
 			$('#myform').submit();
@@ -53,51 +54,72 @@ $(document).ready(function(){
 });
 </script>
 <style>
-	.container-fluid {
+	h1 {
+		margin: 50px;
+	}
+
+	.title {
 		text-align: center;
+	}
+	
+	form {
+		margin: 0 auto;
+		width: 500px;
+	}
+	
+	.btn {
+		width: 500px;
+		margin-top: 30px;
+	}
+	
+	.helper {
+		color: red;
 	}
 </style>
 </head>
 <body>
 <div class="container-fluid">
+	<div class="title">
 		<h1>회원가입</h1>
+	</div>
 	<form id="myform" method="post" action="/addMember">
-		<div>
-			<label for="memberId">아이디 :</label>
-			<input type="text" name="memberId" id="memberId">
-			<span id="idHelper"></span>
+		<div class="form-group">
+			<label for="memberId">아이디</label>
+			<input type="text" name="memberId" id="memberId" class="form-control">
+			<span id="idHelper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberPw">비밀번호</label>
+			<input type="password" name="memberPw" id="memberPw" class="form-control">
+			<span id="pwHelper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberPw2">비밀번호 확인</label>
+			<input type="password" id="memberPw2" class="form-control">
+			<span id="pw2Helper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberName">사용자 이름</label>
+			<input type="text" name="memberName" id="memberName" class="form-control">
+			<span id="nameHelper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberAddr">주소</label>
+			<input type="text" name="memberAddr" id="memberAddr" class="form-control">
+			<span id="addrHelper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberPhone">전화번호</label>
+			<input type="text" name="memberPhone" id="memberPhone" class="form-control">
+			<span id="phoneHelper" class="helper"></span>
+		</div>
+		<div class="form-group">
+			<label for="memberEmail">이메일</label>
+			<input type="text" name="memberEmail" id="memberEmail" class="form-control">
+			<span id="emailHelper" class="helper"></span>
 		</div>
 		<div>
-			<label for="memberPw">비밀번호 :</label>
-			<input type="password" name="memberPw" id="memberPw">
-			<span id="pwHelper"></span>
-		</div>
-		<div>
-			<label for="memberPw2">비밀번호 확인 :</label>
-			<input type="password" id="memberPw2">
-		</div>
-		<div>
-			<label for="memberName">사용자 이름 :</label>
-			<input type="text" name="memberName" id="memberName">
-			<span id="nameHelper"></span>
-		</div>
-		<div>
-			<label for="memberAddr">주소 :</label>
-			<input type="text" name="memberAddr" id="memberAddr">
-			<span id="addrHelper"></span>
-		</div>
-		<div>
-			<label for="memberPhone">전화번호 :</label>
-			<input type="text" name="memberPhone" id="memberPhone">
-			<span id="phoneHelper"></span>
-		</div>
-		<div>
-			<label for="memberEmail">이메일 :</label>
-			<input type="text" name="memberEmail" id="memberEmail">
-			<span id="emailHelper"></span>
-		</div>
-		<div>
-			<button id="btn" type="button">회원가입</button>
+			<button id="btn" class="btn btn-primary" type="button">회원가입</button>
 		</div>
 	</form>
 </div>
