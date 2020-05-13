@@ -35,8 +35,11 @@
 <body>
 <div class="container-fluid">
 	<h1>가계부</h1>
-	<div>
-		<a href="/" class="btn btn-primary">로그인</a>
+	<div th:if="${session.loginMember == null}">
+		<a href="/login" class="btn btn-primary">로그인</a>
+	</div>
+	<div th:if="${session.loginMember != null}">
+		<a href="/logout" class="btn btn-primary">로그아웃</a>
 	</div>
 	<div>
 		<a href="/addMember" class="btn btn-primary">회원가입</a>
