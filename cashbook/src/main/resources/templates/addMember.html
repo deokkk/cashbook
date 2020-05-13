@@ -24,7 +24,7 @@ let helperInit = function(){
 };
 
 $(document).ready(function(){
-	$('#btn').click(function(){
+	$('#addBtn').click(function(){
 		helperInit();
 		if($('#memberId').val().length < 4) {
 			$('#idHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> ID는 4자 이상");
@@ -56,8 +56,14 @@ $(document).ready(function(){
 		$('#idForm').submit();
 	});
 	if($('.checkHelper').text() === "이미 사용중인 아이디 입니다" || $('.checkHelper').text() === "아이디를 입력하세요") {
-		$('.checkHelper').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i>");
+		$('.checkHelper').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
 	}
+	
+	$('.btn').hover(function(){
+		$(this).css({"background-color": "#0084dc", "color": "#ffffff"});
+	}, function() {
+		$(this).css({"background-color": "#3498db", "color": "#ffffff"});
+	});
 });
 </script>
 <style>
@@ -74,7 +80,7 @@ $(document).ready(function(){
 		width: 500px;
 	}
 	
-	#btn {
+	#addBtn {
 		width: 500px;
 		margin-top: 30px;
 	}
@@ -85,6 +91,11 @@ $(document).ready(function(){
 	
 	.checkBtnBox {
 		text-align: right;
+	}
+	
+	.btn {
+		background-color: #3498db;
+		color: #ffffff;
 	}
 </style>
 </head>
@@ -101,7 +112,7 @@ $(document).ready(function(){
 			<span th:if="${nullMsg!=null}" th:text="${nullMsg}" id="nullcheckMsg" class="checkHelper"></span>
 		</div>
 		<div class="checkBtnBox">
-			<button id="checkBtn" class="btn btn-primary" type="button">중복확인</button>
+			<button id="checkBtn" class="btn" type="button">중복확인</button>
 		</div>
 	</form>
 	<form id="myform" method="post" action="/addMember">
@@ -141,7 +152,7 @@ $(document).ready(function(){
 			<span id="emailHelper" class="helper"></span>
 		</div>
 		<div>
-			<button id="btn" class="btn btn-primary" type="button">회원가입</button>
+			<button id="addBtn" class="btn" type="button">회원가입</button>
 		</div>
 	</form>
 </div>

@@ -14,15 +14,21 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 $(document).ready(function(){
-	$('#btn').click(function(){
+	$('#loginBtn').click(function(){
 		$('#loginForm').submit();
 	});
-	console.log($('#loginMsg').text());
 	if($('#loginMsg').text() === "아이디 또는 비밀번호를 확인하세요") {
-		$('#loginMsg').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i>");
+		$('#loginMsg').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
 	}
+	
 	$('#find').click(function(){
 		alert("아이디 비밀번호 찾기");
+	});
+	
+	$('.btn').hover(function(){
+		$(this).css({"background-color": "#0084dc", "color": "#ffffff"});
+	}, function() {
+		$(this).css({"background-color": "#3498db", "color": "#ffffff"});
 	});
 });
 </script>
@@ -58,6 +64,11 @@ $(document).ready(function(){
 	#loginMsg {
 		color: red;
 	}
+	
+	.btn {
+		background-color: #3498db;
+		color: #ffffff;
+	}
 </style>
 </head>
 <body>
@@ -77,10 +88,10 @@ $(document).ready(function(){
 			<a href="" id="find">아이디와 비밀번호가 기억나지 않아요</a>
 		</div>
 		<div>
-			<button class="btn btn-primary" id="btn" type="button">로그인</button>
+			<button class="btn" id="loginBtn" type="button">로그인</button>
 		</div>
 		<div>
-			<a class="btn btn-primary" href="/addMember">회원가입</a>
+			<a class="btn" href="/addMember">회원가입</a>
 		</div>
 	</form>
 </div>

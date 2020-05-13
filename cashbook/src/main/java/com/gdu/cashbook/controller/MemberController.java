@@ -29,7 +29,7 @@ public class MemberController {
 	@PostMapping("/addMember")
 	public String addMember(HttpSession session, Member member) {
 		//System.out.println("controller" + member.toString());
-		if(session.getAttribute("loginMember") == null) {
+		if(session.getAttribute("loginMember") == null) { // 로그인 안되있을때
 			memberService.insertMember(member);
 		}
 		return "redirect:/index";
@@ -37,9 +37,9 @@ public class MemberController {
 	
 	@GetMapping("/login")
 	public String login(HttpSession session) {
-		if(session.getAttribute("loginMember") == null) {
+		if(session.getAttribute("loginMember") == null) { // 로그인 안되있을때
 			return "login";
-		} else {
+		} else { // 로그인 되있을때
 			return "redirect:/";
 		}
 	}
@@ -65,6 +65,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 아이디 중복체크
 	@PostMapping("/checkMemberId")
 	public String checkMemberId(HttpSession session, Model model, @RequestParam("memberIdCheck") String memberIdCheck) {
 		// 로그인 되있을때
