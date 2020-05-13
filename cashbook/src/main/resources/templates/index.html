@@ -41,7 +41,7 @@
 	<div th:if="${session.loginMember != null}">
 		<a href="/logout" class="btn btn-primary">로그아웃</a>
 	</div>
-	<div>
+	<div th:if="${session.loginMember == null}">
 		<a href="/addMember" class="btn btn-primary">회원가입</a>
 	</div>
 	<div>

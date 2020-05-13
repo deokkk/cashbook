@@ -11,34 +11,78 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 $(document).ready(function(){
 	$('#btn').click(function(){
 		$('#loginForm').submit();
 	});
+	console.log($('#loginMsg').text());
+	if($('#loginMsg').text() === "아이디 또는 비밀번호를 확인하세요") {
+		$('#loginMsg').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i>");
+	}
+	$('#find').click(function(){
+		alert("아이디 비밀번호 찾기");
+	});
 });
 </script>
+<style>
+	h1 {
+		margin: 80px;
+	}
+
+	.title {
+		text-align: center;
+	}
+	
+	form {
+		margin: 0 auto;
+		width: 300px;
+	}
+	
+	#findId {
+		margin-top: 30px;
+		margin-bottom: 30px;
+		text-align: center;
+	}
+	
+	.btn {
+		width: 300px;
+		margin-bottom: 10px;
+	}
+	
+	span {
+		text-align: left;
+	}
+	
+	#loginMsg {
+		color: red;
+	}
+</style>
 </head>
 <body>
 <div class="container-fluid">
-	<h1>로그인</h1>
-	<form class="loginForm" method="post" action="/login">
-		<div>
-			<input type="text" name="memberId" id="memberId" placeholder="아이디">
+	<div class="title">
+		<h1>로그인</h1>
+	</div>
+	<form id="loginForm" method="post" action="/login">
+		<div class="form-group">
+			<input type="text" name="memberId" id="memberId" placeholder="아이디" class="form-control">
 		</div>
 		<div>
-			<input type="password" name="memberPw" id="memberPw" placeholder="비밀번호">
+			<input type="password" name="memberPw" id="memberPw" placeholder="비밀번호" class="form-control">
+		</div>
+		<span th:text="${msg}" id="loginMsg"></span>
+		<div id="findId">
+			<a href="" id="find">아이디와 비밀번호가 기억나지 않아요</a>
 		</div>
 		<div>
-			<a href="">아이디와 비밀번호가 기억나지 않아요</a>
+			<button class="btn btn-primary" id="btn" type="button">로그인</button>
 		</div>
 		<div>
-			<button id="btn" type="submit">로그인</button>
+			<a class="btn btn-primary" href="/addMember">회원가입</a>
 		</div>
 	</form>
-	<div>
-		<a href="/addMember">회원가입</a>
-	</div>
 </div>
 </body>
 </html>

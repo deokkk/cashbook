@@ -48,8 +48,8 @@ public class MemberController {
 	public String login(HttpSession session, Model model, LoginMember loginMember) {
 		LoginMember returnLoginMember = memberService.selectMember(loginMember);
 		if(returnLoginMember == null) {	// 로그인 실패
-			//model.addAttribute("msg", "");
-			return "redirect:/login";
+			model.addAttribute("msg", "아이디 또는 비밀번호를 확인하세요");
+			return "login";
 		} else { // 로그인 성공
 			session.setAttribute("loginMember", loginMember);
 			return "redirect:/";
@@ -67,20 +67,20 @@ public class MemberController {
 	
 	@PostMapping("/checkMemberId")
 	public String checkMemberId(HttpSession session, Model model, @RequestParam("memberIdCheck") String memberIdCheck) {
-		System.out.println(memberIdCheck);
 		// 로그인 되있을때
 		if(session.getAttribute("loginMember") != null) {
 			return "redirect:/";
 		}
+		if(memberIdCheck=="") {	// 아이디 입력안했을때
+			model.addAttribute("nullMsg", "아이디를 입력하세요");
+		} 
 		String confirmMemberId = memberService.checkMemberId(memberIdCheck);
-		System.out.println(confirmMemberId);
 		if(confirmMemberId != null) {
 			// 아이디 중복
 			model.addAttribute("msg", "이미 사용중인 아이디 입니다");
 		} else {
 			// 아이디 중복 안됨
 			model.addAttribute("confirmMemberId", memberIdCheck);
-			System.out.println(memberIdCheck);
 		}
 		return "addMember";
 	}

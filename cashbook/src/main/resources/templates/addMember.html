@@ -51,10 +51,13 @@ $(document).ready(function(){
 			$('#myform').submit();
 		}
 	});
-	
+
 	$('#checkBtn').click(function(){
 		$('#idForm').submit();
 	});
+	if($('.checkHelper').text() === "이미 사용중인 아이디 입니다" || $('.checkHelper').text() === "아이디를 입력하세요") {
+		$('.checkHelper').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i>");
+	}
 });
 </script>
 <style>
@@ -76,7 +79,7 @@ $(document).ready(function(){
 		margin-top: 30px;
 	}
 	
-	.helper {
+	.helper, .checkHelper {
 		color: red;
 	}
 	
@@ -94,7 +97,8 @@ $(document).ready(function(){
 		<div class="form-group confirm">
 			<label for="memberIdCheck">아이디 중복 확인</label>
 			<input type="text" name="memberIdCheck" id="memberIdCheck" class="form-control">
-			<span th:text="${msg}"></span>
+			<span th:if="${msg!=null}" th:text="${msg}" id="checkMsg" class="checkHelper"></span>
+			<span th:if="${nullMsg!=null}" th:text="${nullMsg}" id="nullcheckMsg" class="checkHelper"></span>
 		</div>
 		<div class="checkBtnBox">
 			<button id="checkBtn" class="btn btn-primary" type="button">중복확인</button>
