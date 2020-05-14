@@ -21,11 +21,14 @@ let helperInit = function(){
 	$('#addrHelper').text("");
 	$('#phoneHelper').text("");
 	$('#emailHelper').text("");
+	$('#checkMsg').text("");
+	$('#checkHelper').text("");
 };
 
 $(document).ready(function(){
 	$('#addBtn').click(function(){
 		helperInit();
+		//console.log($('#memberId').val().length);
 		if($('#memberId').val().length < 4) {
 			$('#idHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> ID는 4자 이상");
 			$('#memberId').focus();
@@ -51,12 +54,18 @@ $(document).ready(function(){
 			$('#myform').submit();
 		}
 	});
-
+	
 	$('#checkBtn').click(function(){
-		$('#idForm').submit();
+		helperInit();
+		$('#memberId').val("");
+		if($('#memberIdCheck').val().length < 4) {
+			$('#checkHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ID는 4자 이상");
+		} else {
+			$('#idForm').submit();
+		}
 	});
-	if($('.checkHelper').text() === "이미 사용중인 아이디 입니다" || $('.checkHelper').text() === "아이디를 입력하세요") {
-		$('.checkHelper').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
+	if($('#checkMsg').text() === "이미 사용중인 아이디 입니다") {
+		$('#checkMsg').prepend("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
 	}
 	
 	$('.btn').hover(function(){
@@ -108,8 +117,8 @@ $(document).ready(function(){
 		<div class="form-group confirm">
 			<label for="memberIdCheck">아이디 중복 확인</label>
 			<input type="text" name="memberIdCheck" id="memberIdCheck" class="form-control">
-			<span th:if="${msg!=null}" th:text="${msg}" id="checkMsg" class="checkHelper"></span>
-			<span th:if="${nullMsg!=null}" th:text="${nullMsg}" id="nullcheckMsg" class="checkHelper"></span>
+			<span th:if="${msg!=null}" th:text="${msg}" id="checkMsg"></span>
+			<span id="checkHelper"></span>
 		</div>
 		<div class="checkBtnBox">
 			<button id="checkBtn" class="btn" type="button">중복확인</button>

@@ -14,15 +14,19 @@ public class MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	public Member getMemberOne(LoginMember loginMember) {
+		return memberMapper.selectMemberOne(loginMember);
+	}
+	
 	public String checkMemberId(String memberIdCheck) {
 		return memberMapper.selectMemberId(memberIdCheck);
 	}
 	
-	public LoginMember selectMember(LoginMember loginMember) {
+	public LoginMember getMember(LoginMember loginMember) {
 		return memberMapper.selectLoginMember(loginMember);
 	}
 	
-	public int insertMember(Member member) {
+	public int addMember(Member member) {
 		//System.out.println("service" + member.toString());
 		return memberMapper.insertMember(member);
 	}
