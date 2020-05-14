@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Home</title>
+<title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -11,9 +11,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('#removeBtn').click(function(){
+		$('#removeForm').submit();
+	});
+});
+</script>
 </head>
 <body>
+<div class="container-fluid">
 	<div th:include="/include/menu::sidemenu"></div>
-	<h1>Home</h1>
+	<h1>비밀번호 확인</h1>
+	<form id="removeForm" method="post" action="/removeMember">
+		<input type="hidden" name="memberId" th:value="${session.loginMember.memberId}">
+		<div>
+			<label for="memberPw">비밀번호 확인</label>
+			<input type="password" name="memberPw" id="memberPw">
+			<span th:text="${msg}"></span>
+		</div>
+		<div>
+			<button id="removeBtn" type="button">확인</button>
+		</div>
+	</form>
+</div>
 </body>
 </html>

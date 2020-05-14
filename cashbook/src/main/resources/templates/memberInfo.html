@@ -14,8 +14,8 @@
 </head>
 <body>
 <div class="container-fluid">
-	<h1>회원정보</h1>
 	<div th:include="/include/menu::sidemenu"></div>
+	<h1>회원정보</h1>
 	<table class="table">
 		<tr>
 			<th>아이디</th>
@@ -42,6 +42,10 @@
 			<td th:text="${member.memberDate}"></td>
 		</tr>
 	</table>
+	<div>
+		<a th:href="@{/modifyMember}">회원정보수정</a>
+		<a th:href="@{/removeMember}">회원탈퇴</a>
+	</div>
 </div>
 </body>
 </html>

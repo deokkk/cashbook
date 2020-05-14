@@ -3,6 +3,36 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.MemberMapper">
+	<update id="updateMember" parameterType="com.gdu.cashbook.vo.Member">
+		UPDATE member
+		SET member_name = #{memberName},
+			member_addr = #{memberAddr},
+			member_phone = #{memberPhone},
+			member_pw = PASSWORD(#{memberPw})
+		WHERE member_id = #{memberId}
+	</update>
+	
+	<insert id="insertMemberid" parameterType="String">
+		INSERT INTO memberid (
+			memberid
+		) VALUES (
+			#{memberId}
+		)
+	</insert>
+
+	<delete id="deleteMember" parameterType="String">
+		DELETE FROM member
+		WHERE member_id = #{memberId}
+	</delete>
+
+	<select id="selectConfirmMemberCount" resultType="int" parameterType="com.gdu.cashbook.vo.Member">
+		SELECT
+			COUNT(*)
+		FROM member
+		WHERE member_id = #{memberId}
+		AND member_pw = PASSWORD(#{memberPw})
+	</select>
+
 	<select id="selectMemberOne" resultType="com.gdu.cashbook.vo.Member" parameterType="com.gdu.cashbook.vo.LoginMember">
 		SELECT
 			member_id memberId,
@@ -17,9 +47,11 @@
 	
 	<select id="selectMemberId" resultType="String" parameterType="String">
 		SELECT
-			member_id memberId
-		FROM member
-		WHERE member_id = #{memberIdCheck}
+			memberId
+		FROM (	SELECT member_id memberId FROM member
+				UNION
+				SELECT memberid memberId FROM memberid) t
+		WHERE memberId = #{memberIdCheck}
 	</select>
 	
 	<select id="selectLoginMember" resultType="com.gdu.cashbook.vo.LoginMember" parameterType="com.gdu.cashbook.vo.LoginMember">
@@ -27,11 +59,11 @@
 			member_id memberId
 		FROM member
 		WHERE member_id = #{memberId} 
-		AND member_pw = #{memberPw}
+		AND member_pw = PASSWORD(#{memberPw})
 	</select>
 	
 	<insert id="insertMember" parameterType="com.gdu.cashbook.vo.Member">
-		INSERT INTO member(
+		INSERT INTO member (
 			member_id, 
 			member_pw, 
 			member_name, 
@@ -41,7 +73,7 @@
 			member_date
 		) VALUES (
 			#{memberId},
-			#{memberPw},
+			PASSWORD(#{memberPw}),
 			#{memberName},
 			#{memberAddr},
 			#{memberPhone},

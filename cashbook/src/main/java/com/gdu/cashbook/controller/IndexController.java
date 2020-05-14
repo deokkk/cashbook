@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
-	@GetMapping("/index")
-	public String index() {
+	@GetMapping({"/index", "/"})
+	public String index(HttpSession session) {
+		System.out.println(session.getAttribute("loginMember"));
+		if(session.getAttribute("loginMember") != null) {
+			return "redirect:/home";
+		}
 		return "index";
 	}
 	

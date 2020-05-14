@@ -14,6 +14,22 @@ public class MemberService {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	public int modifyMember(Member member) {
+		return memberMapper.updateMember(member);
+	}
+	
+	public int removeMember(String memberId) {
+		// 삭제할 id memberid테이블에 추가
+		memberMapper.insertMemberid(memberId);
+		// member 테이블에서 삭제
+		int result = memberMapper.deleteMember(memberId);
+		return result;
+	}
+	
+	public int getConfirmMemberCount(Member member) {
+		return memberMapper.selectConfirmMemberCount(member);
+	}
+	
 	public Member getMemberOne(LoginMember loginMember) {
 		return memberMapper.selectMemberOne(loginMember);
 	}
