@@ -11,18 +11,11 @@
 			member_pw = PASSWORD(#{memberPw})
 		WHERE member_id = #{memberId}
 	</update>
-	
-	<insert id="insertMemberid" parameterType="String">
-		INSERT INTO memberid (
-			memberid
-		) VALUES (
-			#{memberId}
-		)
-	</insert>
 
-	<delete id="deleteMember" parameterType="String">
+	<delete id="deleteMember" parameterType="com.gdu.cashbook.vo.LoginMember">
 		DELETE FROM member
 		WHERE member_id = #{memberId}
+		AND member_pw = PASSWORD(#{memberPw})
 	</delete>
 
 	<select id="selectConfirmMemberCount" resultType="int" parameterType="com.gdu.cashbook.vo.Member">

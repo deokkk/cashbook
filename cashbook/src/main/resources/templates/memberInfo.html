@@ -11,40 +11,119 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style>
+.sidenav {
+	height: 100%;
+	width: 200px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.sidenav a {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+}
+
+.sidenav a:hover {
+	color: #f1f1f1;
+}
+
+h1 {
+	margin: 50px;
+}
+
+.main-container {
+	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-top: 100px;
+	width: 1000px;
+}
+
+.main {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.title {
+	text-align: center;
+}
+
+.table {
+	border: 1px solid #ccc;
+}
+
+th {
+	background-color: #ccc;
+	text-align: center;
+	width: 22%;
+}
+
+.memberBtn {
+	text-align: right;
+}
+
+.btn {
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+</style>
 </head>
 <body>
 <div class="container-fluid">
-	<div th:include="/include/menu::sidemenu"></div>
-	<h1>회원정보</h1>
-	<table class="table">
-		<tr>
-			<th>아이디</th>
-			<td th:text="${member.memberId}"></td>
-		</tr>
-		<tr>
-			<th>이름</th>
-			<td th:text="${member.memberName}"></td>
-		</tr>
-		<tr>
-			<th>주소</th>
-			<td th:text="${member.memberAddr}"></td>
-		</tr>
-		<tr>
-			<th>전화번호</th>
-			<td th:text="${member.memberPhone}"></td>
-		</tr>
-		<tr>
-			<th>이메일</th>
-			<td th:text="${member.memberEmail}"></td>
-		</tr>
-		<tr>
-			<th>가입날짜</th>
-			<td th:text="${member.memberDate}"></td>
-		</tr>
-	</table>
-	<div>
-		<a th:href="@{/modifyMember}">회원정보수정</a>
-		<a th:href="@{/removeMember}">회원탈퇴</a>
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<div class="main-container">
+		<div class="main">
+			<div class="title">
+				<h1>회원정보</h1>
+			</div>
+			<table class="table">
+				<tr>
+					<th>아이디</th>
+					<td th:text="${member.memberId}"></td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td th:text="${member.memberName}"></td>
+				</tr>
+				<tr>
+					<th>주소</th>
+					<td th:text="${member.memberAddr}"></td>
+				</tr>
+				<tr>
+					<th>전화번호</th>
+					<td th:text="${member.memberPhone}"></td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td th:text="${member.memberEmail}"></td>
+				</tr>
+				<tr>
+					<th>가입날짜</th>
+					<td th:text="${member.memberDate}"></td>
+				</tr>
+			</table>
+			<div class="memberBtn">
+				<a th:href="@{/modifyMember}" class="btn">회원정보수정</a>
+				<a th:href="@{/removeMember}" class="btn">회원탈퇴</a>
+			</div>
+		</div>
 	</div>
 </div>
 </body>

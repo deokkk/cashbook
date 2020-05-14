@@ -36,22 +36,23 @@ public class MemberController {
 		return "modifyMember";
 	}
 	
-	@PostMapping("/removeMember")
-	public String removeMember(HttpSession session, Model model, Member member) {
+	@PostMapping("/removeMember") // @RequestParam("memberPw") String memberPw
+	public String removeMember(HttpSession session, Model model, @RequestParam("memberPw") String memberPw) {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
-		System.out.println(member);
-		if(memberService.getConfirmMemberCount(member)!=0) {
-			int result = memberService.removeMember(member.getMemberId());
-			System.out.println(result + " < -- result");
-			if(result==1) {
-				session.invalidate();
-				return "redirect:/";
-			}
+		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+		loginMember.setMemberPw(memberPw);
+		System.out.println(loginMember);
+		
+		int result = memberService.removeMember(loginMember);
+		System.out.println(result);
+		if(result!=1) {
+			model.addAttribute("msg", "비밀번호를 다시 확인하세요"); 
+			return "removeMember";
 		}
-		model.addAttribute("msg", "비밀번호를 다시 확인하세요");
-		return "removeMember";
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 	@GetMapping("/removeMember")

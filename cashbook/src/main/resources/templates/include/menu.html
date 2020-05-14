@@ -6,14 +6,12 @@
 	<!-- jsp에서는 페이지 단위로 include할 수 있는데 thymeleaf는 태그 단위로 include 가능 -->
 	<!-- fragment1 /include/menu::sidemenu -->
 	<div th:fragment="sidemenu">
-		<div><span th:text="${session.loginMember.memberId}"></span> 님</div>
-		<ul>
-			<li><a th:href="@{/home}">홈</a></li>
-			<li><a th:href="@{/memberInfo}">회원정보</a></li>
-			<li><a th:href="@{/cashbookList}">가계부 관리</a></li>
-			<li><a th:href="@{/boardList}">게시판</a></li>
-			<li><a th:href="@{/logout}">로그아웃</a></li>
-		</ul>
+		<div class="info"><span th:text="${session.loginMember.memberId}"></span>님<br>일반회원</div>
+		<a th:href="@{/home}">홈</a>
+		<a th:href="@{/memberInfo}">회원정보</a>
+		<a th:href="@{/cashbookList}">가계부 관리</a>
+		<a th:href="@{/boardList}">게시판</a>
+		<a th:href="@{/logout}">로그아웃</a>
 	</div>
 	
 	<!-- fragment2 -->
