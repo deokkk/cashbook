@@ -46,7 +46,7 @@ $(document).ready(function(){
 		width: 300px;
 	}
 	
-	#findId {
+	#findBox {
 		margin-top: 30px;
 		margin-bottom: 30px;
 		text-align: center;
@@ -84,8 +84,11 @@ $(document).ready(function(){
 			<input type="password" name="memberPw" id="memberPw" placeholder="비밀번호" class="form-control">
 		</div>
 		<span th:text="${msg}" id="loginMsg"></span>
-		<div id="findId">
-			<a href="" id="find">아이디와 비밀번호가 기억나지 않아요</a>
+		<div id="findBox">
+			<!-- 이름, 전화번호, 이메일 입력하면 조건에 맞는 아이디 보여줌 -->
+			<a th:href="@{/findMemberId}" id="findId">아이디가 기억나지 않아요</a><br>
+			<!-- 아이디, 이메일 입력하면 관리자가 비밀번호 초기화 후 이메일로 전송 -->
+			<a th:href="@{/findMemberPw}" id="findPW">비밀번호가 기억나지 않아요</a>
 		</div>
 		<div>
 			<button class="btn" id="loginBtn" type="button">로그인</button>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+let helperInit = function() {
+	$('#nameHelper').text("");
+	$('#phoneHelper').text("");
+	$('#emailHelper').text("");
+}
+$(document).ready(function(){
+	$('#findIdBtn').click(function(){
+		helperInit();
+		if($('#memberName').val().length === 0) {
+			$('#nameHelper').text("이름을 입력하세요")
+		} else if($('#memberPhone').val().length === 0) {
+			$('#phoneHelper').text("전화번호를 입력하세요")
+		} else if($('#memberEmail').val().length === 0) {
+			$('#emailHelper').text("이메일을 입력하세요")
+		} else {
+			$('#findIdForm').submit();
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<h1>아이디 찾기</h1>
+	<form id="findIdForm" method="post" th:action="@{/findMemberId}">
+		<div>
+			<label for="memberName">이름</label>
+			<input type="text" name="memberName" id="memberName">
+			<span id="nameHelper"></span>
+		</div>
+		<div>
+			<label for="memberPhone">전화번호</label>
+			<input type="text" name="memberPhone" id="memberPhone">
+			<span id="phoneHelper"></span>
+		</div>
+		<div>
+			<label for="memberEmail">이메일</label>
+			<input type="text" name="memberEmail" id="memberEmail">
+			<span id="emailHelper"></span>
+		</div>
+		<div>
+			<button id="findIdBtn" type="button">확인</button>
+		</div>
+	</form>
+</body>
+</html>

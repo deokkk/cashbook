@@ -7,12 +7,12 @@ import com.gdu.cashbook.vo.Member;
 
 @Mapper
 public interface MemberMapper {
+	// 이름, 전화번호, 이메일로 아이디 찾기
+	public String selectMemberIdByMember(Member member);
 	// member 수정
 	public int updateMember(Member member);
 	// member 삭제
 	public int deleteMember(LoginMember loginMember);
-	// 비밀번호 확인
-	public int selectConfirmMemberCount(Member member);
 	// member 개인 정보
 	public Member selectMemberOne(LoginMember loginMember);
 	// 회원가입 memberId 중복체크

@@ -17,13 +17,22 @@ public class MemberController {
 	@Autowired	// 자동으로 객체 생성
 	private MemberService memberService;
 	
-	@PostMapping("/modifyMember")
-	public String modifyMember(HttpSession session, Member member) {
-		if(session.getAttribute("loginMember")==null) {
+	@GetMapping("/findMemberId")
+	public String findMemberId(HttpSession session) {
+		if(session.getAttribute("loginMember")!=null) {
 			return "redirect:/";
 		}
-		memberService.modifyMember(member);
-		return "redirect:/memberInfo";
+		return "findMemberId";
+	}
+	
+	@PostMapping("/findMemberId")
+	public String findMemberId(HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")!=null) {
+			return "redirect:/";
+		}
+		String memberIdPart = memberService.getMemberIdByMember(member);
+		model.addAttribute("memberIdPart", memberIdPart);
+		return "memberIdView";
 	}
 	
 	@GetMapping("/modifyMember")
@@ -34,6 +43,23 @@ public class MemberController {
 		Member member = memberService.getMemberOne((LoginMember)session.getAttribute("loginMember"));
 		model.addAttribute("member", member);
 		return "modifyMember";
+	}
+	
+	@PostMapping("/modifyMember")
+	public String modifyMember(HttpSession session, Member member) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		memberService.modifyMember(member);
+		return "redirect:/memberInfo";
+	}
+	
+	@GetMapping("/removeMember")
+	public String removeMember(HttpSession session) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		return "removeMember";
 	}
 	
 	@PostMapping("/removeMember") // @RequestParam("memberPw") String memberPw
@@ -55,14 +81,7 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/removeMember")
-	public String removeMember(HttpSession session) {
-		if(session.getAttribute("loginMember")==null) {
-			return "redirect:/";
-		}
-		return "removeMember";
-	}
-	
+	// 회원 정보
 	@GetMapping("/memberInfo")
 	public String getMemberOne(HttpSession session, Model model) {
 		if(session.getAttribute("loginMember") == null) {
@@ -74,6 +93,7 @@ public class MemberController {
 		return "memberInfo";
 	}
 	
+	// 회원가입 form
 	@GetMapping("/addMember")
 	public String addMember(HttpSession session) {
 		// 로그인중일때
@@ -83,6 +103,7 @@ public class MemberController {
 		return "addMember";
 	}
 	
+	// 회원가입 action
 	@PostMapping("/addMember")
 	public String addMember(HttpSession session, Member member) {
 		//System.out.println("controller" + member.toString());
@@ -92,6 +113,7 @@ public class MemberController {
 		return "redirect:/index";
 	}
 	
+	// 로그인 form
 	@GetMapping("/login")
 	public String login(HttpSession session) {
 		if(session.getAttribute("loginMember") == null) { // 로그인 안되있을때
@@ -101,9 +123,10 @@ public class MemberController {
 		}
 	}
 	
+	// 로그인 action
 	@PostMapping("/login")
 	public String login(HttpSession session, Model model, LoginMember loginMember) {
-		LoginMember returnLoginMember = memberService.getMember(loginMember);
+		LoginMember returnLoginMember = memberService.getLoginMember(loginMember);
 		if(returnLoginMember == null) {	// 로그인 실패
 			model.addAttribute("msg", "아이디 또는 비밀번호를 확인하세요");
 			return "login";
@@ -114,6 +137,7 @@ public class MemberController {
 		}
 	}
 	
+	// 로그아웃
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		// 로그인 되있을때
