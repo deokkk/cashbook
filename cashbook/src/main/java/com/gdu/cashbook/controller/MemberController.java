@@ -17,6 +17,29 @@ public class MemberController {
 	@Autowired	// 자동으로 객체 생성
 	private MemberService memberService;
 	
+	@GetMapping("/findMemberPw")
+	public String findMemberPw(HttpSession session) {
+		if(session.getAttribute("loginMember")!=null) {
+			return "redirect:/";
+		}
+		return "findMemberPw";
+	}
+	
+	@PostMapping("/findMemberPw")
+	public String findMemberPw(HttpSession session, Model model, Member member) {
+		if(session.getAttribute("loginMember")!=null) {
+			return "redirect:/";
+		}
+		int row = memberService.getMemberPw(member);
+		String msg = "아이디와 메일을 확인하세요";
+		if(row == 1) {
+			msg = "비밀번호가 메일로 전송되었습니다.";
+		}
+		System.out.println(msg);
+		model.addAttribute("msg", msg);
+		return "memberPwView";
+	}
+	
 	@GetMapping("/findMemberId")
 	public String findMemberId(HttpSession session) {
 		if(session.getAttribute("loginMember")!=null) {
@@ -52,6 +75,33 @@ public class MemberController {
 		}
 		memberService.modifyMember(member);
 		return "redirect:/memberInfo";
+	}
+	
+	@GetMapping("/modifyPwConfirm")
+	public String modifyConfirm(HttpSession session) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		return "modifyPwConfirm";
+	}
+	
+	// 비밀번호 확인 후 수정폼
+	@PostMapping("/modifyPwConfirm")
+	public String modifyConfirm(HttpSession session, Model model, String memberPw) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
+		loginMember.setMemberPw(memberPw);
+		System.out.println(loginMember);
+		Member member = memberService.getMemberByIdAndPw(loginMember);
+		System.out.println(member);
+		if(member==null) {
+			model.addAttribute("msg", "비밀번호를 확인하세요");
+			return "modifyPwConfirm";
+		}
+		model.addAttribute("member", member);
+		return "modifyMember";
 	}
 	
 	@GetMapping("/removeMember")

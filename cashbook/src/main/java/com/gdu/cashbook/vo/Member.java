@@ -7,6 +7,7 @@ public class Member {
 	private String memberAddr;
 	private String memberPhone;
 	private String memberEmail;
+	private String memberPic;
 	private String memberDate;
 	public String getMemberId() {
 		return memberId;
@@ -44,6 +45,12 @@ public class Member {
 	public void setMemberEmail(String memberEmail) {
 		this.memberEmail = memberEmail;
 	}
+	public String getMemberPic() {
+		return memberPic;
+	}
+	public void setMemberPic(String memberPic) {
+		this.memberPic = memberPic;
+	}
 	public String getMemberDate() {
 		return memberDate;
 	}
@@ -54,6 +61,6 @@ public class Member {
 	public String toString() {
 		return "Member [memberId=" + memberId + ", memberPw=" + memberPw + ", memberName=" + memberName
 				+ ", memberAddr=" + memberAddr + ", memberPhone=" + memberPhone + ", memberEmail=" + memberEmail
-				+ ", memberDate=" + memberDate + "]";
+				+ ", memberPic=" + memberPic + ", memberDate=" + memberDate + "]";
 	}
 }

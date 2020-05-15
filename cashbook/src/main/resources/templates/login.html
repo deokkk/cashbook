@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Login</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -33,42 +33,39 @@ $(document).ready(function(){
 });
 </script>
 <style>
-	h1 {
-		margin: 80px;
-	}
+h1 {
+	margin: 80px;
+}
 
-	.title {
-		text-align: center;
-	}
+.title {
+	text-align: center;
+}
 	
-	form {
-		margin: 0 auto;
-		width: 300px;
-	}
+form {
+	margin: 0 auto;
+	width: 300px;
+}
 	
-	#findBox {
-		margin-top: 30px;
-		margin-bottom: 30px;
-		text-align: center;
-	}
+#findBox {
+	margin-top: 30px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.btn {
+	width: 300px;
+	margin-bottom: 10px;
+	background-color: #3498db;
+	color: #ffffff;
+}
 	
-	.btn {
-		width: 300px;
-		margin-bottom: 10px;
-	}
+span {
+	text-align: left;
+}
 	
-	span {
-		text-align: left;
-	}
-	
-	#loginMsg {
-		color: red;
-	}
-	
-	.btn {
-		background-color: #3498db;
-		color: #ffffff;
-	}
+#loginMsg {
+	color: red;
+}
 </style>
 </head>
 <body>
@@ -87,7 +84,7 @@ $(document).ready(function(){
 		<div id="findBox">
 			<!-- 이름, 전화번호, 이메일 입력하면 조건에 맞는 아이디 보여줌 -->
 			<a th:href="@{/findMemberId}" id="findId">아이디가 기억나지 않아요</a><br>
-			<!-- 아이디, 이메일 입력하면 관리자가 비밀번호 초기화 후 이메일로 전송 -->
+			<!-- 아이디, 이메일 입력하면 관리자가 비밀번호 변경 후 이메일로 전송 -->
 			<a th:href="@{/findMemberPw}" id="findPW">비밀번호가 기억나지 않아요</a>
 		</div>
 		<div>

@@ -3,6 +3,14 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.MemberMapper">
+	<!-- 비밀번호 찾기 - 아이디, 이메일 확인 일치하면 비밀번호 변경 -->
+	<update id="updateMemberPw" parameterType="com.gdu.cashbook.vo.Member">
+		UPDATE member
+		SET member_pw = PASSWORD(#{memberPw})
+		WHERE member_id = #{memberId}
+		AND member_email = #{memberEmail}
+	</update>
+
 	<!-- 이름, 전화번호, 이메일로 아이디 찾기 -->
 	<select id="selectMemberIdByMember" resultType="String" parameterType="com.gdu.cashbook.vo.Member">
 		SELECT 
@@ -23,6 +31,21 @@
 		WHERE member_id = #{memberId}
 	</update>
 	
+	<!-- member 수정 전 비밀번호 확인 -->
+	<select id="selectMemberByIdAndPw" resultType="com.gdu.cashbook.vo.Member" parameterType="com.gdu.cashbook.vo.LoginMember">
+		SELECT 
+			member_id memberId,
+			member_name memberName,
+			member_addr memberAddr,
+			member_phone memberPhone,
+			member_email memberEmail,
+			member_pic memberPic,
+			member_date memberDate
+		FROM member
+		WHERE member_id = #{memberId}
+		AND member_pw = PASSWORD(#{memberPw})
+	</select>
+	
 	<!-- member 삭제 -->
 	<delete id="deleteMember" parameterType="com.gdu.cashbook.vo.LoginMember">
 		DELETE FROM member
@@ -38,6 +61,7 @@
 			member_addr memberAddr,
 			member_phone memberPhone,
 			member_email memberEmail,
+			member_pic memberPic,
 			member_date memberDate
 		FROM member
 		WHERE member_id = #{memberId}

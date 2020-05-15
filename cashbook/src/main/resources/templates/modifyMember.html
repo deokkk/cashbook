@@ -40,50 +40,134 @@ $(document).ready(function(){
 });
 </script>
 <style>
-	form { 
-		display : inline; 
-	}
+form { 
+	display : inline; 
+}
+
+.sidenav {
+	height: 100%;
+	width: 200px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.sidenav a {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+}
+
+.sidenav a:hover {
+	color: #f1f1f1;
+}
+
+h1 {
+	margin: 50px;
+}
+
+.main-container {
+	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-top: 100px;
+	width: 1000px;
+}
+
+.main {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.title {
+	text-align: center;
+}
+
+.table {
+	border: 1px solid #ccc;
+}
+
+img {
+	width: 80px;
+	height: 80px;
+	border-radius: 70%;
+}
+
+th {
+	background-color: #ccc;
+	text-align: center;
+	width: 22%;
+}
+
+.modifyBtn {
+	text-align: right;
+}
+
+.btn {
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
 </style>
 </head>
 <body>
 <div class="container-fluid">
-	<div th:include="/include/menu::sidemenu"></div>
-	<h1>회원정보수정</h1>
-	<form id="modifyForm" method="post" action="/modifyMember">
-		<table class="table">
-			<tr>
-				<th><label for="memberId">아이디</label></th>
-				<td><input type="text" name="memberId" id="memberId" th:value="${member.memberId}" readonly></td>
-			</tr>
-			<tr>
-				<th><label for="memberName">이름</label></th>
-				<td><input type="text" name="memberName" id="memberName" th:value="${member.memberName}"><span id="nameHelper"></span></td>
-			</tr>
-			<tr>
-				<th><label for="memberAddr">주소</label></th>
-				<td><input type="text" name="memberAddr" id="memberAddr" th:value="${member.memberAddr}"><span id="addrHelper"></span></td>
-			</tr>
-			<tr>
-				<th><label for="memberPhone">전화번호</label></th>
-				<td><input type="text" name="memberPhone" id="memberPhone" th:value="${member.memberPhone}"><span id="phoneHelper"></span></td>
-			</tr>
-			<tr>
-				<th><label for="memberDate">가입날짜</label></th>
-				<td><input type="text" name="memberDate" id="memberDate" th:value="${member.memberDate}" readonly></td>
-			</tr>
-			<tr>
-				<th><label for="memberPw">비밀번호</label></th>
-				<td><input type="password" name="memberPw" id="memberPw" th:value="${member.memberPw}"><span id="pwHelper"></span></td>
-			</tr>
-			<tr>
-				<th><label for="memberPw2">비밀번호 확인</label></th>
-				<td><input type="password" name="memberPw2" id="memberPw2" th:value="${member.memberPw}"><span id="pw2Helper"></span></td>
-			</tr>
-		</table>
-		<div>
-			<button id="modifyBtn" type="button">정보수정</button>
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<div class="main-container">
+		<div class="main">
+		<div class="title">
+			<h1>회원정보수정</h1>
 		</div>
-	</form>
+			<form id="modifyForm" method="post" action="/modifyMember">
+				<table class="table">
+					<tr>
+						<th><label for="memberId">아이디</label></th>
+						<td><input type="text" name="memberId" id="memberId" th:value="${member.memberId}" class="form-control" readonly></td>
+					</tr>
+					<tr>
+						<th><label for="memberName">이름</label></th>
+						<td><input type="text" name="memberName" id="memberName" th:value="${member.memberName}" class="form-control"><span id="nameHelper"></span></td>
+					</tr>
+					<tr>
+						<th><label for="memberAddr">주소</label></th>
+						<td><input type="text" name="memberAddr" id="memberAddr" th:value="${member.memberAddr}" class="form-control"><span id="addrHelper"></span></td>
+					</tr>
+					<tr>
+						<th><label for="memberPhone">전화번호</label></th>
+						<td><input type="text" name="memberPhone" id="memberPhone" th:value="${member.memberPhone}" class="form-control"><span id="phoneHelper"></span></td>
+					</tr>
+					<tr>
+						<th><label for="memberDate">가입날짜</label></th>
+						<td><input type="text" name="memberDate" id="memberDate" th:value="${member.memberDate}" class="form-control" readonly></td>
+					</tr>
+					<tr>
+						<th><label for="memberPw">비밀번호</label></th>
+						<td><input type="password" name="memberPw" id="memberPw" th:value="${member.memberPw}" class="form-control"><span id="pwHelper"></span></td>
+					</tr>
+					<tr>
+						<th><label for="memberPw2">비밀번호 확인</label></th>
+						<td><input type="password" name="memberPw2" id="memberPw2" th:value="${member.memberPw}" class="form-control"><span id="pw2Helper"></span></td>
+					</tr>
+				</table>
+				<div class="modifyBtn">
+					<button id="modifyBtn" type="button" class="btn">정보수정</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 </body>
 </html>

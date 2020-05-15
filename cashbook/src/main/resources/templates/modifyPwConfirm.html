@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('#modifyBtn').click(function(){
+		$('#modifyForm').submit();
+	});
+});
+</script>
+<style>
+.sidenav {
+	height: 100%;
+	width: 200px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.sidenav a {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+}
+
+.sidenav a:hover {
+	color: #f1f1f1;
+}
+
+h1 {
+	margin: 50px;
+}
+
+.main {
+	margin-left: 200px; /* Same as the width of the sidenav */
+}
+
+form {
+	margin-left: 50px;
+	width: 400px;
+}
+
+.btnBox {
+	text-align: right;
+}
+
+.btn {
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<div class="main">
+		<h1>비밀번호 확인</h1>
+		<form id="modifyForm" method="post" action="/modifyPwConfirm">
+			<div class="form-group">
+				<label for="memberPw">비밀번호 확인</label>
+				<input type="password" name="memberPw" id="memberPw" class="form-control">
+				<span th:text="${msg}"></span>
+			</div>
+			<div class="btnBox">
+				<button id="modifyBtn" type="button" class="btn">확인</button>
+			</div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
