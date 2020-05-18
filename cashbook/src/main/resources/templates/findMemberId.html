@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FindMemberId</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 let helperInit = function() {
 	$('#nameHelper').text("");
@@ -21,39 +22,68 @@ $(document).ready(function(){
 	$('#findIdBtn').click(function(){
 		helperInit();
 		if($('#memberName').val().length === 0) {
-			$('#nameHelper').text("이름을 입력하세요")
+			$('#nameHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이름을 입력하세요")
 		} else if($('#memberPhone').val().length === 0) {
-			$('#phoneHelper').text("전화번호를 입력하세요")
+			$('#phoneHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 전화번호를 입력하세요")
 		} else if($('#memberEmail').val().length === 0) {
-			$('#emailHelper').text("이메일을 입력하세요")
+			$('#emailHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이메일을 입력하세요")
 		} else {
 			$('#findIdForm').submit();
 		}
 	});
 });
 </script>
+<style>
+h1 {
+	margin: 80px;
+}
+
+.title {
+	text-align: center;
+}
+	
+form {
+	margin: 0 auto;
+	width: 300px;
+}
+
+.btn {
+	width: 300px;
+	margin-bottom: 10px;
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+.helper {
+	color: red;
+}
+</style>
 </head>
 <body>
-	<h1>아이디 찾기</h1>
+<div class="container-fluid">
+	<div class="title">
+		<h1>아이디 찾기</h1>
+	</div>
 	<form id="findIdForm" method="post" th:action="@{/findMemberId}">
-		<div>
+		<div class="form-group">
 			<label for="memberName">이름</label>
-			<input type="text" name="memberName" id="memberName">
-			<span id="nameHelper"></span>
+			<input type="text" name="memberName" id="memberName" class="form-control">
+			<span id="nameHelper" class="helper"></span>
 		</div>
-		<div>
+		<div class="form-group">
 			<label for="memberPhone">전화번호</label>
-			<input type="text" name="memberPhone" id="memberPhone">
-			<span id="phoneHelper"></span>
+			<input type="text" name="memberPhone" id="memberPhone" class="form-control">
+			<span id="phoneHelper" class="helper"></span>
 		</div>
-		<div>
+		<div class="form-group">
 			<label for="memberEmail">이메일</label>
-			<input type="text" name="memberEmail" id="memberEmail">
-			<span id="emailHelper"></span>
+			<input type="text" name="memberEmail" id="memberEmail" class="form-control">
+			<span id="emailHelper" class="helper"></span>
 		</div>
 		<div>
-			<button id="findIdBtn" type="button">확인</button>
+			<button class="btn" id="findIdBtn" type="button">확인</button>
 		</div>
 	</form>
+</div>
 </body>
 </html>

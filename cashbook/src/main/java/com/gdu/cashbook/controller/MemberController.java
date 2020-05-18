@@ -33,7 +33,7 @@ public class MemberController {
 			return "redirect:/";
 		}
 		int row = memberService.getMemberPw(member);
-		String msg = "아이디와 메일을 확인하세요";
+		String msg = "입력한 정보와 일치하는 정보가 없습니다.";
 		if(row == 1) {
 			msg = "비밀번호가 메일로 전송되었습니다.";
 		}
@@ -42,6 +42,7 @@ public class MemberController {
 		return "memberPwView";
 	}
 	
+	// 아이디 찾기 form
 	@GetMapping("/findMemberId")
 	public String findMemberId(HttpSession session) {
 		if(session.getAttribute("loginMember")!=null) {
@@ -50,16 +51,22 @@ public class MemberController {
 		return "findMemberId";
 	}
 	
+	// 아이디 찾기 action
 	@PostMapping("/findMemberId")
 	public String findMemberId(HttpSession session, Model model, Member member) {
 		if(session.getAttribute("loginMember")!=null) {
 			return "redirect:/";
 		}
 		String memberIdPart = memberService.getMemberIdByMember(member);
+		if(memberIdPart == null) {
+			System.out.println("아이디 없음");
+			model.addAttribute("msg", "입력한 정보와 일치하는 아이디가 없습니다.");
+		}
 		model.addAttribute("memberIdPart", memberIdPart);
 		return "memberIdView";
 	}
 	
+	// 회원정보 수정 form
 	@GetMapping("/modifyMember")
 	public String modifyMember(HttpSession session, Model model) {
 		if(session.getAttribute("loginMember")==null) {
@@ -70,6 +77,7 @@ public class MemberController {
 		return "modifyMember";
 	}
 	
+	// 회원정보 수정 action
 	@PostMapping("/modifyMember")
 	public String modifyMember(HttpSession session, MemberForm memberForm) {
 		if(session.getAttribute("loginMember")==null) {
@@ -86,6 +94,7 @@ public class MemberController {
 		return "redirect:/memberInfo";
 	}
 	
+	// 회원 정보 수정 전 비밀번호 확인폼
 	@GetMapping("/modifyPwConfirm")
 	public String modifyConfirm(HttpSession session) {
 		if(session.getAttribute("loginMember")==null) {
@@ -94,7 +103,7 @@ public class MemberController {
 		return "modifyPwConfirm";
 	}
 	
-	// 비밀번호 확인 후 수정폼
+	// 비밀번호 확인 후 회원정보 수정폼
 	@PostMapping("/modifyPwConfirm")
 	public String modifyConfirm(HttpSession session, Model model, String memberPw) {
 		if(session.getAttribute("loginMember")==null) {
@@ -135,7 +144,7 @@ public class MemberController {
 		int result = memberService.removeMember(loginMember);
 		System.out.println(result);
 		if(result!=1) {
-			model.addAttribute("msg", "비밀번호를 다시 확인하세요"); 
+			model.addAttribute("msg", "비밀번호를 확인하세요"); 
 			return "removeMember";
 		}
 		session.invalidate();

@@ -17,6 +17,7 @@ let helperInit = function() {
 	$('#nameHelper').text("");
 	$('#addrHelper').text("");
 	$('#phoneHelper').text("");
+	$('#emailHelper').text("");
 	$('#pwHelper').text("");
 	$('#pw2Helper').text("");
 }
@@ -25,15 +26,17 @@ $(document).ready(function(){
 	$('#modifyBtn').click(function(){
 		helperInit();
 		if($('#memberName').val().length==0) {
-			$('#nameHelper').text("이름를 입력하세요");
+			$('#nameHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이름을 입력하세요");
 		} else if($('#memberAddr').val().length==0) {
-			$('#addrHelper').text("주소를 입력하세요");
+			$('#addrHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 주소를 입력하세요");
 		} else if($('#memberPhone').val().length==0) {
-			$('#phoneHelper').text("전화번호를 입력하세요");
+			$('#phoneHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 전화번호를 입력하세요");
+		} else if($('#memberEmail').val().length==0) {
+			$('#emailHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이베일을 입력하세요");
 		} else if($('#memberPw').val().length<4) {
-			$('#pwHelper').text("비밀번호는 4자 이상");
+			$('#pwHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 비밀번호는 4자 이상");
 		} else if($('#memberPw').val() != $('#memberPw2').val()) {
-			$('#pw2Helper').text("비밀번호를 확인하세요");
+			$('#pw2Helper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 비밀번호를 확인하세요");
 		} else {
 			$('#modifyForm').submit();
 		}
@@ -118,6 +121,10 @@ th {
 	color: #ffffff;
 }
 
+.helper {
+	color: red;
+}
+
 @media screen and (max-height: 450px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 18px;}
@@ -138,7 +145,7 @@ th {
 						<th><label for="memberPic">사진</label></th>
 						<td>
 							<input type="file" name="memberPic" id="memberPic" class="form-control">
-							<span id="fileHelper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
+							<span id="fileHelper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}" class="helper"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
 						</td>
 					</tr>
 					<tr>
@@ -151,21 +158,28 @@ th {
 						<th><label for="memberName">이름</label></th>
 						<td>
 							<input type="text" name="memberName" id="memberName" th:value="${member.memberName}" class="form-control">
-							<span id="nameHelper"></span>
+							<span id="nameHelper" class="helper"></span>
 						</td>
 					</tr>
 					<tr>
 						<th><label for="memberAddr">주소</label></th>
 						<td>
 							<input type="text" name="memberAddr" id="memberAddr" th:value="${member.memberAddr}" class="form-control">
-							<span id="addrHelper"></span>
+							<span id="addrHelper" class="helper"></span>
 						</td>
 					</tr>
 					<tr>
 						<th><label for="memberPhone">전화번호</label></th>
 						<td>
 							<input type="text" name="memberPhone" id="memberPhone" th:value="${member.memberPhone}" class="form-control">
-							<span id="phoneHelper"></span>
+							<span id="phoneHelper" class="helper"></span>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="memberEmail">이메일</label></th>
+						<td>
+							<input type="text" name="memberEmail" id="memberEmail" th:value="${member.memberEmail}" class="form-control">
+							<span id="emailHelper" class="helper"></span>
 						</td>
 					</tr>
 					<tr>
@@ -178,14 +192,14 @@ th {
 						<th><label for="memberPw">비밀번호</label></th>
 						<td>
 							<input type="password" name="memberPw" id="memberPw" th:value="${member.memberPw}" class="form-control">
-							<span id="pwHelper"></span>
+							<span id="pwHelper" class="helper"></span>
 						</td>
 					</tr>
 					<tr>
 						<th><label for="memberPw2">비밀번호 확인</label></th>
 						<td>
 							<input type="password" name="memberPw2" id="memberPw2" th:value="${member.memberPw}" class="form-control">
-							<span id="pw2Helper"></span>
+							<span id="pw2Helper" class="helper"></span>
 						</td>
 					</tr>
 				</table>

@@ -118,8 +118,8 @@ $(document).ready(function(){
 		<div class="form-group confirm">
 			<label for="memberIdCheck">아이디 중복 확인</label>
 			<input type="text" name="memberIdCheck" id="memberIdCheck" class="form-control">
-			<span th:if="${msg!=null}" th:text="${msg}" id="checkMsg"></span>
-			<span id="checkHelper"></span>
+			<span th:if="${msg!=null}" th:text="${msg}" id="checkMsg" class="helper"></span>
+			<span id="checkHelper" class="helper"></span>
 		</div>
 		<div class="checkBtnBox">
 			<button id="checkBtn" class="btn" type="button">중복확인</button>

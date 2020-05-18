@@ -11,11 +11,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
 $(document).ready(function(){
 	$('#modifyBtn').click(function(){
 		$('#modifyForm').submit();
 	});
+	if($('#pwHelper').text() === "비밀번호를 확인하세요") {
+		$('#pwHelper').prepend("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
+	}
 });
 </script>
 <style>
@@ -70,6 +74,10 @@ form {
 	color: #ffffff;
 }
 
+#pwHelper {
+	color: red;
+}
+
 @media screen and (max-height: 450px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 18px;}
@@ -85,7 +93,7 @@ form {
 			<div class="form-group">
 				<label for="memberPw">비밀번호 확인</label>
 				<input type="password" name="memberPw" id="memberPw" class="form-control">
-				<span th:text="${msg}"></span>
+				<span id="pwHelper" th:text="${msg}"></span>
 			</div>
 			<div class="btnBox">
 				<button id="modifyBtn" type="button" class="btn">확인</button>

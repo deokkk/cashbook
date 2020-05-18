@@ -18,12 +18,8 @@ $(document).ready(function(){
 		$('#loginForm').submit();
 	});
 	if($('#loginMsg').text() === "아이디 또는 비밀번호를 확인하세요") {
-		$('#loginMsg').before("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
+		$('#loginMsg').prepend("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> ");
 	}
-	
-	$('#find').click(function(){
-		alert("아이디 비밀번호 찾기");
-	});
 	
 	$('.btn').hover(function(){
 		$(this).css({"background-color": "#0084dc", "color": "#ffffff"});

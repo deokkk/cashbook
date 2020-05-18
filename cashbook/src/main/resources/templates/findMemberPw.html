@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>FindMemberPw</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -11,21 +11,72 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+let helperInit = function() {
+	$('#idHelper').text("");
+	$('#emailHelper').text("");
+}
+
+$(document).ready(function(){
+	$('#findPwBtn').click(function(){
+		helperInit();
+		if($('#memberId').val().length < 4) {
+			$('#idHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 아이디는 4자 이상")
+		} else if($('#memberEmail').val().length === 0) {
+			$('#emailHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 이메일을 입력하세요")
+		} else {
+			$('#findPwForm').submit();
+		}
+	});
+});
+</script>
+<style>
+h1 {
+	margin: 80px;
+}
+
+.title {
+	text-align: center;
+}
+	
+form {
+	margin: 0 auto;
+	width: 300px;
+}
+
+.btn {
+	width: 300px;
+	margin-bottom: 10px;
+	background-color: #3498db;
+	color: #ffffff;
+}
+
+.helper {
+	color: red;
+}
+</style>
 </head>
 <body>
-	<h1>비밀번호 찾기</h1>
-	<form method="post" th:action="@{/findMemberPw}">
-		<div>
+<div class="container-fluid">
+	<div class="title">
+		<h1>비밀번호 찾기</h1>
+	</div>
+	<form id="findPwForm" method="post" th:action="@{/findMemberPw}">
+		<div class="form-group">
 			<label for="memberId">아이디</label>
-			<input type="text" name="memberId" id="memberId">
+			<input type="text" name="memberId" id="memberId" class="form-control">
+			<span id="idHelper" class="helper"></span>
 		</div>
-		<div>
+		<div class="form-group">
 			<label for="memberEmail">이메일</label>
-			<input type="text" name="memberEmail" id="memberEmail">
+			<input type="text" name="memberEmail" id="memberEmail" class="form-control">
+			<span id="emailHelper" class="helper"></span>
 		</div>
 		<div>
-			<button type="submit">확인</button>
+			<button class="btn" id="findPwBtn" type="button">확인</button>
 		</div>
 	</form>
+</div>
 </body>
 </html>

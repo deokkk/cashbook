@@ -63,7 +63,6 @@ public class MemberService {
 		System.out.println(originName + " <--originName");
 		String memberPic = null;
 		if(originName.equals("")) { // 파일 입력안되면 그전 파일 이름이랑 같게
-			System.out.println(" originName == '' ");
 			memberPic = originMemberPic;
 		} else { // 확장자
 			File originFile = new File(path+originMemberPic);
@@ -110,26 +109,23 @@ public class MemberService {
 	
 	// member 삭제
 	public int removeMember(LoginMember loginMember) {
-		// member 테이블에서 삭제
-		
-		// 1. 이미지 파일 삭제
-		// 1-1. 파일 이름 select member_pic
 		String memberPic = memberMapper.selectMemberPic(loginMember.getMemberId());
-		// 1-2. 파일 삭제
 		File file = new File(path+memberPic);
-		if(file.exists() && !memberPic.equals("default.jpg")) {
-			file.delete();
-		}
-		// 2. 테이블에서 삭제
+		
+		// 테이블에서 삭제
 		int deleteResult = memberMapper.deleteMember(loginMember);
 		int insertResult = 0;
+		// 비밀번호 확인이 맞아서 삭제됬을때
 		if(deleteResult==1) {
 			// 삭제할 id memberid테이블에 추가
 			Memberid memberid = new Memberid();
 			memberid.setMemberid(loginMember.getMemberId());
 			insertResult = memberidMapper.insertMemberid(memberid);
 		}
-		
+		// member테이블에서 삭제 및 memberid테이블 추가 성공시 파일도 물리적으로 삭제
+		if(insertResult==1 && file.exists() && !memberPic.equals("default.jpg")) {
+			file.delete();
+		}
 		return insertResult;
 	}
 	
