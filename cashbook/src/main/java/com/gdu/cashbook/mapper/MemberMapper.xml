@@ -3,6 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.MemberMapper">
+	<!-- 이미지파일 이름 찾기 -->
+	<select id="selectMemberPic" resultType="String" parameterType="String">
+		SELECT member_pic
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
+
 	<!-- 비밀번호 찾기 - 아이디, 이메일 확인 일치하면 비밀번호 변경 -->
 	<update id="updateMemberPw" parameterType="com.gdu.cashbook.vo.Member">
 		UPDATE member
@@ -27,6 +34,7 @@
 		SET member_name = #{memberName},
 			member_addr = #{memberAddr},
 			member_phone = #{memberPhone},
+			member_pic = #{memberPic},
 			member_pw = PASSWORD(#{memberPw})
 		WHERE member_id = #{memberId}
 	</update>
@@ -95,6 +103,7 @@
 			member_addr,
 			member_phone, 
 			member_email,
+			member_pic,
 			member_date
 		) VALUES (
 			#{memberId},
@@ -103,6 +112,7 @@
 			#{memberAddr},
 			#{memberPhone},
 			#{memberEmail},
+			#{memberPic},
 			NOW()
 		)
 	</insert>

@@ -8,10 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook.service.MemberService;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
+import com.gdu.cashbook.vo.MemberForm;
 @Controller
 public class MemberController {
 	@Autowired	// 자동으로 객체 생성
@@ -69,11 +71,18 @@ public class MemberController {
 	}
 	
 	@PostMapping("/modifyMember")
-	public String modifyMember(HttpSession session, Member member) {
+	public String modifyMember(HttpSession session, MemberForm memberForm) {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
-		memberService.modifyMember(member);
+		// 이미지 파일이 입력됐을때
+		MultipartFile mf = memberForm.getMemberPic();
+		if(memberForm.getMemberPic() != null && !mf.getOriginalFilename().equals("")) {
+			if(!memberForm.getMemberPic().getContentType().equals("image/png") && !memberForm.getMemberPic().getContentType().equals("image/jpeg") && !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+				return "redirect:/modifyMember?imgMsg=n";
+			}
+		}
+		memberService.modifyMember(memberForm);
 		return "redirect:/memberInfo";
 	}
 	
@@ -104,6 +113,7 @@ public class MemberController {
 		return "modifyMember";
 	}
 	
+	// 회원탈퇴 비밀번호확인 form
 	@GetMapping("/removeMember")
 	public String removeMember(HttpSession session) {
 		if(session.getAttribute("loginMember")==null) {
@@ -112,6 +122,7 @@ public class MemberController {
 		return "removeMember";
 	}
 	
+	// 회원탈퇴 action
 	@PostMapping("/removeMember") // @RequestParam("memberPw") String memberPw
 	public String removeMember(HttpSession session, Model model, @RequestParam("memberPw") String memberPw) {
 		if(session.getAttribute("loginMember")==null) {
@@ -155,10 +166,18 @@ public class MemberController {
 	
 	// 회원가입 action
 	@PostMapping("/addMember")
-	public String addMember(HttpSession session, Member member) {
+	public String addMember(HttpSession session, MemberForm memberForm) {
 		//System.out.println("controller" + member.toString());
+		//System.out.println(memberForm + " <--memberController.addmember memberForm");
 		if(session.getAttribute("loginMember") == null) { // 로그인 안되있을때
-			memberService.addMember(member);
+			MultipartFile mf = memberForm.getMemberPic();
+			// 이미지 파일이 입력됐을때
+			if(memberForm.getMemberPic() != null && !mf.getOriginalFilename().equals("")) {
+				if(!memberForm.getMemberPic().getContentType().equals("image/png") && !memberForm.getMemberPic().getContentType().equals("image/jpeg") && !memberForm.getMemberPic().getContentType().equals("image/gif")) {
+					return "redirect:/addMember?imgMsg=n";
+				}
+			}
+			memberService.addMember(memberForm);
 		}
 		return "redirect:/index";
 	}

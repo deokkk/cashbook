@@ -113,7 +113,8 @@ $(document).ready(function(){
 	<div class="title">
 		<h1>회원가입</h1>
 	</div>
-	<form id="idForm" method="post" action="/checkMemberId">
+	<!-- enctype="application/x-www-form-urlencoded" : 서버로 전송되기전에  URL-Encode됨 (default값) -->
+	<form id="idForm" method="post" action="/checkMemberId" enctype="application/x-www-form-urlencoded">
 		<div class="form-group confirm">
 			<label for="memberIdCheck">아이디 중복 확인</label>
 			<input type="text" name="memberIdCheck" id="memberIdCheck" class="form-control">
@@ -124,7 +125,13 @@ $(document).ready(function(){
 			<button id="checkBtn" class="btn" type="button">중복확인</button>
 		</div>
 	</form>
-	<form id="myform" method="post" action="/addMember">
+	<!-- enctype="multipart/form-data" : 이미지나 파일형태로 받을때 사용 (바이너리 데이터로 전송) -->
+	<form id="myform" method="post" action="/addMember" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="memberPic">사진</label>
+			<input type="file" name="memberPic" id="memberPic" class="form-control">
+			<span id="imgHelper" class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
+		</div>
 		<div class="form-group">
 			<label for="memberId">아이디</label>
 			<input type="text" name="memberId" th:value="${confirmMemberId}" id="memberId" class="form-control" readonly="readonly">

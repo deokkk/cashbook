@@ -7,7 +7,9 @@ import com.gdu.cashbook.vo.Member;
 
 @Mapper
 public interface MemberMapper {
-	// 
+	// 이미지파일 이름 찾기
+	public String selectMemberPic(String memberId);	
+	// 비밀번호 찾기 성공시 랜덤문자열로 비밀번호 변경
 	public int updateMemberPw(Member member);
 	// 이름, 전화번호, 이메일로 아이디 찾기
 	public String selectMemberIdByMember(Member member);
