@@ -3,8 +3,73 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.CashMapper">
+	<!-- 가계부 수정 -->
+	<update id="updateCash" parameterType="com.gdu.cashbook.vo.Cash">
+		UPDATE cash
+		SET category_name = #{categoryName},
+		cash_kind = #{cashKind},
+		cash_price = #{cashPrice},
+		cash_place = #{cashPlace},
+		cash_memo = #{cashMemo},
+		cash_date = #{cashDate}
+		WHERE cash_no = #{cashNo}
+	</update>
+
+	<!-- 가계부 1개 선택 -->
+	<select id="selectCashOne" resultType="com.gdu.cashbook.vo.Cash" parameterType="int">
+		SELECT
+			cash_no cashNo,
+			cash_date cashDate,
+			cash_kind cashKind,
+			category_name categoryName,
+			cash_price cashPrice,
+			cash_place cashPlace,
+			cash_memo cashMemo
+		FROM cash
+		WHERE cash_no = #{cashNo}
+	</select>
+
+	<!-- 가계부입력 -->
+	<insert id="insertCash" parameterType="com.gdu.cashbook.vo.Cash">
+		INSERT INTO
+		cash (
+			member_id,
+			cash_date,
+			cash_kind,
+			category_name,
+			cash_price,
+			cash_place,
+			cash_memo
+		) VALUES (
+			#{memberId},
+			#{cashDate},
+			#{cashKind},
+			#{categoryName},
+			#{cashPrice},
+			#{cashPlace},
+			#{cashMemo}
+		)
+	</insert>
+
+	<!-- 가계부삭제 -->
+	<delete id="deleteCash" parameterType="int">
+		DELETE FROM cash
+		WHERE cash_no = #{cashNo}
+	</delete>
+	
+	<!-- 수입/지출 총합 -->
+	<select id="selectCashKindSum" resultType="int" parameterType="com.gdu.cashbook.vo.Cash">
+		SELECT
+			(SELECT IFNULL(SUM(cash_price), 0) FROM cash WHERE cash_kind='수입' AND cash_date = #{cashDate} AND member_id = #{memberId})
+			-
+			(SELECT IFNULL(SUM(cash_price), 0) FROM cash WHERE cash_kind='지출' AND cash_date = #{cashDate} AND member_id = #{memberId})
+		FROM dual
+	</select>
+
+	<!-- 로그인한 사용자의 오늘날짜 가계부 리스트 -->
 	<select id="selectCashListByDate" resultType="com.gdu.cashbook.vo.Cash" parameterType="com.gdu.cashbook.vo.Cash">
 		SELECT
+			cash_no cashNo,
 			cash_kind cashKind,
 			category_name categoryName,
 			cash_price cashPrice,
