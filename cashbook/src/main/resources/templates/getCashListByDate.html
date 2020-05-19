@@ -13,6 +13,42 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-
+<div class="container">
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<h1 th:text="${year} + '년 가계부'"></h1>
+	<div>
+		<span th:text="${today} + ' ' +${dayOfWeek}"></span>
+	</div>
+	<table border="1">
+		<thead>
+			<tr>
+				<th>카테고리</th>
+				<th>수입</th>
+				<th>지출</th>
+				<th>장소</th>
+				<th>메모</th>
+				<th>삭제</th>
+				<th>수정</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cash : ${cashList}">
+				<td th:text="${cash.categoryName}"></td>
+				<td th:if="${cash.cashKind}=='수입'" th:text="'+' + ${cash.cashPrice}"></td>
+				<td th:unless="${cash.cashKind}=='수입'"></td>
+				<td th:if="${cash.cashKind}=='지출'" th:text="'-' + ${cash.cashPrice}"></td>
+				<td th:unless="${cash.cashKind}=='지출'"></td>
+				<td th:text="${cash.cashPlace}"></td>
+				<td th:text="${cash.cashMemo}"></td>
+				<td><a href="">수정</a></td>
+				<td><a href="">삭제</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="">입력</a>
+	<span>수입+지출 합계 ---------</span>
+	<span>합계</span>
+	<span th:text="${total}"></span>
+</div>
 </body>
 </html>

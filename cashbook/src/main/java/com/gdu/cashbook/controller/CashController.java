@@ -30,6 +30,14 @@ public class CashController {
 		// 오늘 날짜
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar today =  Calendar.getInstance();
+		// 년도
+		int year = today.get(Calendar.YEAR);
+		System.out.println(year);
+		model.addAttribute("year", year);
+		// 요일
+		String dayOfWeekArr[] = {"일", "월", "화", "수", "목", "금", "토"};
+		String dayOfWeek = dayOfWeekArr[today.get(Calendar.DAY_OF_WEEK)+1];
+		model.addAttribute("dayOfWeek", dayOfWeek);
 		String strToday = sdf.format(today.getTime());
 		System.out.println(today + " <--cashController.getCashListByDate today");
 		System.out.println(strToday + " <--cashController.getCashListByDate strToday");
@@ -42,10 +50,16 @@ public class CashController {
 		List<Cash> cashList = cashService.getCashListByDate(cash);
 		model.addAttribute("cashList", cashList);
 		model.addAttribute("today", strToday);
+		int total = 0;
 		for(Cash c : cashList) {
 			System.out.println(c);
+			if(c.getCashKind().equals("수입")) {
+				total+=c.getCashPrice();
+			} else {
+				total-=c.getCashPrice();
+			}
 		}
-		
+		model.addAttribute("total", total);
 		return "getCashListByDate";
 	}
 }
