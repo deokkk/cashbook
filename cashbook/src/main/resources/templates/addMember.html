@@ -129,7 +129,7 @@ $(document).ready(function(){
 	<form id="myform" method="post" action="/addMember" enctype="multipart/form-data">
 		<div class="form-group">
 			<label for="memberPic">사진</label>
-			<input type="file" name="memberPic" id="memberPic" class="form-control">
+			<input type="file" name="memberPic" id="memberPic" class="form-control-file border">
 			<span id="imgHelper" class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
 		</div>
 		<div class="form-group">

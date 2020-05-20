@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gdu.cashbook.service.CashService;
 import com.gdu.cashbook.vo.Cash;
 import com.gdu.cashbook.vo.Category;
+import com.gdu.cashbook.vo.DayAndPrice;
 import com.gdu.cashbook.vo.LoginMember;
 
 @Controller
@@ -37,16 +38,34 @@ public class CashController {
 		Date date = Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Calendar cDay = Calendar.getInstance();
 		cDay.setTime(date);
+		
+		// 일별 수입/지출 총압 리스트
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		//System.out.println(memberId);
+		int year = cDay.get(Calendar.YEAR);
+		//System.out.println(year);
+		int month = cDay.get(Calendar.MONTH)+1;
+		//System.out.println(month);
+		List<DayAndPrice> dayAndPriceList = cashService.getDayAndPriceList(memberId, year, month);
+		System.out.println(dayAndPriceList + " <--dayAndPriceList");
+		model.addAttribute("dayAndPriceList", dayAndPriceList);
+		int totalPrice = cashService.getMonthTotalPrice(memberId, year, month);
+		model.addAttribute("totalPrice", totalPrice);
+		// 
+		
 		// 마지막 날짜
 		model.addAttribute("lastDay", cDay.getActualMaximum(Calendar.DAY_OF_MONTH));
+		
 		// 첫째날 요일
 		Calendar firstDay = cDay;
 		firstDay.set(Calendar.DATE, 1);
 		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		
 		// 마지막날 요일
 		Calendar lastDay = Calendar.getInstance();
 		lastDay.set(cDay.get(Calendar.YEAR), cDay.get(Calendar.MONTH), cDay.getActualMaximum(Calendar.DAY_OF_MONTH));
 		model.addAttribute("lastDayOfWeek", lastDay.get(Calendar.DAY_OF_WEEK));
+		
 		// Calendar타입 LocalDate타입으로
 		Date calendarToDate = new Date(cDay.getTimeInMillis());
 		LocalDate dateToLocalDate = calendarToDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();

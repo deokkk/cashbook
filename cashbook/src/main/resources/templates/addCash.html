@@ -11,10 +11,34 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
+let helperInit = function() {
+	$('#categoryHelper').text("");
+	$('#kindHelper').text("");
+	$('#priceHelper').text("");
+	$('#placeHelper').text("");
+	$('#dateHelper').text("");
+}
+
 $(document).ready(function(){
 	$('#addBtn').click(function(){
-		$('#addForm').submit();
+		helperInit();
+		console.log($('#cashDate').val());
+		if($('#categoryName').val() === "") {
+			$('#categoryHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 카테고리를 선택하세요");
+		} else if($('#cashKind').val() === "") {
+			$('#kindHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 수입/지출을 선택하세요");
+		} else if($('#cashPrice').val().length === 0) {
+			$('#priceHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 금액을 입력하세요");
+		} else if($('#cashPlace').val().length === 0) {
+			console.log($('#cashPlace').val())
+			$('#placeHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 장소를 입력하세요");
+		} else if($('#cashDate').val().length === 0) {
+			$('#dateHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 날짜를 선택하세요");
+		} else {
+			$('#addForm').submit();
+		}
 	});
 });
 </script>
@@ -36,6 +60,10 @@ $(document).ready(function(){
 	margin: 30px;
 }
 
+h1 {
+	margin: 50px;
+}
+
 .sidenav a {
 	margin-bottom: 50px;
 	text-decoration: none;
@@ -50,6 +78,32 @@ $(document).ready(function(){
 
 .main {
 	margin-left: 200px; /* Same as the width of the sidenav */
+	width: 60%;
+}
+
+#title {
+	text-align: center;
+	font-size: 25px;
+	font-weight: bold;
+	margin: 40px;
+}
+
+form {
+	margin: 0 auto;
+	width: 500px;
+}
+
+.helper {
+	color: red;
+}
+
+.addBtnBox {
+	text-align: right
+}
+
+.btn {
+	background-color: #3498db;
+	color: #ffffff;
 }
 
 @media screen and (max-height: 450px) {
@@ -59,52 +113,65 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
+<div class="container-fluid">
 	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
 	<div class="main">
 		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년 가계부'"></h1>
-		<div>가게부 입력</div>
+		<div id="title">가게부 입력</div>
 		<form id="addForm" method="post" action="/addCash">
-			<table border=1>
+			<table class="table">
 				<tr>
 					<th><label for="categoryName">카테고리</label></th>
 					<td>
-						<select id="categoryName" name="categoryName">
+						<select id="categoryName" name="categoryName" class="form-control">
 							<option value="">카테고리를 선택하세요</option>
 							<option th:each="category : ${categoryList}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
 						</select>
+						<span id="categoryHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="cashKind">수입/지출</label></th>
 					<td>
-						<select id="cashKind" name="cashKind">
+						<select id="cashKind" name="cashKind" class="form-control">
 							<option value="">수입/지출을 선택하세요</option>
 							<option value="수입">수입</option>
 							<option value="지출">지출</option>
 						</select>
+						<span id="kindHelper" class="helper"></span>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="cashPrice">금액</label></th>
-					<td><input type="text" id="cashPrice" name="cashPrice"></td>
+					<td>
+						<input type="text" id="cashPrice" name="cashPrice" class="form-control">
+						<span id="priceHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="cashPlace">장소</label></th>
-					<td><input type="text" id="cashPlace" name="cashPlace"></td>
+					<td>
+						<input type="text" id="cashPlace" name="cashPlace" class="form-control">
+						<span id="placeHelper" class="helper"></span>
+					</td>
 				</tr>
 				<tr>
 					<th><label for="cashMeme">메모</label></th>
-					<td><textarea rows="3" cols="50" id="cashMemo" name="cashMemo"></textarea></td>
+					<td><textarea rows="3" cols="50" id="cashMemo" name="cashMemo" class="form-control"></textarea></td>
 				</tr>
 				<tr>
 					<th><label for="cashDate">날짜</label></th>
-					<td><input type="date" id="cashDate" name="cashDate"></td>
+					<td>
+						<input type="date" id="cashDate" name="cashDate" class="form-control">
+						<span id="dateHelper" class="helper"></span>
+					</td>
 				</tr>
 			</table>
-			<div>
-				<button id="addBtn" type="button">입력</button>
+			<div class="addBtnBox">
+				<button class="btn" id="addBtn" type="button">입력</button>
 			</div>
 		</form>
 	</div>
+</div>
 </body>
 </html>

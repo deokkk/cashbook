@@ -12,12 +12,31 @@ import com.gdu.cashbook.mapper.CashMapper;
 import com.gdu.cashbook.mapper.CategoryMapper;
 import com.gdu.cashbook.vo.Cash;
 import com.gdu.cashbook.vo.Category;
+import com.gdu.cashbook.vo.DayAndPrice;
 
 @Service
 @Transactional
 public class CashService {
 	@Autowired private CashMapper cashMapper;
 	@Autowired private CategoryMapper categoryMapper;
+	// 월 수입/지출 총합
+	public int getMonthTotalPrice(String memberId, int year, int month) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("year", year);
+		map.put("month", month);
+		return cashMapper.selectMonthTotalPrice(map);
+	}
+	
+	// 일별 수입/지출 총합 리스트
+	public List<DayAndPrice> getDayAndPriceList(String memberId, int year, int month) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("year", year);
+		map.put("month", month);
+		return cashMapper.selectDayAndPriceList(map);
+	}
+	
 	// 가계부 수정
 	public int modifyCash(Cash cash) {
 		return cashMapper.updateCash(cash);

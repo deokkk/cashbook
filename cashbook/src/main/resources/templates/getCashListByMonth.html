@@ -42,14 +42,40 @@
 }
 
 .main {
-	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-left: 300px; /* Same as the width of the sidenav */
+}
+
+h1 {
+	margin-top: 50px;
+	margin-bottom: 50px;
+}
+
+#calendar {
+	width: 750px;
+}
+
+.date {
+	text-align: center;
+	font-size: 20px;
+	margin-bottom: 15px;
+}
+
+.dateBtn {
+	background-color: #e6e6e6;
+	width: 100px;
+	border-radius: 20em;
+}
+
+.nextBtn {
+	text-align: right;
 }
 
 div.gd-left {
 	float: left;
-	width: 90px;
-	height: 90px;
+	width: 100px;
+	height: 100px;
 	border: 1px solid #000000;
+	border-radius: 0.5em;
 	margin-right: 5px;
 	margin-bottom: 5px;
 }
@@ -60,13 +86,33 @@ div.gd-clear {
 	margin-left: 10px;
 }
 
+div.gd-sat div a, .gd-sat {
+	color: blue;
+}
+
+div.gd-left a {
+	color: black;
+}
+
+div.gd-clear a {
+	color: red;
+}
+
+
+
 div.gd-title {
 	height: 50px;
 	background-color: #dcdcdc;
+	text-align: center;
+	
 }
 
-#calendar {
-	text-align: center;
+.plus {
+	color: #3498db;
+}
+
+.minus {
+	color: red;
 }
 
 @media screen and (max-height: 450px) {
@@ -76,25 +122,40 @@ div.gd-title {
 </style>
 </head>
 <body>
+<div class="container-fluid">
 	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
 	<div class="main">
 		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년  가계부'"></h1>
-		<span th:text="${#temporals.format(day, 'yyyy년 MM월')}"></span>
-		<div>
-			<a th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}">이전</a>
-			<a th:href="@{/getCashListByMonth(day=${day.plusMonths(+1)})}">다음</a>
-		</div>
 		<div id="calendar">
+			<div class="row">
+				<div class="col">
+					<a class="btn dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}">이전</a>
+				</div>
+				<div class="col date">
+					<span th:text="${#temporals.format(day, 'yyyy년 MM월')}"></span>
+				</div>
+				<div class="col nextBtn">
+					<a class="btn dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(+1)})}">다음</a>
+				</div>
+			</div>
 			<div class="gd-left gd-clear gd-title">일</div>
 			<div class="gd-left gd-title">월</div>
 			<div class="gd-left gd-title">화</div>
 			<div class="gd-left gd-title">수</div>
 			<div class="gd-left gd-title">목</div>
 			<div class="gd-left gd-title">금</div>
-			<div class="gd-left gd-title">토</div>
-			<!-- 조건 다시 -->
-			<div th:class="${index.index%7}==0 ? 'gd-clear gd-left' : 'gd-left'" th:each="i, index : ${#numbers.sequence(1, lastDay + (firstDayOfWeek-1) + (7-lastDayOfWeek))}" th:text="${i-(firstDayOfWeek-1)}>0 and ${i-(firstDayOfWeek-1)<=lastDay} ? ${i-(firstDayOfWeek-1)}"></div>
+			<div class="gd-left gd-title gd-sat">토</div>
+			<div th:class="${index.index%7}==0 ? 'gd-clear gd-left' : (${index.index%7}==6 ? 'gd-sat gd-left' : 'gd-left')" th:each="i, index : ${#numbers.sequence(1, lastDay + (firstDayOfWeek-1) + (7-lastDayOfWeek))}">
+				<div th:if="${i-(firstDayOfWeek-1)}>0 and ${i-(firstDayOfWeek-1)<=lastDay}">
+					<a th:href="${i-(firstDayOfWeek-1)}<10 ? @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+'0'+${i-(firstDayOfWeek-1)})} : @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+${i-(firstDayOfWeek-1)})}" th:text="${i-(firstDayOfWeek-1)}"></a>
+				</div>
+				<div th:each="dp : ${dayAndPriceList}" th:if="${i-(firstDayOfWeek-1)}==${dp.day}" th:text="${dp.price}>0 ? '+' + ${dp.price} : ${dp.price}" th:class="${dp.price}>0 ? 'plus' : 'minus'"></div>
+			</div>
+		</div>
+		<div>
+			<span th:text="'합계 : ' + ${totalPrice}"></span>
 		</div>
 	</div>
+</div>
 </body>
 </html>

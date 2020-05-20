@@ -144,7 +144,7 @@ th {
 					<tr>
 						<th><label for="memberPic">사진</label></th>
 						<td>
-							<input type="file" name="memberPic" id="memberPic" class="form-control">
+							<input type="file" name="memberPic" id="memberPic" class="form-control-file border">
 							<span id="fileHelper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}" class="helper"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
 						</td>
 					</tr>
