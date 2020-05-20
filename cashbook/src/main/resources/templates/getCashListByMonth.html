@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>GetCashListByMonth</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<style>
+.sidenav {
+	height: 100%;
+	width: 200px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.sidenav a {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+}
+
+.sidenav a:hover {
+	color: #f1f1f1;
+}
+
+.main {
+	margin-left: 200px; /* Same as the width of the sidenav */
+}
+
+div.gd-left {
+	float: left;
+	width: 90px;
+	height: 90px;
+	border: 1px solid #000000;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+div.gd-clear {
+	clear: both;
+	color: red;
+	margin-left: 10px;
+}
+
+div.gd-title {
+	height: 50px;
+	background-color: #dcdcdc;
+}
+
+#calendar {
+	text-align: center;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<div class="main">
+		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년  가계부'"></h1>
+		<span th:text="${#temporals.format(day, 'yyyy년 MM월')}"></span>
+		<div>
+			<a th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}">이전</a>
+			<a th:href="@{/getCashListByMonth(day=${day.plusMonths(+1)})}">다음</a>
+		</div>
+		<div id="calendar">
+			<div class="gd-left gd-clear gd-title">일</div>
+			<div class="gd-left gd-title">월</div>
+			<div class="gd-left gd-title">화</div>
+			<div class="gd-left gd-title">수</div>
+			<div class="gd-left gd-title">목</div>
+			<div class="gd-left gd-title">금</div>
+			<div class="gd-left gd-title">토</div>
+			<!-- 조건 다시 -->
+			<div th:class="${index.index%7}==0 ? 'gd-clear gd-left' : 'gd-left'" th:each="i, index : ${#numbers.sequence(1, lastDay + (firstDayOfWeek-1) + (7-lastDayOfWeek))}" th:text="${i-(firstDayOfWeek-1)}>0 and ${i-(firstDayOfWeek-1)<=lastDay} ? ${i-(firstDayOfWeek-1)}"></div>
+		</div>
+	</div>
+</body>
+</html>

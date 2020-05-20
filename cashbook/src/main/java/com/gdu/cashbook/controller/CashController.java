@@ -2,6 +2,9 @@ package com.gdu.cashbook.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +27,33 @@ import com.gdu.cashbook.vo.LoginMember;
 public class CashController {
 	@Autowired
 	private CashService cashService;
+	// 가계부 월별리스트
+	@GetMapping("/getCashListByMonth")
+	public String getCashListByMonth(HttpSession session, Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		// 파라미터로 받은 LocalDate타입 Calendar타입으로 변경
+		Date date = Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Calendar cDay = Calendar.getInstance();
+		cDay.setTime(date);
+		// 마지막 날짜
+		model.addAttribute("lastDay", cDay.getActualMaximum(Calendar.DAY_OF_MONTH));
+		// 첫째날 요일
+		Calendar firstDay = cDay;
+		firstDay.set(Calendar.DATE, 1);
+		model.addAttribute("firstDayOfWeek", firstDay.get(Calendar.DAY_OF_WEEK));
+		// 마지막날 요일
+		Calendar lastDay = Calendar.getInstance();
+		lastDay.set(cDay.get(Calendar.YEAR), cDay.get(Calendar.MONTH), cDay.getActualMaximum(Calendar.DAY_OF_MONTH));
+		model.addAttribute("lastDayOfWeek", lastDay.get(Calendar.DAY_OF_WEEK));
+		// Calendar타입 LocalDate타입으로
+		Date calendarToDate = new Date(cDay.getTimeInMillis());
+		LocalDate dateToLocalDate = calendarToDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		model.addAttribute("day", dateToLocalDate);
+		return "getCashListByMonth";
+	}
+	
 	// 가계부수정 action
 	@PostMapping("/modifyCash")
 	public String modifyCash(HttpSession session, Cash cash, @RequestParam(value="date") String date) { 
@@ -90,7 +120,7 @@ public class CashController {
 		return "redirect:/getCashListByDate?day="+day;
 	}
 	
-	// 가계부리스트
+	// 가계부 일별 리스트
 	@GetMapping("/getCashListByDate")
 	public String getCashListByDate(HttpSession session, Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
 		if(session.getAttribute("loginMember")==null) {
