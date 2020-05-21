@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gdu.cashbook.mapper.CashMapper;
 import com.gdu.cashbook.mapper.MemberMapper;
 import com.gdu.cashbook.mapper.MemberidMapper;
 import com.gdu.cashbook.vo.LoginMember;
@@ -25,11 +26,18 @@ public class MemberService {
 	@Autowired private MemberMapper memberMapper;
 	@Autowired private MemberidMapper memberidMapper;
 	@Autowired private JavaMailSender javaMailSender;
+	@Autowired private CashMapper cashMapper;
 	
 	// 경로 : linux(/), windows(\\)
 	@Value("D:\\git-cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path;
 	
+	// 로그인한 memberPic
+	public String getMemberPic(String memberId) {
+		return memberMapper.selectMemberPic(memberId);
+	}
+	
+	// 비밀번호찾기 - 비밀번호 랜덤문자열로 변경 후 이메일로 전송
 	public int getMemberPw(Member member) {
 		// pw 추가
 		UUID uuid = UUID.randomUUID(); // 랜덤문자열 생성 라이브러리
@@ -111,9 +119,13 @@ public class MemberService {
 	public int removeMember(LoginMember loginMember) {
 		String memberPic = memberMapper.selectMemberPic(loginMember.getMemberId());
 		File file = new File(path+memberPic);
+		// member 삭제 전 그 memberId로 작성된 가계부 삭제
+		cashMapper.deleteCashByMember(loginMember.getMemberId());
 		
 		// 테이블에서 삭제
 		int deleteResult = memberMapper.deleteMember(loginMember);
+		
+		System.out.println(deleteResult + " <-- deleteResult");
 		int insertResult = 0;
 		// 비밀번호 확인이 맞아서 삭제됬을때
 		if(deleteResult==1) {
@@ -122,6 +134,7 @@ public class MemberService {
 			memberid.setMemberid(loginMember.getMemberId());
 			insertResult = memberidMapper.insertMemberid(memberid);
 		}
+		System.out.println(insertResult + " <-- insertResult");
 		// member테이블에서 삭제 및 memberid테이블 추가 성공시 파일도 물리적으로 삭제
 		if(insertResult==1 && file.exists() && !memberPic.equals("default.jpg")) {
 			file.delete();

@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 .sidenav {
 	height: 100%;
@@ -25,19 +26,43 @@
 	padding-top: 20px;
 }
 
+#sidePic {
+	width: 80px;
+	height: 80px;
+	border-radius: 3em;
+	margin-bottom: 5px;
+}
+
 .info {
 	margin: 30px;
 }
 
-.sidenav a {
+.menuItem {
 	margin-bottom: 50px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #111;
 	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
 }
 
-.sidenav a:hover {
+.dropdown-btn {
+ 	margin-bottom: 50px;
+ 	margin-left: 25px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.menuItem:hover, .dropdown-btn:hover {
 	color: #f1f1f1;
 }
 
@@ -98,8 +123,6 @@ div.gd-clear a {
 	color: red;
 }
 
-
-
 div.gd-title {
 	height: 50px;
 	background-color: #dcdcdc;
@@ -113,6 +136,33 @@ div.gd-title {
 
 .minus {
 	color: red;
+}
+
+#totalBox {
+	/* margin-top: 690px;
+	margin-left: 640px; */
+	/* text-align: right;
+	width: 650px; */
+}
+
+.totalBox {
+	font-size: 30px;
+	text-align: right;
+	width: 740px;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+	text-align: center;
+	display: none;
+	background-color: #3498db;
+	padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
 }
 
 @media screen and (max-height: 450px) {
@@ -150,10 +200,16 @@ div.gd-title {
 					<a th:href="${i-(firstDayOfWeek-1)}<10 ? @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+'0'+${i-(firstDayOfWeek-1)})} : @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+${i-(firstDayOfWeek-1)})}" th:text="${i-(firstDayOfWeek-1)}"></a>
 				</div>
 				<div th:each="dp : ${dayAndPriceList}" th:if="${i-(firstDayOfWeek-1)}==${dp.day}" th:text="${dp.price}>0 ? '+' + ${dp.price} : ${dp.price}" th:class="${dp.price}>0 ? 'plus' : 'minus'"></div>
+				
 			</div>
 		</div>
-		<div>
-			<span th:text="'합계 : ' + ${totalPrice}"></span>
+		<div class="row">
+			<div class="col">
+				<a th:href="@{/getCashListByYear(day=${day})}">월별 비교</a>
+			</div>
+			<div class="col totalBox">
+				<span>합계 : </span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} : ${totalPrice}" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
+			</div>
 		</div>
 	</div>
 </div>

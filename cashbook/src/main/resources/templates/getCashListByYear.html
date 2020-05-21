@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Home</title>
+<title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -11,16 +11,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- custom css -->
-<link href="/css/homeStyle.css" rel="stylesheet">
 </head>
 <body>
-<div class="container-fluid">
-	<div th:include="/include/menu::sidemenu"></div>
-	<div class="main">
-		<h1>Home</h1>
+	<h1>년별가계부</h1>
+	<div th:text="${day}"></div>
+	<div th:each="i :  ${#numbers.sequence(1, 12)}">
+		<span th:text="${i}"></span>
+		<span th:each="list : ${monthAndPriceList}" th:text="${list.month}"></span>
 	</div>
-</div>
 </body>
 </html>

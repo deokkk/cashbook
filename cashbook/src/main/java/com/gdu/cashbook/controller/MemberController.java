@@ -19,6 +19,7 @@ public class MemberController {
 	@Autowired	// 자동으로 객체 생성
 	private MemberService memberService;
 	
+	// 비밀번호찾기 form
 	@GetMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session) {
 		if(session.getAttribute("loginMember")!=null) {
@@ -27,6 +28,7 @@ public class MemberController {
 		return "findMemberPw";
 	}
 	
+	// 비밀번호 찾기 action
 	@PostMapping("/findMemberPw")
 	public String findMemberPw(HttpSession session, Model model, Member member) {
 		if(session.getAttribute("loginMember")!=null) {
@@ -132,14 +134,14 @@ public class MemberController {
 	}
 	
 	// 회원탈퇴 action
-	@PostMapping("/removeMember") // @RequestParam("memberPw") String memberPw
+	@PostMapping("/removeMember")
 	public String removeMember(HttpSession session, Model model, @RequestParam("memberPw") String memberPw) {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
 		LoginMember loginMember = (LoginMember)(session.getAttribute("loginMember"));
 		loginMember.setMemberPw(memberPw);
-		System.out.println(loginMember);
+		System.out.println(loginMember + "loginMember");
 		
 		int result = memberService.removeMember(loginMember);
 		System.out.println(result);
@@ -210,6 +212,7 @@ public class MemberController {
 			return "login";
 		} else { // 로그인 성공
 			session.setAttribute("loginMember", returnLoginMember);
+			session.setAttribute("memberPic", memberService.getMemberPic(loginMember.getMemberId()));
 			System.out.println(returnLoginMember);
 			return "redirect:/home";
 		}

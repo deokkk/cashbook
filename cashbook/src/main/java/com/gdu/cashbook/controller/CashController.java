@@ -23,11 +23,33 @@ import com.gdu.cashbook.vo.Cash;
 import com.gdu.cashbook.vo.Category;
 import com.gdu.cashbook.vo.DayAndPrice;
 import com.gdu.cashbook.vo.LoginMember;
+import com.gdu.cashbook.vo.MonthAndPrice;
 
 @Controller
 public class CashController {
-	@Autowired
-	private CashService cashService;
+	@Autowired private CashService cashService;
+	// 월별 수입/지출 총합 리스트
+	@GetMapping("/getCashListByYear")
+	public String getCashListByYear(HttpSession session,Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
+		// 파라미터로 받은 LocalDate타입 Calendar타입으로 변경
+		Date date = Date.from(day.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Calendar cDay = Calendar.getInstance();
+		cDay.setTime(date);
+		int year = cDay.get(Calendar.YEAR);
+		List<MonthAndPrice> monthAndPriceList = cashService.getMonthAndPriceList(memberId, year);
+		System.out.println(monthAndPriceList);
+		model.addAttribute("monthAndPriceList", monthAndPriceList);
+		// Calendar타입 LocalDate타입으로
+		Date calendarToDate = new Date(cDay.getTimeInMillis());
+		LocalDate dateToLocalDate = calendarToDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		model.addAttribute("day", dateToLocalDate);
+		return "getCashListByYear";
+	}
+	
 	// 가계부 월별리스트
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(HttpSession session, Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
@@ -75,14 +97,13 @@ public class CashController {
 	
 	// 가계부수정 action
 	@PostMapping("/modifyCash")
-	public String modifyCash(HttpSession session, Cash cash, @RequestParam(value="date") String date) { 
+	public String modifyCash(HttpSession session, Cash cash) { 
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
 		System.out.println(cash);
 		cashService.modifyCash(cash);
-		LocalDate day = LocalDate.parse(date);
-		return "redirect:/getCashListByDate?day="+day;
+		return "redirect:/getCashListByDate?day="+cash.getCashDate();
 	}
 	
 	// 가계부수정 form
@@ -111,8 +132,7 @@ public class CashController {
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <--CashController.addCash cash");
 		cashService.addCash(cash);
-		LocalDate day = LocalDate.now();
-		return "redirect:/getCashListByDate?day="+day;
+		return "redirect:/getCashListByDate?day="+cash.getCashDate();
 	}
 	
 	// 가계부입력 form

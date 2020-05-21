@@ -11,6 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 .sidenav {
 	height: 100%;
@@ -25,15 +26,43 @@
 	padding-top: 20px;
 }
 
-.sidenav a {
+#sidePic {
+	width: 80px;
+	height: 80px;
+	border-radius: 3em;
+	margin-bottom: 5px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.menuItem {
 	margin-bottom: 50px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #111;
 	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
 }
 
-.sidenav a:hover {
+.dropdown-btn {
+ 	margin-bottom: 50px;
+ 	margin-left: 25px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.menuItem:hover, .dropdown-btn:hover {
 	color: #f1f1f1;
 }
 
@@ -95,6 +124,20 @@ h1 {
 
 .totalCash {
 	font-size: 25px;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+	text-align: center;
+	display: none;
+	background-color: #3498db;
+	padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
 }
 
 @media screen and (max-height: 450px) {

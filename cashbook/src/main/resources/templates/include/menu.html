@@ -6,15 +6,40 @@
 	<!-- jsp에서는 페이지 단위로 include할 수 있는데 thymeleaf는 태그 단위로 include 가능 -->
 	<!-- fragment1 /include/menu::sidemenu -->
 	<div th:fragment="sidemenu">
-		<div class="info"><span th:text="${session.loginMember.memberId}"></span>님<br>일반회원</div>
-		<a th:href="@{/home}">홈</a>
-		<a th:href="@{/memberInfo}">회원정보</a>
-		<!-- <a th:href="@{/cashbookList}">가계부 관리</a> -->
-		<!-- <a th:href="@{/getCashListByDate(day=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">가계부 관리 dates</a> -->
-		<a th:href="@{/getCashListByDate(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">일별 가계부 관리</a>
-		<a th:href="@{/getCashListByMonth(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">월별 가계부 관리</a>
-		<a th:href="@{/boardList}">게시판</a>
-		<a th:href="@{/logout}">로그아웃</a>
+		<div class="sidenav">
+			<div class="info">
+				<div><img id="sidePic" th:src="@{${'/upload/'+session.memberPic}}"></div>
+				<span th:text="${session.loginMember.memberId}"></span>님<br>일반회원
+			</div>
+			<a class="menuItem" th:href="@{/home}">홈</a>
+			<a class="menuItem" th:href="@{/memberInfo}">회원정보</a>
+			<!-- <a th:href="@{/cashbookList}">가계부 관리</a> -->
+			<!-- <a th:href="@{/getCashListByDate(day=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">가계부 관리 dates</a> -->
+			<button class="dropdown-btn">가계부 관리<i class="fa fa-caret-down"></i></button>
+			<div class="dropdown-container">
+				<a class="menuItem" th:href="@{/getCashListByDate(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">일별 가계부 관리</a>
+				<a class="menuItem" th:href="@{/getCashListByMonth(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">월별 가계부 관리</a>
+			</div>
+			<a class="menuItem" th:href="@{/boardList}">게시판</a>
+			<a class="menuItem" th:href="@{/logout}">로그아웃</a>
+		</div>
+		<script>
+		/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+		var dropdown = document.getElementsByClassName("dropdown-btn");
+		var i;
+
+		for (i = 0; i < dropdown.length; i++) {
+			dropdown[i].addEventListener("click", function() {
+				this.classList.toggle("active");
+				var dropdownContent = this.nextElementSibling;
+				if (dropdownContent.style.display === "block") {
+					dropdownContent.style.display = "none";
+				} else {
+					dropdownContent.style.display = "block";
+				}
+			});
+		}
+		</script>
 	</div>
 	<!-- fragment2 -->
 	<!-- fragment3 -->
