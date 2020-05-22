@@ -13,11 +13,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<h1>년별가계부</h1>
-	<div th:text="${day}"></div>
-	<div th:each="i :  ${#numbers.sequence(1, 12)}">
-		<span th:text="${i}"></span>
-		<span th:each="list : ${monthAndPriceList}" th:text="${list.month}"></span>
+	<h1 th:text="${#temporals.format(day, 'yyyy')} + '년  가계부'"></h1>
+	<div th:text="${#temporals.format(day, 'yyyy')} + '년 월별 비교'"></div>
+	<div class="row">
+	<div th:each="i :  ${#numbers.sequence(1, 12)}" class="col">
+			<!-- <div><a th:href="@{/getCashListByMonth(day=${#temporals.format(day, 'yyyy-')} + ${i} + ${#temporals.format(day, '-dd')}}" th:text="${i} + '월'"></a></div> -->
+			<div th:each="mp : ${monthAndPriceList}" th:if="${mp.month}==${i}" th:text="${mp.price}"></div>
+	</div>
 	</div>
 </body>
 </html>

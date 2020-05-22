@@ -5,7 +5,7 @@
 <mapper namespace="com.gdu.cashbook.mapper.CashMapper">
 	<!-- 월별 수입/지출 총합 리스트 -->
 	<select id="selectMonthAndPriceList" resultType="com.gdu.cashbook.vo.MonthAndPrice" parameterType="java.util.Map">
-		SELECT MONTH(cash_date), 
+		SELECT MONTH(cash_date) AS month, 
 				SUM(case when cash_kind = '수입' then cash_price
 				when cash_kind = '지출' then -cash_price END) AS price
 		FROM cash
