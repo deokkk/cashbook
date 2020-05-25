@@ -160,7 +160,7 @@ public class MemberController {
 			return "redirect:/";
 		}
 		Member member = memberService.getMemberOne((LoginMember)session.getAttribute("loginMember"));
-		System.out.println(member);
+		System.out.println(member + " <--MemberController.memberInfo member");
 		model.addAttribute("member", member);
 		return "memberInfo";
 	}

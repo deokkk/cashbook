@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gdu.cashbook.mapper.BoardMapper">
+	<!-- 전체 행 수 -->
+	<select id="selectBoardTotalRow" resultType="int">
+		SELECT COUNT(*)
+		FROM board
+	</select>
+	<!-- 게시글 전체 불러오기 -->
+	<select id="selectBoardListByPage" resultType="com.gdu.cashbook.vo.Board" parameterType="com.gdu.cashbook.vo.Page">
+		SELECT
+			board_no boardNo,
+			board_title boardTitle,
+			member_id memberId,
+			board_date boardDate,
+			board_content boardContent
+		FROM board
+		ORDER BY board_no DESC
+		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+</mapper>

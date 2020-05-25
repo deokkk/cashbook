@@ -2,7 +2,7 @@
 
 .sidenav {
 	height: 100%;
-	width: 200px;
+	width: 250px;
 	text-align: center;
 	position: fixed;
 	z-index: 1;
@@ -38,7 +38,7 @@
 
 .dropdown-btn {
  	margin-bottom: 50px;
- 	margin-left: 25px;
+ 	margin-left: 50px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #111;
@@ -54,7 +54,7 @@
 }
 
 .main {
-	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-left: 350px; /* Same as the width of the sidenav */
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */

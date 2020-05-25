@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<h1 th:text="게시판"></h1>
+<table border="1">
+	<thead>
+		<tr>
+			<th>글번호</th>
+			<th>글제목</th>
+			<th>작성자</th>
+			<th>작성날짜</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="board : ${boardList}">
+			<td th:text="${board.boardNo}"></td>
+			<td th:text="${board.boardTitle}"></td>
+			<td th:text="${board.memberId}"></td>
+			<td th:text="${board.boardDate}"></td>
+		</tr>
+	</tbody>
+</table>
+<span th:text="${page.currentPage} + ' <--currentPage '"></span>
+<span th:text="${page.lastPage} + ' <--lastPage '"></span>
+<span th:text="${page.totalRow} + ' <--totalRow '"></span>
+<span th:text="${page.rowPerPage} + ' <--rowPerPage '"></span>
+<span th:text="${page.currentPageGroup} + ' <--currentPageGroup '"></span>
+<span th:text="${page.pagePerGroup} + ' <--pagePerGroup '"></span>
+<span th:text="${page.lastPageGroup} + ' <--lastPageGroup '"></span>
+<span th:text="${page.beginRow} + ' <--beginRow '"></span>
+<span th:text="${page.currentPageGroup+page.pagePerGroup}"></span>
+<div class="pageNav">
+	<a href="" th:text="prev" th:if="${page.currentPageGroup}>1"></a>
+	<span th:if="${page.currentPage}!=${page.lastPage}" th:each="i : ${#numbers.sequence(page.currentPageGroup, page.currentPageGroup+page.pagePerGroup-1)}">
+		<span th:if="${i}==${page.currentPage}" th:text="${i}"></span>
+		<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="@{/boardListByPage(currentPage=${i})}"></a>
+	</span>
+	<a href="" th:text="'next'" th:if="${page.currentPageGroup<lastPageGroup}">다음</a>
+</div>
+</body>
+</html>

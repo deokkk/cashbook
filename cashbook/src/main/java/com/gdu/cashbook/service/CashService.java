@@ -20,6 +20,14 @@ import com.gdu.cashbook.vo.MonthAndPrice;
 public class CashService {
 	@Autowired private CashMapper cashMapper;
 	@Autowired private CategoryMapper categoryMapper;
+	// 연 수입/지출 총합
+	public int getYearTotalPrice(String memberId, int year) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberId", memberId);
+		map.put("year", year);
+		return cashMapper.selectYearTotalPrice(map);
+	}
+	
 	// 월별 수입/지출 총합 리스트
 	public List<MonthAndPrice> getMonthAndPriceList(String memberId, int year) {
 		Map<String, Object> map = new HashMap<>();
@@ -76,7 +84,7 @@ public class CashService {
 		List<Cash> cashList =  cashMapper.selectCashListByDate(cash);
 		int cashKindSum = cashMapper.selectCashKindSum(cash);
 		System.out.println(cashKindSum + " <---CashService.getCashListByDate cashKindSum");
-		Map<String, Object> map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cashList", cashList);
 		map.put("cashKindSum", cashKindSum);
 		return map;

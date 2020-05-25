@@ -11,6 +11,8 @@ import com.gdu.cashbook.vo.MonthAndPrice;
 
 @Mapper
 public interface CashMapper {
+	// 연 수입/지출 총합
+	public int selectYearTotalPrice(Map<String, Object> year);
 	// 월별 수입/지출 총합 리스트
 	public List<MonthAndPrice> selectMonthAndPriceList(Map<String, Object> month);
 	// 회원 탈퇴시 그 memberId로 작성된 가계부 전부 삭제

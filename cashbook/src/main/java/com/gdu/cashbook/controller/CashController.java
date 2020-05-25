@@ -40,6 +40,8 @@ public class CashController {
 		Calendar cDay = Calendar.getInstance();
 		cDay.setTime(date);
 		int year = cDay.get(Calendar.YEAR);
+		int totalPrice = cashService.getYearTotalPrice(memberId, year);
+		model.addAttribute("totalPrice", totalPrice);
 		List<MonthAndPrice> monthAndPriceList = cashService.getMonthAndPriceList(memberId, year);
 		System.out.println(monthAndPriceList);
 		model.addAttribute("monthAndPriceList", monthAndPriceList);

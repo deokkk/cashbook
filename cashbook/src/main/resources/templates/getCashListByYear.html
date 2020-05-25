@@ -11,10 +11,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 .sidenav {
 	height: 100%;
-	width: 200px;
+	width: 250px;
 	text-align: center;
 	position: fixed;
 	z-index: 1;
@@ -27,6 +28,13 @@
 
 .info {
 	margin: 30px;
+}
+
+.date {
+	width: 1020px;
+	text-align: center;
+	font-size: 20px;
+	margin-bottom: 15px;
 }
 
 #sidePic {
@@ -50,7 +58,7 @@
 
 .dropdown-btn {
  	margin-bottom: 50px;
- 	margin-left: 25px;
+ 	margin-left: 50px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #111;
@@ -66,20 +74,58 @@
 }
 
 .main {
-	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-left: 300px; /* Same as the width of the sidenav */
+}
+
+h1 {
+	margin-top: 50px;
+	margin-bottom: 50px;
 }
 
 .row {
-	width: 900px;
+	width: 1020px;
 }
 
 .col {
-	width: 75px;
-	height: 75px;
+	width: 85px;
+	height: 160px;
 	border: 1px solid #000000;
-	border-radius: 0.5em;
-	margin-right: 5px;
-	margin-bottom: 5px;
+	padding: 0px;
+}
+
+.no-border {
+	border: 0px;
+	height: auto;
+	width: auto;
+}
+
+.dateBtn {
+	background-color: #e6e6e6;
+	width: 100px;
+	border-radius: 20em;
+}
+
+.nextBtn {
+	text-align: right;
+}
+
+.month {
+	text-align: center;
+	height: 80px;
+	background-color: #dcdcdc;
+	border-bottom: 1px solid #000000;
+	line-height: 75px;
+}
+
+.month a {
+	color: black;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.price {
+	text-align: center;
+	line-height: 75px;
 }
 
 .plus {
@@ -88,6 +134,12 @@
 
 .minus {
 	color: red;
+}
+
+.totalBox {
+	width: 1020px;
+	font-size: 30px;
+	text-align: right;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
@@ -115,14 +167,29 @@
 	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
 	<div class="main">
 		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년  가계부'"></h1>
-		<div th:text="${#temporals.format(day, 'yyyy')} + '년 월별 비교'"></div>
 		<div class="row">
-		<div th:each="i, index :  ${#numbers.sequence(1, 12)}" class="col">
-				<div>
+			<div class="col no-border">
+				<a class="btn dateBtn" th:href="@{/getCashListByYear(day=${day.plusYears(-1)})}">이전</a>
+			</div>
+			<div class="col date no-border">
+				<div th:text="${#temporals.format(day, 'yyyy년 월별 비교')}"></div>
+			</div>
+			<div class="col nextBtn no-border">
+				<a class="btn dateBtn" th:href="@{/getCashListByYear(day=${day.plusYears(+1)})}">다음</a>
+			</div>
+		</div>
+		<div class="row">
+			<div th:each="i, index :  ${#numbers.sequence(1, 12)}" class="col">
+				<div class="month">
 					<a th:href="${i}<10 ? @{/getCashListByMonth(day=${#temporals.format(day, 'yyyy-')}+'0'+${i}+${#temporals.format(day, '-dd')})} : @{/getCashListByMonth(day=${#temporals.format(day, 'yyyy-')}+${i}+${#temporals.format(day, '-dd')})}" th:text="${i} + '월'"></a>
 				</div>
-				<div th:each="mp : ${monthAndPriceList}" th:if="${mp.month}==${i}" th:text="${mp.price}>0 ? '+' + ${mp.price} : ${mp.price}" th:class="${mp.price}>0 ? 'plus' : 'minus'"></div>
+				<div class="price">
+					<div th:each="mp : ${monthAndPriceList}" th:if="${mp.month}==${i}" th:text="${mp.price}>0 ? '+' + ${mp.price} + '원' : ${mp.price} + '원'" th:class="${mp.price}>0 ? 'plus' : 'minus'"></div>
+				</div>
+			</div>
 		</div>
+		<div class="totalBox">
+			<span th:text="${#temporals.format(day, 'yyyy년 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} + '원' : ${totalPrice} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
 		</div>
 	</div>
 </div>

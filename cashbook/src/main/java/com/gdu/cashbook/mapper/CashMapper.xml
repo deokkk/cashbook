@@ -3,6 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.CashMapper">
+	<!-- 연 수입/지출 총합 -->
+	<select id="selectYearTotalPrice" resultType="int" parameterType="java.util.Map">
+		SELECT IFNULL(SUM(CASE WHEN cash_kind = '수입' THEN cash_price
+			   WHEN cash_kind = '지출' THEN -cash_price END), 0) as price
+		FROM cash
+		WHERE member_id = #{memberId}
+		AND YEAR(cash_date) = #{year}
+	</select>
+
 	<!-- 월별 수입/지출 총합 리스트 -->
 	<select id="selectMonthAndPriceList" resultType="com.gdu.cashbook.vo.MonthAndPrice" parameterType="java.util.Map">
 		SELECT MONTH(cash_date) AS month, 

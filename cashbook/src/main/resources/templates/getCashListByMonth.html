@@ -15,7 +15,7 @@
 <style>
 .sidenav {
 	height: 100%;
-	width: 200px;
+	width: 250px;
 	text-align: center;
 	position: fixed;
 	z-index: 1;
@@ -51,7 +51,7 @@
 
 .dropdown-btn {
  	margin-bottom: 50px;
- 	margin-left: 25px;
+ 	margin-left: 50px;
 	text-decoration: none;
 	font-size: 25px;
 	color: #111;
@@ -138,17 +138,21 @@ div.gd-title {
 	color: red;
 }
 
-#totalBox {
-	/* margin-top: 690px;
-	margin-left: 640px; */
-	/* text-align: right;
-	width: 650px; */
-}
-
 .totalBox {
 	font-size: 30px;
 	text-align: right;
-	width: 740px;
+}
+
+.bottomBox {
+	position: absolute;
+	width: 760px;
+	top: 880px;
+}
+
+.btn {
+	margin-bottom: 10px;
+	background-color: #3498db;
+	color: #ffffff;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
@@ -203,12 +207,12 @@ div.gd-title {
 				
 			</div>
 		</div>
-		<div class="row">
+		<div class="row bottomBox">
 			<div class="col">
-				<a th:href="@{/getCashListByYear(day=${day})}">월별 비교</a>
+				<a class="btn" th:href="@{/getCashListByYear(day=${day})}">월별 비교</a>
 			</div>
 			<div class="col totalBox">
-				<span>합계 : </span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} : ${totalPrice}" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
+				<span th:text="${#temporals.format(day, 'MM월 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} + '원' : ${totalPrice} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
 			</div>
 		</div>
 	</div>

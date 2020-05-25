@@ -1,7 +1,6 @@
 package com.gdu.cashbook.service;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,8 @@ public class MemberService {
 	@Autowired private CashMapper cashMapper;
 	
 	// 경로 : linux(/), windows(\\)
-	@Value("D:\\git-cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
+	//@Value("D:\\git-cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
+	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\")
 	private String path;
 	
 	// 로그인한 memberPic
