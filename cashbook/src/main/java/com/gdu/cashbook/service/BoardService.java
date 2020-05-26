@@ -1,42 +1,113 @@
 package com.gdu.cashbook.service;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook.mapper.BoardMapper;
 import com.gdu.cashbook.vo.Board;
+import com.gdu.cashbook.vo.BoardForm;
 import com.gdu.cashbook.vo.Page;
 
 @Service
 public class BoardService {
 	@Autowired private BoardMapper boardMapper;
 	
-	// 전체 행 수
-	public int getBoardTotlaRow() {
-		return boardMapper.selectBoardTotalRow();
+	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\board\\")
+	private String path;
+	// 게시글 삭제
+	public int removeBoard(int boardNo) {
+		int result = boardMapper.deleteBoard(boardNo);
+		String boardPic = boardMapper.selectBoardPic(boardNo);
+		File file = new File(path+boardPic);
+		// 테이블에서 게시글이 삭제됬고 파일이 물리 저장소에 존재하면
+		if(result==1 && file.exists()) {
+			file.delete();
+		}
+		return result;
 	}
 	
+	// 게시글 상세보기
+	public Map<String, Object> getBoardOne(int boardNo) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("board", boardMapper.selectBoardOne(boardNo));
+		// 처음 게시물, 마지막 게시물 번호
+		Map<String, Object> boardNoMap = boardMapper.selectFistAndLastBoard();
+		map.put("firstBoardNo", boardNoMap.get("minBoardNo"));
+		map.put("lastBoardNo", boardNoMap.get("maxBoardNo"));
+		map.put("nextBoardNo", boardMapper.selectNextBoardNo(boardNo));
+		map.put("prevBoardNo", boardMapper.selectPrevBoardNo(boardNo));
+		return map;
+	}
+	
+	// 게시글 입력
+	public int addBoard(BoardForm boardForm) {
+		MultipartFile mf = boardForm.getBoardPic();
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName);
+		String boardPic = null;
+		if(!originName.equals("")) {
+			int lastDot = originName.lastIndexOf(".");
+			String extension = originName.substring(lastDot);
+			System.out.println(extension);
+			// 사진파일 랜덤문자열로 추가
+			UUID uuid = UUID.randomUUID();
+			System.out.println(uuid);
+			boardPic = boardForm.getMemberId()+uuid+extension;
+			System.out.println(boardPic);
+		}
+		
+		// boardForm -> board
+		Board board = new Board();
+		board.setBoardTitle(boardForm.getBoardTitle());
+		board.setBoardContent(boardForm.getBoardContent());
+		board.setMemberId(boardForm.getMemberId());
+		board.setBoardPic(boardPic);
+		System.out.println(board + " <--boardService.addBoard board");
+		
+		int row = boardMapper.insertBoard(board);
+		if(!originName.equals("")) {
+			// file 저장
+			System.out.println(path+boardPic + " <-- 저장경로");
+			File file = new File(path+boardPic);
+			try {
+				mf.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		}
+		return row;
+	}
 	// 게시글 전체 불러오기
-	public Map<String, Object> getBoardListByPage(int currentPage) {
+	public Map<String, Object> getBoardListByPage(int currentPage, String searchWord) {
 		Page page = new Page();
-		int rowPerPage = 1;	// 페이지당 행수
+		int rowPerPage = 10;	// 페이지당 행수
 		int beginRow = (currentPage-1)*rowPerPage;
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);
+		page.setSearchWord(searchWord);
 		List<Board> boardList = boardMapper.selectBoardListByPage(page);
-		int totalRow = boardMapper.selectBoardTotalRow();
+		int totalRow = boardMapper.selectBoardTotalRow(searchWord);
 		page.setCurrentPage(currentPage);
 		page.setTotalRow(totalRow);
+		
 		int lastPage = totalRow%rowPerPage!=0 ? totalRow/rowPerPage+1 : totalRow/rowPerPage;
 		page.setLastPage(lastPage);
-		int pagePerGroup = 1; // 몇페이지씩 그룹
+		
+		int pagePerGroup = 5; // 몇페이지씩 그룹
 		page.setPagePerGroup(pagePerGroup);
-		int currentPageGroup = (currentPage-1)%pagePerGroup==0 ? currentPage : (currentPage-1/pagePerGroup)/pagePerGroup+1;
+		
+		int currentPageGroup = (currentPage-1)%pagePerGroup==0 ? currentPage : (currentPage-1)/pagePerGroup*pagePerGroup+1;
 		page.setCurrentPageGroup(currentPageGroup);
+		
 		int lastPageGroup = lastPage%pagePerGroup!=0 ? lastPage/pagePerGroup+1 : lastPage/pagePerGroup;
 		page.setLastPageGroup(lastPageGroup);
 		

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>GetBoardListByPage</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+.sidenav {
+	height: 100%;
+	width: 250px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+#sidePic {
+	width: 80px;
+	height: 80px;
+	border-radius: 3em;
+	margin-bottom: 5px;
+}
+
+.info {
+	margin: 30px;
+}
+
+.menuItem {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.dropdown-btn {
+ 	margin-bottom: 50px;
+ 	margin-left: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.menuItem:hover, .dropdown-btn:hover {
+	color: #f1f1f1;
+}
+
+h1 {
+	margin: 50px;
+}
+
+.main {
+	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-top: 100px;
+	width: 1000px;
+}
+
+.main-contents {
+	width: 1000px;
+	margin-left: 200px;
+}
+
+
+.title {
+	text-align: center;
+}
+
+#addBox {
+	text-align: right;
+	margin-bottom: 10px;
+}
+
+.table {
+	border: 1px solid #ccc;
+}
+
+th {
+	background-color: #ccc;
+	text-align: center;
+}
+
+td {
+	text-align: center;
+}
+
+td a {
+	color: #000000;
+	font-size: 17px;
+}
+
+form {
+	margin: 0 auto;
+	width: 500px;
+}
+
+#searchWord {
+	width: 400px;
+}
+
+.btn {
+	background-color: #ccc;
+	width: 80px;
+}
+
+.pagination {
+	margin-top: 15px;
+}
+
+.page-item.active .page-link {
+	background-color: #ccc;
+	border-color: #ccc;
+	color: black;
+}
+	
+.page-link {
+	color: black;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+	text-align: center;
+	display: none;
+	background-color: #3498db;
+	padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
+}
+
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div th:include="/include/menu::sidemenu"></div>
+	<div class="main">
+		<div class="main-contents">
+			<div class="title">
+				<h1 th:text="게시판"></h1>
+			</div>
+			<div id="addBox">
+				<a th:href="@{/addBoard}" th:text="글작성" class="btn"></a>
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th style="width: 10%;">글번호</th>
+						<th style="width: 45%;">글제목</th>
+						<th style="width: 20%;">작성자</th>
+						<th style="width: 25%;">작성날짜</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="board : ${boardList}">
+						<td th:text="${board.boardNo}"></td>
+						<td><a th:href="@{/boardDetail(boardNo=${board.boardNo})}" th:text="${board.boardTitle}"></a></td>
+						<td th:text="${board.memberId}"></td>
+						<td th:text="${board.boardDate}"></td>
+					</tr>
+				</tbody>
+			</table>
+			<div id="searchBox">
+				<form method="get" action="/getBoardListByPage" class="form-inline">
+					<input type="search" name="searchWord" id="searchWord" class="form-control">
+					<button class="btn" type="submit">검색</button>
+				</form>
+			</div>
+			<ul class="pagination"  style="justify-content: center;">
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup})} : @{/getBoardListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup}>1" class="page-link"><i class="fa fa-angle-left"></i></a></li>
+				<li th:if="${i}<${page.lastPage+1}" th:each="i : ${#numbers.sequence(page.currentPageGroup, page.currentPageGroup+page.pagePerGroup-1)}" th:class="${i}==${page.currentPage} ? 'page-item active' : 'page-item'">
+					<span th:if="${i}==${page.currentPage}" th:text="${i}" class="page-link"></span>
+					<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${i})} : @{/getBoardListByPage(currentPage=${i}, searchWord=${page.searchWord})}" class="page-link"></a>
+				</li>
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup})} : @{getBoardListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup<(page.lastPageGroup-1)*page.pagePerGroup+1}" class="page-link"><i class="fa fa-angle-right"></i></a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+</body>
+</html>

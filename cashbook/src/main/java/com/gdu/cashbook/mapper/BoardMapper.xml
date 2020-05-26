@@ -3,10 +3,84 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.BoardMapper">
+	<!-- 게시글 이미지파일 이름 -->
+	<select id="selectBoardPic" resultType="String" parameterType="int">
+		SELECT board_pic
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
+	<!-- 게시글 삭제 -->
+	<delete id="deleteBoard" parameterType="int">
+		DELETE FROM board
+		WHERE board_no = #{boardNo}
+	</delete>
+	
+	<!-- 회원탈퇴시 게시글 삭제 -->
+	<delete id="deleteBoardByMember" parameterType="String">
+		DELETE FROM board
+		WHERE member_id = #{memberId}
+	</delete>
+	
+	<!-- 이전글 boardNo -->
+	<select id="selectPrevBoardNo" resultType="int" parameterType="int">
+	<![CDATA[
+		SELECT IFNULL(MAX(board_no), 0)
+		FROM board
+		WHERE board_no < #{boardNo}
+	]]>
+	</select>
+	
+	<!-- 다음글 boardNo -->
+	<select id="selectNextBoardNo" resultType="int" parameterType="int">
+		SELECT IFNULL(MIN(board_no), 0)
+		FROM board
+		WHERE board_no > #{boardNo}
+	</select>
+	
+	<!-- 처음, 마지막 게시글 -->
+	<select id="selectFistAndLastBoard" resultType="java.util.Map">
+		SELECT
+			MAX(board_no) maxBoardNo,
+			MIN(board_no) minBoardNo
+		FROM board
+	</select>
+
+	<!-- 게시글 상세보기 -->
+	<select id="selectBoardOne" resultType="com.gdu.cashbook.vo.Board" parameterType="int">
+		SELECT
+			board_no boardNo,
+			board_title boardTitle,
+			member_id memberId,
+			board_date boardDate,
+			board_pic boardPic,
+			board_content boardContent
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
+	<!-- 게시글 입력 -->
+	<insert id="insertBoard" parameterType="com.gdu.cashbook.vo.Board">
+		INSERT INTO
+		board(
+			board_title,
+			member_id,
+			board_date,
+			board_content,
+			board_pic
+		) VALUES (
+			#{boardTitle},
+			#{memberId},
+			NOW(),
+			#{boardContent},
+			#{boardPic}
+		)
+	</insert>
 	<!-- 전체 행 수 -->
-	<select id="selectBoardTotalRow" resultType="int">
+	<select id="selectBoardTotalRow" resultType="int" parameterType="String">
 		SELECT COUNT(*)
 		FROM board
+		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 	</select>
 	<!-- 게시글 전체 불러오기 -->
 	<select id="selectBoardListByPage" resultType="com.gdu.cashbook.vo.Board" parameterType="com.gdu.cashbook.vo.Page">
@@ -14,9 +88,9 @@
 			board_no boardNo,
 			board_title boardTitle,
 			member_id memberId,
-			board_date boardDate,
-			board_content boardContent
+			board_date boardDate
 		FROM board
+		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 		ORDER BY board_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>

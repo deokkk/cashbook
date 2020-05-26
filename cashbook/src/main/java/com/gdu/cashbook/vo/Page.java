@@ -9,6 +9,7 @@ public class Page {
 	private int lastPage;
 	private int currentPageGroup;
 	private int lastPageGroup;
+	private String searchWord;
 	public int getCurrentPage() {
 		return currentPage;
 	}
@@ -57,10 +58,16 @@ public class Page {
 	public void setLastPageGroup(int lastPageGroup) {
 		this.lastPageGroup = lastPageGroup;
 	}
+	public String getSearchWord() {
+		return searchWord;
+	}
+	public void setSearchWord(String searchWord) {
+		this.searchWord = searchWord;
+	}
 	@Override
 	public String toString() {
 		return "Page [currentPage=" + currentPage + ", pagePerGroup=" + pagePerGroup + ", rowPerPage=" + rowPerPage
 				+ ", beginRow=" + beginRow + ", totalRow=" + totalRow + ", lastPage=" + lastPage + ", currentPageGroup="
-				+ currentPageGroup + ", lastPageGroup=" + lastPageGroup + "]";
+				+ currentPageGroup + ", lastPageGroup=" + lastPageGroup + ", searchWord=" + searchWord + "]";
 	}
 }

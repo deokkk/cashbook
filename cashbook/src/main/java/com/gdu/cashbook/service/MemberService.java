@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gdu.cashbook.mapper.BoardMapper;
 import com.gdu.cashbook.mapper.CashMapper;
 import com.gdu.cashbook.mapper.MemberMapper;
 import com.gdu.cashbook.mapper.MemberidMapper;
@@ -26,6 +27,7 @@ public class MemberService {
 	@Autowired private MemberidMapper memberidMapper;
 	@Autowired private JavaMailSender javaMailSender;
 	@Autowired private CashMapper cashMapper;
+	@Autowired private BoardMapper boardMapper;
 	
 	// 경로 : linux(/), windows(\\)
 	//@Value("D:\\git-cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
@@ -121,7 +123,8 @@ public class MemberService {
 		File file = new File(path+memberPic);
 		// member 삭제 전 그 memberId로 작성된 가계부 삭제
 		cashMapper.deleteCashByMember(loginMember.getMemberId());
-		
+		// member 삭제 전 그 memberId로 작성된 게시글 삭제
+		boardMapper.deleteBoardByMember(loginMember.getMemberId());
 		// 테이블에서 삭제
 		int deleteResult = memberMapper.deleteMember(loginMember);
 		

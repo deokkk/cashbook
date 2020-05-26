@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>AddBoard</title>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+let helperInit = function(){
+	$('#titleHelper').text("");
+	$('#contentHelper').text("");
+};
+
+$(document).ready(function(){
+	$('#addBtn').click(function(){
+		helperInit();
+		if($('#boardTitle').val().length === 0) {
+			$('#titleHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 제목을 입력하세요");
+			$('#boardTitle').focus();
+		} else if($('#boardContent').val().length === 0) {
+			$('#contentHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 내용을 입력하세요");
+			$('#boardContent').focus();
+		} else {
+			$('#addForm').submit();
+		}
+	});
+});
+</script>
+<style>
+.sidenav {
+	height: 100%;
+	width: 250px;
+	text-align: center;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #3498db;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+.info {
+	margin: 30px;
+}
+
+#sidePic {
+	width: 80px;
+	height: 80px;
+	border-radius: 3em;
+	margin-bottom: 5px;
+}
+
+.menuItem {
+	margin-bottom: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.dropdown-btn {
+ 	margin-bottom: 50px;
+ 	margin-left: 50px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #111;
+	display: block;
+	border: none;
+	background-color: #3498db;
+	cursor: pointer;
+	outline: none;
+}
+
+.menuItem:hover, .dropdown-btn:hover {
+	color: #f1f1f1;
+}
+
+h1 {
+	margin: 50px;
+}
+
+.main {
+	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-top: 100px;
+	width: 1000px;
+}
+
+.main-contents {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.title {
+	text-align: center;
+}
+
+#boardContent {
+	height: 400px;
+}
+
+.helper, .checkHelper {
+	color: red;
+}
+
+.btnBox {
+	text-align: right;
+}
+
+.btn {
+	background-color: #ccc;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+	text-align: center;
+	display: none;
+	background-color: #3498db;
+	padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+	float: right;
+	padding-right: 8px;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a {font-size: 18px;}
+}
+}
+</style>
+</head>
+<body>
+<div class="container-fluid">
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
+	<div class="main">
+		<div class="main-contents">
+			<div class="title">
+				<h1>글쓰기</h1>
+			</div>
+			<form id="addForm" method="post" action="/addBoard" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="boardTitle">제목</label>
+					<input type="text" name="boardTitle" id="boardTitle" class="form-control">
+					<span id="titleHelper" class="helper"></span>
+				</div>
+				<div class="form-group">
+					<label for="boardPic">사진첨부</label>
+					<input type="file" name="boardPic" id="boardPic" class="form-control-file border">
+					<span id="imgHelper" class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
+				</div>
+				<div class="form-group">
+					<label for="boardContent">내용</label>
+					<span id="contentHelper" class="helper"></span>
+					<textarea rows="3" cols="20" name="boardContent" id="boardContent" class="form-control"></textarea>
+				</div>
+				<div class="btnBox">
+					<button id="addBtn" class="btn" type="button">확인</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</body>
+</html>

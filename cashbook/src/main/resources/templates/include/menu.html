@@ -21,7 +21,7 @@
 				<a class="menuItem" th:href="@{/getCashListByMonth(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">월별 가계부 관리</a>
 				<a class="menuItem" th:href="@{/getCashListByDate(day=${#calendars.format(#calendars.createNow(), 'yyyy-MM-dd')})}">일별 가계부 관리</a>
 			</div>
-			<a class="menuItem" th:href="@{/boardListByPage}">게시판</a>
+			<a class="menuItem" th:href="@{/getBoardListByPage}">게시판</a>
 			<a class="menuItem" th:href="@{/logout}">로그아웃</a>
 		</div>
 		<script>
