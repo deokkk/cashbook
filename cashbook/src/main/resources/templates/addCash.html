@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>AddCash</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -34,6 +34,18 @@ $(document).ready(function(){
 			$('#dateHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 날짜를 선택하세요");
 		} else {
 			$('#addForm').submit();
+		}
+	});
+	
+	$('#categoryNameInput').val($('#categoryName').val());
+	$('#categoryName').change(function(){
+		$('#categoryNameInput').val($('#categoryName').val());
+		if($('#categoryNameInput').val() === '직접입력') {
+			$('#categoryNameInput').removeAttr("readonly");
+			$('#categoryNameInput').val("");
+			$('#categoryNameInput').attr("placeholder", "직접입력");
+		} else {
+			$('#categoryNameInput').attr("readonly", true);
 		}
 	});
 });
@@ -97,7 +109,7 @@ h1 {
 }
 
 .main {
-	margin-left: 200px; /* Same as the width of the sidenav */
+	margin-left: 300px; /* Same as the width of the sidenav */
 	width: 60%;
 }
 
@@ -124,6 +136,11 @@ form {
 .btn {
 	background-color: #3498db;
 	color: #ffffff;
+}
+
+#category-td {
+	width: 100%;
+	margin-left: 0;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
@@ -156,11 +173,13 @@ form {
 			<table class="table">
 				<tr>
 					<th><label for="categoryName">카테고리</label></th>
-					<td>
-						<select id="categoryName" name="categoryName" class="form-control">
-							<option value="">카테고리를 선택하세요</option>
+					<td id="category-td" class="row">
+						<select id="categoryName" class="form-control col">
+							<option value="">카테고리 선택</option>
 							<option th:each="category : ${categoryList}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
+							<option th:value="직접입력" th:text="직접입력">
 						</select>
+						<input type="text" id="categoryNameInput" name="categoryName" class="form-control col" readonly>
 						<span id="categoryHelper" class="helper"></span>
 					</td>
 				</tr>

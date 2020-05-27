@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook.mapper.BoardMapper;
+import com.gdu.cashbook.mapper.CommentMapper;
 import com.gdu.cashbook.vo.Board;
 import com.gdu.cashbook.vo.BoardForm;
 import com.gdu.cashbook.vo.Page;
@@ -19,11 +20,62 @@ import com.gdu.cashbook.vo.Page;
 @Service
 public class BoardService {
 	@Autowired private BoardMapper boardMapper;
+	@Autowired private CommentMapper commentMapper;
 	
 	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\board\\")
 	private String path;
+	// 게시글 수정
+	public int modifyBoard(BoardForm boardForm) {
+		String originBoardPic = boardMapper.selectBoardPic(boardForm.getBoardNo());
+		MultipartFile mf = boardForm.getBoardPic();
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName + " <-originName");
+		String boardPic = null;
+		if(!originName.equals("")) {
+			File originFile = new File(path+originBoardPic);
+			if(originFile.exists()) {
+				originFile.delete();
+			}
+			int lastDot = originName.lastIndexOf(".");
+			String extension = originName.substring(lastDot);
+			System.out.println(extension);
+			// 사진파일 랜덤문자열로 추가
+			UUID uuid = UUID.randomUUID();
+			System.out.println(uuid);
+			boardPic = boardForm.getMemberId()+uuid+extension;
+			System.out.println(boardPic);
+		}
+		// BoardForm -> Board
+		Board board = new Board();
+		//title content pic no
+		board.setBoardContent(boardForm.getBoardContent());
+		board.setBoardNo(boardForm.getBoardNo());
+		board.setBoardPic(boardPic);
+		board.setBoardTitle(boardForm.getBoardTitle());
+		System.out.println(board);
+		int row = boardMapper.updateBoard(board);
+		
+		if(!originName.equals("")) {
+			// 물리적으로 저장
+			File file = new File(path+boardPic);
+			try {
+				mf.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		}
+		return row;
+	}
+	
+	// 수정할 게시글
+	public Board getModifyBoard(int boardNo) {
+		return boardMapper.selectBoardOne(boardNo);
+	}
+	
 	// 게시글 삭제
 	public int removeBoard(int boardNo) {
+		commentMapper.deleteCommentByBoard(boardNo);
 		int result = boardMapper.deleteBoard(boardNo);
 		String boardPic = boardMapper.selectBoardPic(boardNo);
 		File file = new File(path+boardPic);
@@ -94,11 +146,10 @@ public class BoardService {
 		page.setBeginRow(beginRow);
 		page.setRowPerPage(rowPerPage);
 		page.setSearchWord(searchWord);
+		page.setCurrentPage(currentPage);
+		
 		List<Board> boardList = boardMapper.selectBoardListByPage(page);
 		int totalRow = boardMapper.selectBoardTotalRow(searchWord);
-		page.setCurrentPage(currentPage);
-		page.setTotalRow(totalRow);
-		
 		int lastPage = totalRow%rowPerPage!=0 ? totalRow/rowPerPage+1 : totalRow/rowPerPage;
 		page.setLastPage(lastPage);
 		

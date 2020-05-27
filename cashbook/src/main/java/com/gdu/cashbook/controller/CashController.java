@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gdu.cashbook.service.CashService;
+import com.gdu.cashbook.service.CategoryService;
 import com.gdu.cashbook.vo.Cash;
 import com.gdu.cashbook.vo.Category;
 import com.gdu.cashbook.vo.DayAndPrice;
@@ -28,6 +29,7 @@ import com.gdu.cashbook.vo.MonthAndPrice;
 @Controller
 public class CashController {
 	@Autowired private CashService cashService;
+	@Autowired private CategoryService categoryService;
 	// 월별 수입/지출 총합 리스트
 	@GetMapping("/getCashListByYear")
 	public String getCashListByYear(HttpSession session,Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
@@ -133,6 +135,8 @@ public class CashController {
 		String memberId = ((LoginMember)session.getAttribute("loginMember")).getMemberId();
 		cash.setMemberId(memberId);
 		System.out.println(cash + " <--CashController.addCash cash");
+		
+		categoryService.addCategory(cash.getCategoryName());
 		cashService.addCash(cash);
 		return "redirect:/getCashListByDate?day="+cash.getCashDate();
 	}

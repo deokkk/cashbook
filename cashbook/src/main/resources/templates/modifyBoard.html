@@ -2,8 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Member Info</title>
-
+<title>ModifyBoard</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -13,6 +12,27 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+let helperInit = function(){
+	$('#titleHelper').text("");
+	$('#contentHelper').text("");
+};
+
+$(document).ready(function(){
+	$('#modifyBtn').click(function(){
+		helperInit();
+		if($('#boardTitle').val().length === 0) {
+			$('#titleHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 제목을 확인하세요");
+			$('#boardTitle').focus();
+		} else if($('#boardContent').val().length === 0) {
+			$('#contentHelper').append("<i class='fa fa-exclamation-circle' style='font-size:24px'></i> 내용을 확인하세요");
+			$('#boardContent').focus();
+		} else {
+			$('#modifyForm').submit();
+		}
+	});
+});
+</script>
 <style>
 .sidenav {
 	height: 100%;
@@ -27,15 +47,15 @@
 	padding-top: 20px;
 }
 
+.info {
+	margin: 30px;
+}
+
 #sidePic {
 	width: 80px;
 	height: 80px;
 	border-radius: 3em;
 	margin-bottom: 5px;
-}
-
-.info {
-	margin: 30px;
 }
 
 .menuItem {
@@ -86,29 +106,20 @@ h1 {
 	text-align: center;
 }
 
-.table {
-	border: 1px solid #ccc;
+#boardContent {
+	height: 400px;
 }
 
-img {
-	width: 80px;
-	height: 80px;
-	border-radius: 70%;
+.helper, .checkHelper {
+	color: red;
 }
 
-th {
-	background-color: #ccc;
-	text-align: center;
-	width: 22%;
-}
-
-.memberBtn {
+.btnBox {
 	text-align: right;
 }
 
 .btn {
-	background-color: #3498db;
-	color: #ffffff;
+	background-color: #ccc;
 }
 
 /* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
@@ -125,7 +136,6 @@ th {
 	padding-right: 8px;
 }
 
-
 @media screen and (max-height: 450px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 18px;}
@@ -134,46 +144,38 @@ th {
 </head>
 <body>
 <div class="container-fluid">
-	<div th:include="/include/menu::sidemenu"></div>
+	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
 	<div class="main">
 		<div class="main-contents">
-			<div class="title">
-				<h1>회원정보</h1>
+		<div class="title">
+			<h1>게시글 수정</h1>
+		</div>
+		<form id="modifyForm" method="post" action="/modifyBoard" enctype="multipart/form-data">
+			<input type="hidden" name="boardNo" th:value="${board.boardNo}">
+			<div class="form-group">
+				<input type="text" name="boardTitle" id="boardTitle" th:value="${board.boardTitle}" class="form-control">
+				<span id="titleHelper" class="helper"></span>
 			</div>
-			<table class="table">
-				<tr>
-					<th>사진</th>
-					<td><img th:src="@{${'/upload/'+member.memberPic}}"></td>
-				</tr>
-				<tr>
-					<th>아이디</th>
-					<td th:text="${member.memberId}"></td>
-				</tr>
-				<tr>
-					<th>이름</th>
-					<td th:text="${member.memberName}"></td>
-				</tr>
-				<tr>
-					<th>주소</th>
-					<td th:text="${member.memberAddr}"></td>
-				</tr>
-				<tr>
-					<th>전화번호</th>
-					<td th:text="${member.memberPhone}"></td>
-				</tr>
-				<tr>
-					<th>이메일</th>
-					<td th:text="${member.memberEmail}"></td>
-				</tr>
-				<tr>
-					<th>가입날짜</th>
-					<td th:text="${member.memberDate}"></td>
-				</tr>
-			</table>
-			<div class="memberBtn">
-				<a th:href="@{/modifyPwConfirm}" class="btn">회원정보수정</a>
-				<a th:href="@{/removeMember}" class="btn">회원탈퇴</a>
+			<div class="row">
+				<div class="form-group col">
+					<input type="text" name="memberId" id="memberId" th:value="${board.memberId}" class="form-control" readonly>
+				</div>
+				<div class="form-group col">
+					<input type="text" name="boardDate" id="boardDate" th:value="${board.boardDate}" class="form-control" readonly>
+				</div>
 			</div>
+			<div class="form-group">
+				<input type="file" name="boardPic" id="boardPic" class="form-control-file border">
+				<span id="imgHelper" class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
+			</div>
+			<div class="form-group">
+				<span id="contentHelper" class="helper"></span>
+				<textarea rows="3" cols="20" name="boardContent" id="boardContent" th:text="${board.boardContent}" class="form-control"></textarea>
+			</div>
+			<div class="btnBox">
+				<button id="modifyBtn" class="btn" type="button">확인</button>
+			</div>
+		</form>
 		</div>
 	</div>
 </div>

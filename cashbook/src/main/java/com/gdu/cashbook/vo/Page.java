@@ -5,7 +5,6 @@ public class Page {
 	private int pagePerGroup;
 	private int rowPerPage;
 	private int beginRow;
-	private int totalRow;
 	private int lastPage;
 	private int currentPageGroup;
 	private int lastPageGroup;
@@ -34,12 +33,6 @@ public class Page {
 	public void setBeginRow(int beginRow) {
 		this.beginRow = beginRow;
 	}
-	public int getTotalRow() {
-		return totalRow;
-	}
-	public void setTotalRow(int totalRow) {
-		this.totalRow = totalRow;
-	}
 	public int getLastPage() {
 		return lastPage;
 	}
@@ -67,7 +60,7 @@ public class Page {
 	@Override
 	public String toString() {
 		return "Page [currentPage=" + currentPage + ", pagePerGroup=" + pagePerGroup + ", rowPerPage=" + rowPerPage
-				+ ", beginRow=" + beginRow + ", totalRow=" + totalRow + ", lastPage=" + lastPage + ", currentPageGroup="
-				+ currentPageGroup + ", lastPageGroup=" + lastPageGroup + ", searchWord=" + searchWord + "]";
+				+ ", beginRow=" + beginRow + ", lastPage=" + lastPage + ", currentPageGroup=" + currentPageGroup
+				+ ", lastPageGroup=" + lastPageGroup + ", searchWord=" + searchWord + "]";
 	}
 }

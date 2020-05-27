@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.gdu.cashbook.service.BoardService;
+import com.gdu.cashbook.service.CommentService;
 import com.gdu.cashbook.vo.Board;
 import com.gdu.cashbook.vo.BoardForm;
 import com.gdu.cashbook.vo.LoginMember;
@@ -20,9 +21,41 @@ import com.gdu.cashbook.vo.LoginMember;
 @Controller
 public class BoardController {
 	@Autowired private BoardService boardService;
+	@Autowired private CommentService commentService;
+	
+	// 게시글 수정 form
+	@GetMapping("/modifyBoard")
+	public String modifyBoard(HttpSession session, Model model, @RequestParam(value="boardNo") int boardNo) {
+		// 로그인 안되있을때
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		System.out.println(boardService.getModifyBoard(boardNo) + " <--getBoardOne");
+		model.addAttribute("board", boardService.getModifyBoard(boardNo));
+		return "modifyBoard";
+	}
+	
+	// 게시글 수정 action
+	@PostMapping("/modifyBoard")
+	public String modifyBoard(HttpSession session, BoardForm boardForm) {
+		// 로그인 안되있을때
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		// 파일 입력됬을때
+		MultipartFile mf = boardForm.getBoardPic();
+		if(boardForm.getBoardPic() != null && !mf.getOriginalFilename().equals("")) {
+			if(!boardForm.getBoardPic().getContentType().equals("image/png") && !boardForm.getBoardPic().getContentType().equals("image/jpeg") && !boardForm.getBoardPic().getContentType().equals("image/gif")) {
+				return "redirect:/modifyBoard?imgMsg=n";
+			}
+		}
+		boardService.modifyBoard(boardForm);
+		return "redirect:/boardDetail?boardNo="+boardForm.getBoardNo();
+	}
+	
 	// 게시글 삭제
 	@GetMapping("/removeBoard")
-	public String removeBoard(HttpSession session, @RequestParam(value="boardNo") int boardNo, @RequestParam(value="memberId") String memberId) {
+	public String removeBoard(HttpSession session, @RequestParam(value="boardNo") int boardNo) {
 		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
@@ -33,7 +66,7 @@ public class BoardController {
 	
 	// 게시글 상세보기
 	@GetMapping("/boardDetail")
-	public String boardDetail(HttpSession session, Model model, @RequestParam(value = "boardNo") int boardNo) {
+	public String boardDetail(HttpSession session, Model model, @RequestParam(value = "boardNo") int boardNo, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage) {
 		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
@@ -45,6 +78,13 @@ public class BoardController {
 		model.addAttribute("lastBoardNo", map.get("lastBoardNo"));
 		model.addAttribute("nextBoardNo", map.get("nextBoardNo"));
 		model.addAttribute("prevBoardNo", map.get("prevBoardNo"));
+		
+		System.out.println(currentPage + " <--comment currentPage");
+		Map<String, Object> commentMap = commentService.getCommentListByPage(boardNo, currentPage);
+		System.out.println(commentMap.get("commentList") + " <-- commentListByPage");
+		model.addAttribute("commentList", commentMap.get("commentList"));
+		model.addAttribute("page", commentMap.get("page"));
+		System.out.println(commentMap.get("page") + " <-- comment page");
 		return "boardDetail";
 	}
 	

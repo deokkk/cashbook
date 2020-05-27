@@ -8,6 +8,8 @@ import com.gdu.cashbook.vo.Category;
 
 @Mapper
 public interface CategoryMapper {
+	// 카테고리 추가
+	public int insertCategory(String categoryName);
 	// 카테고리 목록 가져오기
 	public List<Category> selectCategoryList();
 }

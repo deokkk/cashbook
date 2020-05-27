@@ -10,6 +10,8 @@ import com.gdu.cashbook.vo.Page;
 
 @Mapper
 public interface BoardMapper {
+	// 게시글 수정
+	public int updateBoard(Board board);
 	// 게시글 이미지파일 이름
 	public String selectBoardPic(int boardNo);
 	// 게시글 삭제

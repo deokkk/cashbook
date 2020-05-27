@@ -4,7 +4,7 @@ public class Comment {
 	private int commentNo;
 	private int boardNo;
 	private String memberId;
-	private String commentcontent;
+	private String commentContent;
 	private String commentDate;
 	public int getCommentNo() {
 		return commentNo;
@@ -24,11 +24,11 @@ public class Comment {
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
 	}
-	public String getCommentcontent() {
-		return commentcontent;
+	public String getCommentContent() {
+		return commentContent;
 	}
-	public void setCommentcontent(String commentcontent) {
-		this.commentcontent = commentcontent;
+	public void setCommentContent(String commentContent) {
+		this.commentContent = commentContent;
 	}
 	public String getCommentDate() {
 		return commentDate;
@@ -39,6 +39,6 @@ public class Comment {
 	@Override
 	public String toString() {
 		return "Comment [commentNo=" + commentNo + ", boardNo=" + boardNo + ", memberId=" + memberId
-				+ ", commentcontent=" + commentcontent + ", commentDate=" + commentDate + "]";
+				+ ", commentContent=" + commentContent + ", commentDate=" + commentDate + "]";
 	}
 }
