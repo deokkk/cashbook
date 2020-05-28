@@ -85,10 +85,11 @@ h1 {
 	margin-bottom: 15px;
 }
 
-.dateBtn {
-	background-color: #e6e6e6;
+#dateBtn {
+	background-color: #ccc;
 	width: 100px;
 	border-radius: 20em;
+	color: #000000;
 }
 
 .nextBtn {
@@ -183,13 +184,13 @@ div.gd-title {
 		<div id="calendar">
 			<div class="row">
 				<div class="col">
-					<a class="btn dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}">이전</a>
+					<a class="btn" id="dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(-1)})}">이전</a>
 				</div>
 				<div class="col date">
 					<span th:text="${#temporals.format(day, 'yyyy년 MM월')}"></span>
 				</div>
 				<div class="col nextBtn">
-					<a class="btn dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(+1)})}">다음</a>
+					<a class="btn" id="dateBtn" th:href="@{/getCashListByMonth(day=${day.plusMonths(+1)})}">다음</a>
 				</div>
 			</div>
 			<div class="gd-left gd-clear gd-title">일</div>
