@@ -9,9 +9,11 @@
 		<div class="sidenav">
 			<div class="info">
 				<div><img id="sidePic" th:src="@{${'/upload/'+session.memberPic}}"></div>
-				<span th:text="${session.loginMember.memberId}"></span>님<br>일반회원
+				<span th:text="${session.loginMember.memberId}"></span>님<br>
+				<span th:text="${session.memberType} eq 'admin' ? '관리자' : '일반회원'"></span>
 			</div>
 			<a class="menuItem" th:href="@{/home}">홈</a>
+			<a th:if="${session.memberType} eq 'admin'" class="menuItem" th:href="@{/getMemberListByPage}">회원관리</a>
 			<a class="menuItem" th:href="@{/memberInfo}">회원정보</a>
 			<!-- <a th:href="@{/cashbookList}">가계부 관리</a> -->
 			<!-- <a th:href="@{/getCashListByDate(day=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')})}">가계부 관리 dates</a> -->

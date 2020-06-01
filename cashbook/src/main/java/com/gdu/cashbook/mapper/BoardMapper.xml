@@ -3,6 +3,52 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gdu.cashbook.mapper.BoardMapper">
+	<!-- 답글에 답글일때 순서 update -->
+	<update id="updateGroupOrderRe" parameterType="com.gdu.cashbook.vo.Board">
+		UPDATE board SET
+			group_order = #{groupOrder}+1
+		WHERE origin_no = #{originNo}
+		AND group_order > #{groupOrder}
+		AND NOT board_no = #{boardNo}
+	</update>
+
+	<!--  origin_no, group_order, group_layer 수정 -->
+	<update id="updateGroupOrder" parameterType="com.gdu.cashbook.vo.Board">
+		UPDATE board SET
+			origin_no = #{originNo},
+			group_order = #{groupOrder},
+			group_layer = #{groupLayer}
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- 부모글 groupLayer -->
+	<select id="selectGroupLayer" resultType="int" parameterType="int">
+		SELECT group_layer 
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<!-- 부모글 groupOrder -->
+	<select id="selectGroupOrder" resultType="int" parameterType="int">
+		SELECT group_order
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<!-- max(groupOrder) -->
+	<select id="selectMaxGroupOrder" resultType="int" parameterType="int">
+		SELECT MAX(group_order)
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
+	<!-- 원래글의 originNo -->
+	<select id="selectOriginNo" resultType="int" parameterType="int">
+		SELECT origin_no
+		FROM board
+		WHERE board_no = #{boardNo}
+	</select>
+
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="com.gdu.cashbook.vo.Board">
 		UPDATE board
@@ -68,9 +114,18 @@
 		FROM board
 		WHERE board_no = #{boardNo}
 	</select>
+	
+	<!-- 게시글 원글일때 origin_no, group_order, group_layer 초기화 -->
+	<update id="updateBoardInit">
+		UPDATE board
+		SET	origin_no = (SELECT MAX(board_no) FROM board),
+			group_order = 0,
+			group_layer = 0
+		WHERE board_no = (SELECT MAX(board_no) FROM board)
+	</update>
 
 	<!-- 게시글 입력 -->
-	<insert id="insertBoard" parameterType="com.gdu.cashbook.vo.Board">
+	<insert id="insertBoard" parameterType="com.gdu.cashbook.vo.Board" useGeneratedKeys="true" keyColumn="board_no" keyProperty="boardNo">
 		INSERT INTO
 		board(
 			board_title,
@@ -95,13 +150,14 @@
 	<!-- 게시글 전체 불러오기 -->
 	<select id="selectBoardListByPage" resultType="com.gdu.cashbook.vo.Board" parameterType="com.gdu.cashbook.vo.Page">
 		SELECT
+			group_layer groupLayer,
 			board_no boardNo,
 			board_title boardTitle,
 			member_id memberId,
 			board_date boardDate
 		FROM board
 		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
-		ORDER BY board_no DESC
+		ORDER BY origin_no DESC, group_order
 		LIMIT #{beginRow}, #{rowPerPage}
 	</select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.gdu.cashbook.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.gdu.cashbook.service.AdminService;
 import com.gdu.cashbook.service.MemberService;
 import com.gdu.cashbook.vo.LoginMember;
 import com.gdu.cashbook.vo.Member;
@@ -18,6 +21,51 @@ import com.gdu.cashbook.vo.MemberForm;
 public class MemberController {
 	@Autowired	// 자동으로 객체 생성
 	private MemberService memberService;
+	@Autowired private AdminService adminService;
+	
+	// 관리자로 변경
+	@GetMapping("/addAdmin")
+	public String addAdmin(HttpSession session, @RequestParam(value = "memberId") String memberId) {
+		if(session.getAttribute("loginMember")==null || session.getAttribute("memberType").equals("normal")) {
+			return "redirect:/";
+		}
+		adminService.addAdmin(memberId);
+		return "redirect:/getMemberListByPage";
+	}
+	
+	// 관리자가 일반회원 탈퇴시키기
+	@GetMapping("/removeMembeByAdmin")
+	public String removeMemberByAdmin(HttpSession session, Model model, @RequestParam(value = "memberId") String memberId) {
+		if(session.getAttribute("loginMember")==null || session.getAttribute("memberType").equals("normal")) {
+			return "redirect:/";
+		}
+		System.out.println(memberId + "memberId");
+		
+		int result = memberService.removeMemberByAdmin(memberId);
+		System.out.println(result);
+		return "redirect:/getMemberListByPage";
+	}
+	
+	// 일반회원 memberList
+	@GetMapping("/getMemberListByPage")
+	public String getMemberList(HttpSession session, Model model, @RequestParam(value = "currentPage", defaultValue = "1") int currentPage, @RequestParam(required = false, value = "searchWord") String searchWord) {
+		System.out.println(session.getAttribute("memberType") + " <--getMemberList memberType");
+		// 로그인 안되있거나 일반회원이면
+		if(session.getAttribute("loginMember")==null || session.getAttribute("memberType").equals("normal")) {
+			return "redirect:/";
+		}
+		if(searchWord==null) {
+			searchWord="";
+		}
+		System.out.println(searchWord + " <--searchWord");
+		System.out.println(currentPage + " <-- currentPage");
+		Map<String, Object> map = memberService.getMemberListByPage(currentPage, searchWord);
+		System.out.println(map.get("memberList") + " <--controller");
+		System.out.println(map.get("page") + " <--controller");
+		model.addAttribute("memberList", map.get("memberList"));
+		model.addAttribute("page", map.get("page"));
+		return "getMemberListByPage";
+	}
 	
 	// 비밀번호찾기 form
 	@GetMapping("/findMemberPw")
@@ -214,6 +262,14 @@ public class MemberController {
 			session.setAttribute("loginMember", returnLoginMember);
 			session.setAttribute("memberPic", memberService.getMemberPic(loginMember.getMemberId()));
 			System.out.println(returnLoginMember);
+			
+			// 로그인한 계정이 관리자계정일때
+			if(adminService.getAdmin(loginMember.getMemberId())!=null) {
+				System.out.println(adminService.getAdmin(loginMember.getMemberId()) + " <-- adminMember");
+				session.setAttribute("memberType", "admin");
+			} else {
+				session.setAttribute("memberType", "normal");
+			}
 			return "redirect:/home";
 		}
 	}

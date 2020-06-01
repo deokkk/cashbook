@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>GetBoardListByPage</title>
+<title>Insert title here</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -86,11 +86,6 @@ h1 {
 	text-align: center;
 }
 
-#addBox {
-	text-align: right;
-	margin-bottom: 10px;
-}
-
 .table {
 	border: 1px solid #ccc;
 }
@@ -105,7 +100,6 @@ td {
 }
 
 td a {
-	color: #000000;
 	font-size: 17px;
 }
 
@@ -164,46 +158,48 @@ form {
 	<div class="main">
 		<div class="main-contents">
 			<div class="title">
-				<h1 th:text="게시판"></h1>
-			</div>
-			<div id="addBox">
-				<a th:href="@{/addBoard}" th:text="글작성" class="btn"></a>
+				<h1 th:text="회원관리"></h1>
 			</div>
 			<table class="table">
 				<thead>
 					<tr>
-						<th>글번호</th>
-						<th>글제목</th>
-						<th>작성자</th>
-						<th>작성날짜</th>
-						<th th:if="${session.memberType} eq 'admin'" th:text="'답글달기'"></th>
-						<th th:if="${session.memberType} eq 'admin'" th:text="'글삭제'"></th>
+						<!-- style="width: %;" -->
+						<th>아이디</th>
+						<th>사용자이름</th>
+						<th>주소</th>
+						<th>전화번호</th>
+						<th>이메일</th>
+						<th>가입날짜</th>
+						<th>회원등급</th>
+						<th>회원탈퇴</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="board : ${boardList}">
-						<td th:text="${board.boardNo}"></td>
-						<td style="text-align: left; width: 40%"><span th:if="${board.groupLayer}!=0" th:each="i, index :  ${#numbers.sequence(1, board.groupLayer)}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a th:href="@{/boardDetail(boardNo=${board.boardNo})}" th:text="${board.groupLayer}==0 ? ${board.boardTitle} : '┗'+${board.boardTitle}"></a></td>
-						<td th:text="${board.memberId}"></td>
-						<td th:text="${board.boardDate}"></td>
-						<td th:if="${session.memberType} eq 'admin'"><a th:href="@{/addBoard(boardNo=${board.boardNo})}"  th:text="'답글달기'"></a></td>
-						<td th:if="${session.memberType} eq 'admin'"><a th:href="@{/removeBoard(boardNo=${board.boardNo})}"  th:text="'삭제'"></a></td>
+					<tr th:each="member : ${memberList}">
+						<td th:text="${member.memberId}"></td>
+						<td th:text="${member.memberName}"></td>
+						<td th:text="${member.memberAddr}"></td>
+						<td th:text="${member.memberPhone}"></td>
+						<td th:text="${member.memberEmail}"></td>
+						<td th:text="${member.memberDate}"></td>
+						<td><a th:href="@{/addAdmin(memberId=${member.memberId})}" th:text="'관리자로 변경'"></a></td>
+						<td><a th:href="@{/removeMembeByAdmin(memberId=${member.memberId})}" th:text="회원탈퇴"></a></td>
 					</tr>
 				</tbody>
 			</table>
 			<div id="searchBox">
-				<form method="get" action="/getBoardListByPage" class="form-inline">
+				<form method="get" action="/getMemberListByPage" class="form-inline">
 					<input type="search" name="searchWord" id="searchWord" class="form-control">
 					<button class="btn" type="submit">검색</button>
 				</form>
 			</div>
 			<ul class="pagination"  style="justify-content: center;">
-				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup})} : @{/getBoardListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup}>1" class="page-link"><i class="fa fa-angle-left"></i></a></li>
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup})} : @{/getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup}>1" class="page-link"><i class="fa fa-angle-left"></i></a></li>
 				<li th:if="${i}<${page.lastPage+1}" th:each="i : ${#numbers.sequence(page.currentPageGroup, page.currentPageGroup+page.pagePerGroup-1)}" th:class="${i}==${page.currentPage} ? 'page-item active' : 'page-item'">
 					<span th:if="${i}==${page.currentPage}" th:text="${i}" class="page-link"></span>
-					<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${i})} : @{/getBoardListByPage(currentPage=${i}, searchWord=${page.searchWord})}" class="page-link"></a>
+					<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${i})} : @{/getMemberListByPage(currentPage=${i}, searchWord=${page.searchWord})}" class="page-link"></a>
 				</li>
-				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getBoardListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup})} : @{getBoardListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup<(page.lastPageGroup-1)*page.pagePerGroup+1}" class="page-link"><i class="fa fa-angle-right"></i></a></li>
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup})} : @{getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup<(page.lastPageGroup-1)*page.pagePerGroup+1}" class="page-link"><i class="fa fa-angle-right"></i></a></li>
 			</ul>
 		</div>
 	</div>

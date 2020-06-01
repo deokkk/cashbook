@@ -2,6 +2,9 @@ package com.gdu.cashbook.vo;
 
 public class Board {
 	private int boardNo;
+	private int originNo;
+	private int groupOrder;
+	private int groupLayer;
 	private String boardTitle;
 	private String memberId;
 	private String boardDate;
@@ -12,6 +15,24 @@ public class Board {
 	}
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
+	}
+	public int getOriginNo() {
+		return originNo;
+	}
+	public void setOriginNo(int originNo) {
+		this.originNo = originNo;
+	}
+	public int getGroupOrder() {
+		return groupOrder;
+	}
+	public void setGroupOrder(int groupOrder) {
+		this.groupOrder = groupOrder;
+	}
+	public int getGroupLayer() {
+		return groupLayer;
+	}
+	public void setGroupLayer(int groupLayer) {
+		this.groupLayer = groupLayer;
 	}
 	public String getBoardTitle() {
 		return boardTitle;
@@ -45,7 +66,8 @@ public class Board {
 	}
 	@Override
 	public String toString() {
-		return "Board [boardNo=" + boardNo + ", boardTitle=" + boardTitle + ", memberId=" + memberId + ", boardDate="
-				+ boardDate + ", boardContent=" + boardContent + ", boardPic=" + boardPic + "]";
+		return "Board [boardNo=" + boardNo + ", originNo=" + originNo + ", groupOrder=" + groupOrder + ", groupLayer="
+				+ groupLayer + ", boardTitle=" + boardTitle + ", memberId=" + memberId + ", boardDate=" + boardDate
+				+ ", boardContent=" + boardContent + ", boardPic=" + boardPic + "]";
 	}
 }

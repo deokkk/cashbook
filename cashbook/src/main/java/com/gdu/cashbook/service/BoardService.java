@@ -24,6 +24,66 @@ public class BoardService {
 	
 	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\board\\")
 	private String path;
+	
+	// 답글 작성
+	public int addBoardByAdmin(BoardForm boardForm) {
+		MultipartFile mf = boardForm.getBoardPic();
+		String originName = mf.getOriginalFilename();
+		System.out.println(originName);
+		String boardPic = null;
+		if(!originName.equals("")) {
+			int lastDot = originName.lastIndexOf(".");
+			String extension = originName.substring(lastDot);
+			System.out.println(extension);
+			// 사진파일 랜덤문자열로 추가
+			UUID uuid = UUID.randomUUID();
+			System.out.println(uuid);
+			boardPic = boardForm.getMemberId()+uuid+extension;
+			System.out.println(boardPic);
+		}
+		
+		// boardForm -> board
+		Board board = new Board();
+		board.setBoardTitle(boardForm.getBoardTitle());
+		board.setBoardContent(boardForm.getBoardContent());
+		board.setMemberId(boardForm.getMemberId());
+		board.setBoardPic(boardPic);
+		System.out.println(board + " <--boardService.addBoard board");
+		
+		int row = boardMapper.insertBoard(board);
+		int boardNo = Integer.valueOf(String.valueOf(board.getBoardNo()));
+		System.out.println(boardNo + " <-----generatedKey");
+		int originNo = boardMapper.selectOriginNo(boardForm.getBoardNo());
+		int groupLayer = boardMapper.selectGroupLayer(boardForm.getBoardNo())+1;
+		board.setOriginNo(originNo);
+		board.setGroupLayer(groupLayer);
+		int groupOrder = 0;
+		if(originNo==boardForm.getBoardNo()) {
+			groupOrder = boardMapper.selectMaxGroupOrder(boardForm.getBoardNo())+1;
+			board.setGroupOrder(groupOrder);
+			boardMapper.updateGroupOrder(board);
+		} else {
+			groupOrder = boardMapper.selectGroupOrder(boardForm.getBoardNo())+1;
+			board.setGroupOrder(groupOrder);
+			boardMapper.updateGroupOrder(board);
+			boardMapper.updateGroupOrderRe(board);
+		}
+		// 방금 입력된 board origin_no, group_order, group_layer 초기화
+		//boardMapper.updateBoardInit();
+		if(!originName.equals("")) {
+			// file 저장
+			System.out.println(path+boardPic + " <-- 저장경로");
+			File file = new File(path+boardPic);
+			try {
+				mf.transferTo(file);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		}
+		return row;
+	}
+	
 	// 게시글 수정
 	public int modifyBoard(BoardForm boardForm) {
 		String originBoardPic = boardMapper.selectBoardPic(boardForm.getBoardNo());
@@ -125,6 +185,8 @@ public class BoardService {
 		System.out.println(board + " <--boardService.addBoard board");
 		
 		int row = boardMapper.insertBoard(board);
+		// 방금 입력된 board origin_no, group_order, group_layer 초기화
+		boardMapper.updateBoardInit();
 		if(!originName.equals("")) {
 			// file 저장
 			System.out.println(path+boardPic + " <-- 저장경로");
@@ -140,6 +202,7 @@ public class BoardService {
 	}
 	// 게시글 전체 불러오기
 	public Map<String, Object> getBoardListByPage(int currentPage, String searchWord) {
+		System.out.println(searchWord + " <-- boardList searchWord");
 		Page page = new Page();
 		int rowPerPage = 10;	// 페이지당 행수
 		int beginRow = (currentPage-1)*rowPerPage;

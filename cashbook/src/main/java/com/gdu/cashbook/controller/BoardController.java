@@ -23,6 +23,25 @@ public class BoardController {
 	@Autowired private BoardService boardService;
 	@Autowired private CommentService commentService;
 	
+	// 답글작성 action
+	@PostMapping("/addBoardByAdmin")
+	public String addBoardByAdmin(HttpSession session, Model model, BoardForm boardForm) {
+		if(session.getAttribute("loginMember")==null) {
+			return "redirect:/";
+		}
+		// 파일이 입력됐을때
+		MultipartFile mf = boardForm.getBoardPic();
+		if(boardForm.getBoardPic() != null && !mf.getOriginalFilename().equals("")) {
+			if(!boardForm.getBoardPic().getContentType().equals("image/png") && !boardForm.getBoardPic().getContentType().equals("image/jpeg") && !boardForm.getBoardPic().getContentType().equals("image/gif")) {
+				return "redirect:/addBoard?imgMsg=n";
+			}
+		}
+		boardForm.setMemberId(((LoginMember)session.getAttribute("loginMember")).getMemberId());
+		System.out.println(boardForm);
+		boardService.addBoard(boardForm);
+		return "redirect:/getBoardListByPage";
+	}
+	
 	// 게시글 수정 form
 	@GetMapping("/modifyBoard")
 	public String modifyBoard(HttpSession session, Model model, @RequestParam(value="boardNo") int boardNo) {
@@ -90,17 +109,19 @@ public class BoardController {
 	
 	// 게시글 추가 form
 	@GetMapping("/addBoard")
-	public String addBoard(HttpSession session) {
+	public String addBoard(HttpSession session, Model model, @RequestParam(value="boardNo", required = false) String boardNo) {
 		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
+		System.out.println(boardNo + " <--boardNo");
+		model.addAttribute("boardNo", boardNo);
 		return "addBoard";
 	}
 	
 	// 게시글 추가 action
 	@PostMapping("/addBoard")
-	public String addBoard(HttpSession session, BoardForm boardForm) {
+	public String addBoard(HttpSession session, BoardForm boardForm, @RequestParam(value="originBoardNo") String originBoardNo) {
 		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
@@ -113,7 +134,12 @@ public class BoardController {
 			}
 		}
 		boardForm.setMemberId(((LoginMember)session.getAttribute("loginMember")).getMemberId());
-		boardService.addBoard(boardForm);
+		if(originBoardNo == null) {
+			boardService.addBoard(boardForm);
+		} else {
+			boardForm.setBoardNo(Integer.parseInt(originBoardNo));
+			boardService.addBoardByAdmin(boardForm);
+		}
 		return "redirect:/getBoardListByPage";
 	}
 	

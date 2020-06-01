@@ -150,6 +150,10 @@ th {
 					<td th:text="${member.memberId}"></td>
 				</tr>
 				<tr>
+					<th>회원등급</th>
+					<td th:text="${session.memberType} eq 'admin' ? '관리자' : '일반회원'"></td>
+				</tr>
+				<tr>
 					<th>이름</th>
 					<td th:text="${member.memberName}"></td>
 				</tr>

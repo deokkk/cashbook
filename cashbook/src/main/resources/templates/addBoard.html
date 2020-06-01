@@ -151,6 +151,7 @@ h1 {
 				<h1>게시글 쓰기</h1>
 			</div>
 			<form id="addForm" method="post" action="/addBoard" enctype="multipart/form-data">
+				<input th:if="${boardNo} != null" type="hidden" th:value="${boardNo}" name="originBoardNo">
 				<div class="form-group">
 					<label for="boardTitle">제목</label>
 					<input type="text" name="boardTitle" id="boardTitle" class="form-control">
