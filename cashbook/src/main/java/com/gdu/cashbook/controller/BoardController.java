@@ -121,7 +121,8 @@ public class BoardController {
 	
 	// 게시글 추가 action
 	@PostMapping("/addBoard")
-	public String addBoard(HttpSession session, BoardForm boardForm, @RequestParam(value="originBoardNo") String originBoardNo) {
+	public String addBoard(HttpSession session, BoardForm boardForm, @RequestParam(value="originBoardNo", required = false) String originBoardNo) {
+		System.out.println(originBoardNo + " <--addBaord boardNo");
 		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";

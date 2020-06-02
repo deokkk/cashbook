@@ -6,9 +6,9 @@
 	<!-- 답글에 답글일때 순서 update -->
 	<update id="updateGroupOrderRe" parameterType="com.gdu.cashbook.vo.Board">
 		UPDATE board SET
-			group_order = #{groupOrder}+1
+			group_order = group_order+1
 		WHERE origin_no = #{originNo}
-		AND group_order > #{groupOrder}
+		AND group_order >= #{groupOrder}
 		AND NOT board_no = #{boardNo}
 	</update>
 
