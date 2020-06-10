@@ -182,9 +182,9 @@ h1 {
 					<tr th:each="cash, index : ${cashList}">
 						<td th:text="${index.index}+1"></td>
 						<td th:text="${cash.categoryName}"></td>
-						<td th:if="${cash.cashKind}=='수입'" th:text="'+' + ${cash.cashPrice}" class="plus"></td>
+						<td th:if="${cash.cashKind}=='수입'" th:text="'+' + ${#numbers.formatInteger(cash.cashPrice, 0, 'COMMA')} + '원'" class="plus"></td>
 						<td th:unless="${cash.cashKind}=='수입'"></td>
-						<td th:if="${cash.cashKind}=='지출'" th:text="'-' + ${cash.cashPrice}" class="minus"></td>
+						<td th:if="${cash.cashKind}=='지출'" th:text="'-' + ${#numbers.formatInteger(cash.cashPrice, 0, 'COMMA')} + '원'" class="minus"></td>
 						<td th:unless="${cash.cashKind}=='지출'"></td>
 						<td th:text="${cash.cashPlace}"></td>
 						<td th:text="${cash.cashMemo}"></td>
@@ -200,8 +200,8 @@ h1 {
 			</div>
 			<div class="box col" id="total">
 				<span id="sum">합계 : </span>
-				<span class="totalCash plus" th:if="${total}>0" th:text="'+' + ${total} + '원'"></span>
-				<span class="totalCash minus" th:if="${total}<0" th:text="${total} + '원'"></span>
+				<span class="totalCash plus" th:if="${total}>0" th:text="'+' + ${#numbers.formatInteger(total, 0, 'COMMA')} + '원'"></span>
+				<span class="totalCash minus" th:if="${total}<0" th:text="${#numbers.formatInteger(total, 0, 'COMMA')} + '원'"></span>
 			</div>
 		</div>
 	</div>

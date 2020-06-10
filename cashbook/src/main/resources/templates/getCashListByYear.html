@@ -184,12 +184,12 @@ h1 {
 					<a th:href="${i}<10 ? @{/getCashListByMonth(day=${#temporals.format(day, 'yyyy-')}+'0'+${i}+${#temporals.format(day, '-dd')})} : @{/getCashListByMonth(day=${#temporals.format(day, 'yyyy-')}+${i}+${#temporals.format(day, '-dd')})}" th:text="${i} + '월'"></a>
 				</div>
 				<div class="price">
-					<div th:each="mp : ${monthAndPriceList}" th:if="${mp.month}==${i}" th:text="${mp.price}>0 ? '+' + ${mp.price} + '원' : ${mp.price} + '원'" th:class="${mp.price}>0 ? 'plus' : 'minus'"></div>
+					<div th:each="mp : ${monthAndPriceList}" th:if="${mp.month}==${i}" th:text="${mp.price}>0 ? '+' + ${#numbers.formatInteger(mp.price, 0, 'COMMA')} + '원' : ${#numbers.formatInteger(mp.price, 0, 'COMMA')} + '원'" th:class="${mp.price}>0 ? 'plus' : 'minus'"></div>
 				</div>
 			</div>
 		</div>
 		<div class="totalBox">
-			<span th:text="${#temporals.format(day, 'yyyy년 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} + '원' : ${totalPrice} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
+			<span th:text="${#temporals.format(day, 'yyyy년 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${#numbers.formatInteger(totalPrice, 0, 'COMMA')} + '원' : ${#numbers.formatInteger(totalPrice, 0, 'COMMA')} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
 		</div>
 	</div>
 </div>

@@ -204,7 +204,7 @@ div.gd-title {
 				<div th:if="${i-(firstDayOfWeek-1)}>0 and ${i-(firstDayOfWeek-1)<=lastDay}">
 					<a th:href="${i-(firstDayOfWeek-1)}<10 ? @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+'0'+${i-(firstDayOfWeek-1)})} : @{/getCashListByDate(day=${#temporals.format(day, 'yyyy-MM-')}+${i-(firstDayOfWeek-1)})}" th:text="${i-(firstDayOfWeek-1)}"></a>
 				</div>
-				<div th:each="dp : ${dayAndPriceList}" th:if="${i-(firstDayOfWeek-1)}==${dp.day}" th:text="${dp.price}>0 ? '+' + ${dp.price} : ${dp.price}" th:class="${dp.price}>0 ? 'plus' : 'minus'"></div>
+				<div th:each="dp : ${dayAndPriceList}" th:if="${i-(firstDayOfWeek-1)}==${dp.day}" th:text="${dp.price}>0 ? '+' + ${#numbers.formatInteger(dp.price, 0, 'COMMA')} + '원' : ${#numbers.formatInteger(dp.price, 0, 'COMMA')} + '원'" th:class="${dp.price}>0 ? 'plus' : 'minus'"></div>
 				
 			</div>
 		</div>
@@ -213,7 +213,7 @@ div.gd-title {
 				<a class="btn" th:href="@{/getCashListByYear(day=${day})}">월별 비교</a>
 			</div>
 			<div class="col totalBox">
-				<span th:text="${#temporals.format(day, 'MM월 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${totalPrice} + '원' : ${totalPrice} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
+				<span th:text="${#temporals.format(day, 'MM월 합계 : ')}"></span><span th:text="${totalPrice}>0 ? '+' + ${#numbers.formatInteger(totalPrice, 0, 'COMMA')} + '원' : ${#numbers.formatInteger(totalPrice, 0, 'COMMA')} + '원'" th:class="${totalPrice}>0 ? 'plus' : (${totalPrice}<0 ? 'minus' : '')"></span>
 			</div>
 		</div>
 	</div>
