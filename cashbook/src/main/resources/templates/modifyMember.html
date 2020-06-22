@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ModifyMember</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -177,7 +177,7 @@ th {
 		<div class="title">
 			<h1>회원정보수정</h1>
 		</div>
-			<form id="modifyForm" method="post" action="/modifyMember" enctype="multipart/form-data">
+			<form id="modifyForm" method="post" th:action="@{/modifyMember}" enctype="multipart/form-data">
 				<table class="table">
 					<tr>
 						<th><label for="memberPic">사진</label></th>

@@ -22,7 +22,7 @@ public class BoardService {
 	@Autowired private BoardMapper boardMapper;
 	@Autowired private CommentMapper commentMapper;
 	
-	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\board\\")
+	@Value("/deokk95/tomcat/webapps/cashbook/WEB-INF/classes/static/upload/board/")
 	private String path;
 	
 	// 답글 작성

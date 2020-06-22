@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>GetCashListByYear</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -163,7 +163,6 @@ form {
 			<table class="table">
 				<thead>
 					<tr>
-						<!-- style="width: %;" -->
 						<th>아이디</th>
 						<th>사용자이름</th>
 						<th>주소</th>
@@ -188,18 +187,18 @@ form {
 				</tbody>
 			</table>
 			<div id="searchBox">
-				<form method="get" action="/getMemberListByPage" class="form-inline">
+				<form method="get" th:action="@{/getMemberListByPage}" class="form-inline">
 					<input type="search" name="searchWord" id="searchWord" class="form-control">
 					<button class="btn" type="submit">검색</button>
 				</form>
 			</div>
 			<ul class="pagination"  style="justify-content: center;">
-				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup})} : @{/getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup}>1" class="page-link"><i class="fa fa-angle-left"></i></a></li>
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{/getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup})} : @{/getMemberListByPage(currentPage=${page.currentPageGroup-page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup}>1" class="page-link"><i class="fa fa-angle-left"></i></a></li>
 				<li th:if="${i}<${page.lastPage+1}" th:each="i : ${#numbers.sequence(page.currentPageGroup, page.currentPageGroup+page.pagePerGroup-1)}" th:class="${i}==${page.currentPage} ? 'page-item active' : 'page-item'">
 					<span th:if="${i}==${page.currentPage}" th:text="${i}" class="page-link"></span>
-					<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${i})} : @{/getMemberListByPage(currentPage=${i}, searchWord=${page.searchWord})}" class="page-link"></a>
+					<a th:unless="${i}==${page.currentPage}" th:text=${i} th:href="${page.searchWord}=='' ? @{/getMemberListByPage(currentPage=${i})} : @{/getMemberListByPage(currentPage=${i}, searchWord=${page.searchWord})}" class="page-link"></a>
 				</li>
-				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup})} : @{getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup<(page.lastPageGroup-1)*page.pagePerGroup+1}" class="page-link"><i class="fa fa-angle-right"></i></a></li>
+				<li class="page-item"><a th:href="${page.searchWord}=='' ? @{/getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup})} : @{/getMemberListByPage(currentPage=${page.currentPageGroup+page.pagePerGroup}, searchWord=${page.searchWord})}" th:if="${page.currentPageGroup<(page.lastPageGroup-1)*page.pagePerGroup+1}" class="page-link"><i class="fa fa-angle-right"></i></a></li>
 			</ul>
 		</div>
 	</div>

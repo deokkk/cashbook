@@ -37,8 +37,9 @@ public class MemberService {
 	@Autowired private CommentMapper commentMapper;
 	
 	// 경로 : linux(/), windows(\\)
-	//@Value("D:\\git-cashbook\\cashbook\\src\\main\\resources\\static\\upload\\")
-	@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\")
+	//@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\")
+	//@Value("http://deokk95.cafe24.com/cashbook/upload/")
+	@Value("/deokk95/tomcat/webapps/cashbook/WEB-INF/classes/static/upload/")
 	private String path;
 	
 	// 관리자가 일반회원 회원탈퇴시키기

@@ -2,7 +2,7 @@
 <html xmlns:th="www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>ModifyCash</title>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <!-- jQuery library -->
@@ -173,7 +173,7 @@ form {
 	<div class="main">
 		<h1 th:text="${year} + '년 가계부'"></h1>
 		<div id="title">가게부 수정</div>
-		<form id="modifyForm" method="post" action="/modifyCash">
+		<form id="modifyForm" method="post" th:action="@{/modifyCash}">
 			<input type="hidden" name="cashNo" th:value="${cash.cashNo}">
 			<table class="table">
 				<tr>

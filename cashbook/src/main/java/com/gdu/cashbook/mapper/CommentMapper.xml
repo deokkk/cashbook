@@ -5,33 +5,33 @@
 <mapper namespace="com.gdu.cashbook.mapper.CommentMapper">
 	<!-- 댓글 수정 -->
 	<update id="updateComment" parameterType="com.gdu.cashbook.vo.Comment">
-		UPDATE comment
+		UPDATE cashbook_comment
 		SET comment_content = #{commentContent}
 		WHERE comment_no = #{commentNo}
 	</update>
 	
 	<!-- 게시글 삭제시 모든 댓글 삭제 -->
 	<delete id="deleteCommentByBoard" parameterType="int">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 	</delete>
 
 	<!-- 회원탈퇴시 모든 댓글 삭제 -->
 	<delete id="deleteCommentByMember" parameterType="String">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE member_id = #{memberId}
 	</delete>
 
 	<!-- 댓글 삭제 -->
 	<delete id="deleteComment" parameterType="int">
-		DELETE FROM comment
+		DELETE FROM cashbook_comment
 		WHERE comment_no = #{commentNo}
 	</delete>
 	
 	<!-- 댓글 입력 -->
 	<insert id="insertComment" parameterType="com.gdu.cashbook.vo.Comment">
 		INSERT INTO
-		comment(
+		cashbook_comment(
 			board_no,
 			member_id,
 			comment_content,
@@ -47,7 +47,7 @@
 	<!-- 전체 댓글 행수 -->
 	<select id="selectCommentTotalRowByBoard" resultType="int" parameterType="int">
 		SELECT COUNT(*)
-		FROM comment
+		FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 	</select>
 
@@ -58,7 +58,7 @@
 			member_id memberId,
 			board_no boardNo,
 			comment_content commentContent
-		FROM comment
+		FROM cashbook_comment
 		WHERE board_no = #{boardNo}
 		ORDER BY comment_no DESC
 		LIMIT #{page.beginRow}, #{page.rowPerPage}

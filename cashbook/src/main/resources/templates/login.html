@@ -69,7 +69,7 @@ span {
 	<div class="title">
 		<h1>로그인</h1>
 	</div>
-	<form id="loginForm" method="post" action="/login">
+	<form id="loginForm" method="post" th:action="@{/login}">
 		<div class="form-group">
 			<input type="text" name="memberId" id="memberId" placeholder="아이디" class="form-control">
 		</div>
@@ -87,7 +87,7 @@ span {
 			<button class="btn" id="loginBtn" type="button">로그인</button>
 		</div>
 		<div>
-			<a class="btn" href="/addMember">회원가입</a>
+			<a class="btn" th:href="@{/addMember}">회원가입</a>
 		</div>
 	</form>
 </div>

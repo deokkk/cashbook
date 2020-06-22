@@ -150,7 +150,7 @@ h1 {
 		<div class="title">
 			<h1>게시글 수정</h1>
 		</div>
-		<form id="modifyForm" method="post" action="/modifyBoard" enctype="multipart/form-data">
+		<form id="modifyForm" method="post" th:action="@{/modifyBoard}" enctype="multipart/form-data">
 			<input type="hidden" name="boardNo" th:value="${board.boardNo}">
 			<div class="form-group">
 				<input type="text" name="boardTitle" id="boardTitle" th:value="${board.boardTitle}" class="form-control">

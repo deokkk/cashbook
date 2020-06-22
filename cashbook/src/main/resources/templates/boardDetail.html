@@ -52,7 +52,7 @@ $(document).ready(function(){
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "/modifyComment",
+					url: "/cashbook/modifyComment",
 					data: {
 						"commentNo" : $('#modifyCommentNo').val(),
 						"boardNo" : $('#modifyBoardNo').val(),
@@ -92,7 +92,7 @@ $(document).ready(function(){
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "/modifyComment",
+					url: "/cashbook/modifyComment",
 					data: {
 						"commentNo" : $('#modifyCommentNo').val(),
 						"boardNo" : $('#modifyBoardNo').val(),
@@ -132,7 +132,7 @@ $(document).ready(function(){
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "/modifyComment",
+					url: "/cashbook/modifyComment",
 					data: {
 						"commentNo" : $('#modifyCommentNo').val(),
 						"boardNo" : $('#modifyBoardNo').val(),
@@ -172,7 +172,7 @@ $(document).ready(function(){
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "/modifyComment",
+					url: "/cashbook/modifyComment",
 					data: {
 						"commentNo" : $('#modifyCommentNo').val(),
 						"boardNo" : $('#modifyBoardNo').val(),
@@ -212,7 +212,7 @@ $(document).ready(function(){
 			} else {
 				$.ajax({
 					type: "POST",
-					url: "/modifyComment",
+					url: "/cashbook/modifyComment",
 					data: {
 						"commentNo" : $('#modifyCommentNo').val(),
 						"boardNo" : $('#modifyBoardNo').val(),
@@ -456,7 +456,7 @@ h1 {
 			</div>
 			<!-- 댓글 입력 폼 -->
 			<div class="commentFormBox">
-				<form id="commentForm" method="post" action="/addComment" class="form-inline">
+				<form id="commentForm" method="post" th:action="@{/addComment}" class="form-inline">
 					<input type="hidden" th:name="memberId" th:value="${session.loginMember.memberId}">
 					<input type="hidden" th:name="boardNo" th:value="${board.boardNo}" id="boardNoVal">
 					<input type="text" th:name="commentContent" id="commentContent" class="form-control">

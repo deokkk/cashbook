@@ -5,7 +5,7 @@
 <mapper namespace="com.gdu.cashbook.mapper.BoardMapper">
 	<!-- 답글에 답글일때 순서 update -->
 	<update id="updateGroupOrderRe" parameterType="com.gdu.cashbook.vo.Board">
-		UPDATE board SET
+		UPDATE cashbook_board SET
 			group_order = group_order+1
 		WHERE origin_no = #{originNo}
 		AND group_order >= #{groupOrder}
@@ -14,7 +14,7 @@
 
 	<!--  origin_no, group_order, group_layer 수정 -->
 	<update id="updateGroupOrder" parameterType="com.gdu.cashbook.vo.Board">
-		UPDATE board SET
+		UPDATE cashbook_board SET
 			origin_no = #{originNo},
 			group_order = #{groupOrder},
 			group_layer = #{groupLayer}
@@ -24,34 +24,34 @@
 	<!-- 부모글 groupLayer -->
 	<select id="selectGroupLayer" resultType="int" parameterType="int">
 		SELECT group_layer 
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 	
 	<!-- 부모글 groupOrder -->
 	<select id="selectGroupOrder" resultType="int" parameterType="int">
 		SELECT group_order
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 	
 	<!-- max(groupOrder) -->
 	<select id="selectMaxGroupOrder" resultType="int" parameterType="int">
 		SELECT MAX(group_order)
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 
 	<!-- 원래글의 originNo -->
 	<select id="selectOriginNo" resultType="int" parameterType="int">
 		SELECT origin_no
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 
 	<!-- 게시글 수정 -->
 	<update id="updateBoard" parameterType="com.gdu.cashbook.vo.Board">
-		UPDATE board
+		UPDATE cashbook_board
 		SET
 			board_title = #{boardTitle},
 			board_content = #{boardContent},
@@ -62,19 +62,19 @@
 	<!-- 게시글 이미지파일 이름 -->
 	<select id="selectBoardPic" resultType="String" parameterType="int">
 		SELECT board_pic
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 
 	<!-- 게시글 삭제 -->
 	<delete id="deleteBoard" parameterType="int">
-		DELETE FROM board
+		DELETE FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</delete>
 	
 	<!-- 회원탈퇴시 게시글 삭제 -->
 	<delete id="deleteBoardByMember" parameterType="String">
-		DELETE FROM board
+		DELETE FROM cashbook_board
 		WHERE member_id = #{memberId}
 	</delete>
 	
@@ -82,7 +82,7 @@
 	<select id="selectPrevBoardNo" resultType="int" parameterType="int">
 	<![CDATA[
 		SELECT IFNULL(MAX(board_no), 0)
-		FROM board
+		FROM cashbook_board
 		WHERE board_no < #{boardNo}
 	]]>
 	</select>
@@ -90,7 +90,7 @@
 	<!-- 다음글 boardNo -->
 	<select id="selectNextBoardNo" resultType="int" parameterType="int">
 		SELECT IFNULL(MIN(board_no), 0)
-		FROM board
+		FROM cashbook_board
 		WHERE board_no > #{boardNo}
 	</select>
 	
@@ -99,7 +99,7 @@
 		SELECT
 			MAX(board_no) maxBoardNo,
 			MIN(board_no) minBoardNo
-		FROM board
+		FROM cashbook_board
 	</select>
 
 	<!-- 게시글 상세보기 -->
@@ -111,23 +111,23 @@
 			board_date boardDate,
 			board_pic boardPic,
 			board_content boardContent
-		FROM board
+		FROM cashbook_board
 		WHERE board_no = #{boardNo}
 	</select>
 	
 	<!-- 게시글 원글일때 origin_no, group_order, group_layer 초기화 -->
 	<update id="updateBoardInit">
-		UPDATE board
-		SET	origin_no = (SELECT MAX(board_no) FROM board),
+		UPDATE cashbook_board
+		SET	origin_no = (SELECT * FROM (SELECT MAX(board_no) FROM cashbook_board) t1),
 			group_order = 0,
 			group_layer = 0
-		WHERE board_no = (SELECT MAX(board_no) FROM board)
+		WHERE board_no = (SELECT * FROM (SELECT MAX(board_no) FROM cashbook_board) t2)
 	</update>
 
 	<!-- 게시글 입력 -->
 	<insert id="insertBoard" parameterType="com.gdu.cashbook.vo.Board" useGeneratedKeys="true" keyColumn="board_no" keyProperty="boardNo">
 		INSERT INTO
-		board(
+		cashbook_board(
 			board_title,
 			member_id,
 			board_date,
@@ -144,7 +144,7 @@
 	<!-- 전체 행 수 -->
 	<select id="selectBoardTotalRow" resultType="int" parameterType="String">
 		SELECT COUNT(*)
-		FROM board
+		FROM cashbook_board
 		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 	</select>
 	<!-- 게시글 전체 불러오기 -->
@@ -155,7 +155,7 @@
 			board_title boardTitle,
 			member_id memberId,
 			board_date boardDate
-		FROM board
+		FROM cashbook_board
 		WHERE board_title LIKE CONCAT('%', #{searchWord}, '%')
 		ORDER BY origin_no DESC, group_order
 		LIMIT #{beginRow}, #{rowPerPage}

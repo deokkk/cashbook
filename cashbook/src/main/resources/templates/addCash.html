@@ -169,7 +169,7 @@ form {
 	<div class="main">
 		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년 가계부'"></h1>
 		<div id="title">가게부 입력</div>
-		<form id="addForm" method="post" action="/addCash">
+		<form id="addForm" method="post" th:action="@{/addCash}">
 			<table class="table">
 				<tr>
 					<th><label for="categoryName">카테고리</label></th>

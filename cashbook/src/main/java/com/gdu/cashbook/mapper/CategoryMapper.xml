@@ -5,13 +5,13 @@
 <mapper namespace="com.gdu.cashbook.mapper.CategoryMapper">
 	<insert id="insertCategory" parameterType="String">
 		INSERT INTO
-		category(category_name)
+		cashbook_category(category_name)
 		VALUES(#{categoryName})
 	</insert>
 
 	<select id="selectCategoryList" resultType="com.gdu.cashbook.vo.Category">
 		SELECT
 			category_name categoryName
-		FROM category
+		FROM cashbook_category
 	</select>
 </mapper>
