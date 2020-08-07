@@ -15,12 +15,12 @@ public class CategoryService {
 		List<Category> list = categoryMapper.selectCategoryList();
 		boolean flag = true;
 		for(Category c : list) {
-			if(c.getCategoryName().equals(categoryName)) {
+			if(c.getCategoryName().equals(categoryName)) { 
 				flag = false;
 			}
 		}
 		int row = 0;
-		if(flag) {
+		if(flag) { // 입력받은 카테고리가 리스트에 없을때
 			row = categoryMapper.insertCategory(categoryName);
 		}
 		return row;

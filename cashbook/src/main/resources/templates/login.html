@@ -71,10 +71,10 @@ span {
 	</div>
 	<form id="loginForm" method="post" th:action="@{/login}">
 		<div class="form-group">
-			<input type="text" name="memberId" id="memberId" placeholder="아이디" class="form-control">
+			<input type="text" name="memberId" id="memberId" placeholder="admin" class="form-control">
 		</div>
 		<div>
-			<input type="password" name="memberPw" id="memberPw" placeholder="비밀번호" class="form-control">
+			<input type="password" name="memberPw" id="memberPw" placeholder="1234" class="form-control">
 		</div>
 		<span th:text="${msg}" id="loginMsg"></span>
 		<div id="findBox">

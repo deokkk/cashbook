@@ -27,7 +27,7 @@ public class CashbookApplication {
 		JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
 		javaMailSender.setHost("smtp.gmail.com"); // 메일서버 이름
 		javaMailSender.setPort(587);
-		//System.out.println(username);
+		//System.out.println(username); // google.properties 파일로 대체
 		//System.out.println(password);
 		javaMailSender.setUsername(username);
 		javaMailSender.setPassword(password);

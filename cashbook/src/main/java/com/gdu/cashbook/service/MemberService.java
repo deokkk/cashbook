@@ -38,7 +38,6 @@ public class MemberService {
 	
 	// 경로 : linux(/), windows(\\)
 	//@Value("D:\\sts-deok\\maven.1590373000896\\cashbook\\src\\main\\resources\\static\\upload\\")
-	//@Value("http://deokk95.cafe24.com/cashbook/upload/")
 	@Value("/deokk95/tomcat/webapps/cashbook/WEB-INF/classes/static/upload/")
 	private String path;
 	
@@ -244,9 +243,9 @@ public class MemberService {
 		String originName = mf.getOriginalFilename();
 		System.out.println(originName + " <--originName");
 		String memberPic = null;
-		if(originName.equals("")) {
+		if(originName.equals("")) { 
 			System.out.println(" originName == '' ");
-			memberPic = "default.jpg";
+			memberPic = "default.jpg"; // 입력받은 파일이 없으면 default
 		} else {
 			int lastDot = originName.lastIndexOf(".");
 			String extension = originName.substring(lastDot);

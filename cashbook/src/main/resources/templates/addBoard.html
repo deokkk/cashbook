@@ -13,6 +13,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
+/* 유효성 검사 테스트 초기화 */
 let helperInit = function(){
 	$('#titleHelper').text("");
 	$('#contentHelper').text("");
@@ -143,32 +144,32 @@ h1 {
 </style>
 </head>
 <body>
-<div class="container-fluid">
-	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
-	<div class="main">
-		<div class="main-contents">
-			<div class="title">
-				<h1>게시글 쓰기</h1>
+<div th:class="container-fluid">
+	<div th:include="/include/menu::sidemenu" th:class="sidenav"></div>
+	<div th:class="main">
+		<div th:class="main-contents">
+			<div th:class="title">
+				<h1 th:text="'게시글 쓰기'"></h1>
 			</div>
-			<form id="addForm" method="post" th:action="@{/addBoard}" enctype="multipart/form-data">
-				<input th:if="${boardNo} != null" type="hidden" th:value="${boardNo}" name="originBoardNo">
-				<div class="form-group">
-					<label for="boardTitle">제목</label>
-					<input type="text" name="boardTitle" id="boardTitle" class="form-control">
-					<span id="titleHelper" class="helper"></span>
+			<form th:id="addForm" th:method="post" th:action="@{/addBoard}" enctype="multipart/form-data">
+				<input th:if="${boardNo} != null" th:type="hidden" th:value="${boardNo}" th:name="originBoardNo">
+				<div th:class="form-group">
+					<label th:for="boardTitle" th:text="제목"></label>
+					<input th:type="text" th:name="boardTitle" th:id="boardTitle" th:class="form-control">
+					<span th:id="titleHelper" th:class="helper"></span>
 				</div>
-				<div class="form-group">
-					<label for="boardPic">사진첨부</label>
-					<input type="file" name="boardPic" id="boardPic" class="form-control-file border">
-					<span id="imgHelper" class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}"><i class='fa fa-exclamation-circle' style='font-size:24px;color:red'></i> 이미지 파일이 아닙니다.</span>
+				<div th:class="form-group">
+					<label th:for="boardPic" th:text="사진첨부"></label>
+					<input th:type="file" th:name="boardPic" th:id="boardPic" th:class="'form-control-file border'">
+					<span th:id="imgHelper" th:class="helper" th:if="${#httpServletRequest.getParameter('imgMsg')!=null}" th:text="'이미지 파일이 아닙니다.'"><i th:class='fa fa-exclamation-circle' th:style='font-size:24px;color:red'></i></span>
 				</div>
-				<div class="form-group">
-					<label for="boardContent">내용</label>
-					<span id="contentHelper" class="helper"></span>
-					<textarea rows="3" cols="20" name="boardContent" id="boardContent" class="form-control"></textarea>
+				<div th:class="form-group">
+					<label th:for="boardContent" th:text="내용"></label>
+					<span th:id="contentHelper" th:class="helper"></span>
+					<textarea th:rows="3" th:cols="20" th:name="boardContent" th:id="boardContent" th:class="form-control"></textarea>
 				</div>
-				<div class="btnBox">
-					<button id="addBtn" class="btn" type="button">확인</button>
+				<div th:class="btnBox">
+					<button th:id="addBtn" th:class="btn" th:type="button" th:text="확인"></button>
 				</div>
 			</form>
 		</div>

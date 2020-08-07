@@ -33,6 +33,7 @@ public class CashController {
 	// 월별 수입/지출 총합 리스트
 	@GetMapping("/getCashListByYear")
 	public String getCashListByYear(HttpSession session,Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -57,6 +58,7 @@ public class CashController {
 	// 가계부 월별리스트
 	@GetMapping("/getCashListByMonth")
 	public String getCashListByMonth(HttpSession session, Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -102,6 +104,7 @@ public class CashController {
 	// 가계부수정 action
 	@PostMapping("/modifyCash")
 	public String modifyCash(HttpSession session, Cash cash) { 
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -113,6 +116,7 @@ public class CashController {
 	// 가계부수정 form
 	@GetMapping("/modifyCash")
 	public String modifyCash(HttpSession session, Model model, @RequestParam(value="cashNo") int cashNo, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -129,6 +133,7 @@ public class CashController {
 	// 가계부입력 action
 	@PostMapping("/addCash")
 	public String addCash(HttpSession session, Cash cash) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -144,6 +149,7 @@ public class CashController {
 	// 가계부입력 form
 	@GetMapping("/addCash")
 	public String addCash(HttpSession session, Model model, Cash cash) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -158,6 +164,7 @@ public class CashController {
 	// 가계부삭제
 	@GetMapping("/removeCash")
 	public String removeCash(HttpSession session, @RequestParam(value="cashNo") int cashNo, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
@@ -168,6 +175,7 @@ public class CashController {
 	// 가계부 일별 리스트
 	@GetMapping("/getCashListByDate")
 	public String getCashListByDate(HttpSession session, Model model, @RequestParam(value="day") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate day) {
+		// 로그인 안되있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}

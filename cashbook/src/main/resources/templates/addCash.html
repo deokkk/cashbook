@@ -13,6 +13,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
+/* 데이터 유효성 검사 텍스트 초기화 */
 let helperInit = function() {
 	$('#categoryHelper').text("");
 	$('#kindHelper').text("");
@@ -164,63 +165,63 @@ form {
 </style>
 </head>
 <body>
-<div class="container-fluid">
-	<div th:include="/include/menu::sidemenu" class="sidenav"></div>
-	<div class="main">
+<div th:class="container-fluid">
+	<div th:include="/include/menu::sidemenu" th:class="sidenav"></div>
+	<div th:class="main">
 		<h1 th:text="${#temporals.format(day, 'yyyy')} + '년 가계부'"></h1>
-		<div id="title">가게부 입력</div>
-		<form id="addForm" method="post" th:action="@{/addCash}">
-			<table class="table">
+		<div th:id="title" th:text="'가게부 입력'"></div>
+		<form th:id="addForm" th:method="post" th:action="@{/addCash}">
+			<table th:class="table">
 				<tr>
-					<th><label for="categoryName">카테고리</label></th>
-					<td id="category-td" class="row">
-						<select id="categoryName" class="form-control col">
-							<option value="">카테고리 선택</option>
+					<th><label th:for="categoryName" th:text="카테고리"></label></th>
+					<td th:id="category-td" th:class="row">
+						<select th:id="categoryName" th:class="'form-control col'">
+							<option value="" th:text="'카테고리 선택'"></option>
 							<option th:each="category : ${categoryList}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
 							<option th:value="직접입력" th:text="직접입력">
 						</select>
-						<input type="text" id="categoryNameInput" name="categoryName" class="form-control col" readonly>
-						<span id="categoryHelper" class="helper"></span>
+						<input th:type="text" th:id="categoryNameInput" th:name="categoryName" th:class="'form-control col'" readonly>
+						<span th:id="categoryHelper" th:class="helper"></span>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="cashKind">수입/지출</label></th>
+					<th><label th:for="cashKind">수입/지출</label></th>
 					<td>
-						<select id="cashKind" name="cashKind" class="form-control">
-							<option value="">수입/지출을 선택하세요</option>
-							<option value="수입">수입</option>
-							<option value="지출">지출</option>
+						<select th:id="cashKind" th:name="cashKind" th:class="form-control">
+							<option value="" th:text="'수입/지출을 선택하세요'"></option>
+							<option th:value="수입" th:text="수입"></option>
+							<option th:value="지출" th:text="지출"></option>
 						</select>
-						<span id="kindHelper" class="helper"></span>
+						<span th:id="kindHelper" th:class="helper"></span>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="cashPrice">금액</label></th>
+					<th><label th:for="cashPrice">금액</label></th>
 					<td>
-						<input type="text" id="cashPrice" name="cashPrice" class="form-control">
-						<span id="priceHelper" class="helper"></span>
+						<input th:type="text" th:id="cashPrice" th:name="cashPrice" th:class="form-control">
+						<span th:id="priceHelper" th:class="helper"></span>
 					</td>
 				</tr>
 				<tr>
-					<th><label for="cashPlace">장소</label></th>
+					<th><label th:for="cashPlace">장소</label></th>
 					<td>
-						<input type="text" id="cashPlace" name="cashPlace" class="form-control">
+						<input th:type="text" th:id="cashPlace" th:name="cashPlace" th:class="form-control">
 					</td>
 				</tr>
 				<tr>
-					<th><label for="cashMeme">메모</label></th>
-					<td><textarea rows="3" cols="50" id="cashMemo" name="cashMemo" class="form-control"></textarea></td>
+					<th><label th:for="cashMeme">메모</label></th>
+					<td><textarea th:rows="3" th:cols="50" th:id="cashMemo" th:name="cashMemo" th:class="form-control"></textarea></td>
 				</tr>
 				<tr>
-					<th><label for="cashDate">날짜</label></th>
+					<th><label th:for="cashDate">날짜</label></th>
 					<td>
-						<input type="date" id="cashDate" name="cashDate" class="form-control">
-						<span id="dateHelper" class="helper"></span>
+						<input th:type="date" th:id="cashDate" th:name="cashDate" th:class="form-control">
+						<span th:id="dateHelper" th:class="helper"></span>
 					</td>
 				</tr>
 			</table>
-			<div class="addBtnBox">
-				<button class="btn" id="addBtn" type="button">입력</button>
+			<div th:class="addBtnBox">
+				<button th:class="btn" th:id="addBtn" th:type="button">입력</button>
 			</div>
 		</form>
 	</div>

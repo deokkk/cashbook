@@ -51,15 +51,17 @@ public class BoardService {
 		System.out.println(board + " <--boardService.addBoard board");
 		
 		int row = boardMapper.insertBoard(board);
-		int boardNo = Integer.valueOf(String.valueOf(board.getBoardNo()));
+		int boardNo = Integer.valueOf(String.valueOf(board.getBoardNo())); // 방금 입력된 게시글의 pk(String)을 return받아 int로 변환
 		System.out.println(boardNo + " <-----generatedKey");
-		int originNo = boardMapper.selectOriginNo(boardForm.getBoardNo());
+		
+		// originNo : 어떤 게시글(부모글)의 답글인지, groupLayer : 몇 단계의 답글인지, groupOrder : 정렬시키기 위한 컬럼
+		int originNo = boardMapper.selectOriginNo(boardForm.getBoardNo()); // 제일 상위에 있는 부모글
 		int groupLayer = boardMapper.selectGroupLayer(boardForm.getBoardNo())+1;
 		board.setOriginNo(originNo);
 		board.setGroupLayer(groupLayer);
 		int groupOrder = 0;
 		if(originNo==boardForm.getBoardNo()) {
-			groupOrder = boardMapper.selectMaxGroupOrder(boardForm.getBoardNo())+1;
+			groupOrder = boardMapper.selectMaxGroupOrder(boardForm.getBoardNo())+1; 
 			board.setGroupOrder(groupOrder);
 			boardMapper.updateGroupOrder(board);
 		} else {
@@ -91,10 +93,10 @@ public class BoardService {
 		String originName = mf.getOriginalFilename();
 		System.out.println(originName + " <-originName");
 		String boardPic = null;
-		if(!originName.equals("")) {
+		if(!originName.equals("")) { // 파일이 입력됬을 때
 			File originFile = new File(path+originBoardPic);
-			if(originFile.exists()) {
-				originFile.delete();
+			if(originFile.exists()) { 
+				originFile.delete(); // 기존에 파일이 존재하면 파일삭제
 			}
 			int lastDot = originName.lastIndexOf(".");
 			String extension = originName.substring(lastDot);

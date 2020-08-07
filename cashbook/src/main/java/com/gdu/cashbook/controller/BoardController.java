@@ -26,12 +26,14 @@ public class BoardController {
 	// 답글작성 action
 	@PostMapping("/addBoardByAdmin")
 	public String addBoardByAdmin(HttpSession session, Model model, BoardForm boardForm) {
+		// 로그인 안되어있을때
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
-		// 파일이 입력됐을때
 		MultipartFile mf = boardForm.getBoardPic();
+		// 파일이 입력됐을때
 		if(boardForm.getBoardPic() != null && !mf.getOriginalFilename().equals("")) {
+			// 파일 형식이 이미지 파일 아닐때
 			if(!boardForm.getBoardPic().getContentType().equals("image/png") && !boardForm.getBoardPic().getContentType().equals("image/jpeg") && !boardForm.getBoardPic().getContentType().equals("image/gif")) {
 				return "redirect:/addBoard?imgMsg=n";
 			}
@@ -61,9 +63,10 @@ public class BoardController {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
-		// 파일 입력됬을때
 		MultipartFile mf = boardForm.getBoardPic();
+		// 파일 입력됬을때
 		if(boardForm.getBoardPic() != null && !mf.getOriginalFilename().equals("")) {
+			// 파일이 이미지형식이 아닐때
 			if(!boardForm.getBoardPic().getContentType().equals("image/png") && !boardForm.getBoardPic().getContentType().equals("image/jpeg") && !boardForm.getBoardPic().getContentType().equals("image/gif")) {
 				return "redirect:/modifyBoard?imgMsg=n";
 			}
@@ -90,6 +93,7 @@ public class BoardController {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
+		// 댓글 페이징
 		Map<String, Object> map = boardService.getBoardOne(boardNo);
 		model.addAttribute("board", map.get("board"));
 		System.out.println(map.get("board") + " <---getBoardOne");
@@ -151,6 +155,7 @@ public class BoardController {
 		if(session.getAttribute("loginMember")==null) {
 			return "redirect:/";
 		}
+		// 페이징
 		if(searchWord==null) {
 			searchWord="";
 		}
