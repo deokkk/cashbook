@@ -60,15 +60,15 @@ public class BoardService {
 		board.setOriginNo(originNo);
 		board.setGroupLayer(groupLayer);
 		int groupOrder = 0;
-		if(originNo==boardForm.getBoardNo()) {
-			groupOrder = boardMapper.selectMaxGroupOrder(boardForm.getBoardNo())+1; 
+		if(originNo==boardForm.getBoardNo()) { // 제일 상위에 있는 부모글과 방금 입력된 글의 부모글 넘버가 같으면
+			groupOrder = boardMapper.selectMaxGroupOrder(boardForm.getBoardNo())+1; // 정렬시 맨 아래에 오도록 최대값 +1
 			board.setGroupOrder(groupOrder);
-			boardMapper.updateGroupOrder(board);
-		} else {
-			groupOrder = boardMapper.selectGroupOrder(boardForm.getBoardNo())+1;
+			boardMapper.updateGroupOrder(board); // 입력받은 게시글의  board origin_no, group_order, group_layer 업데이트
+		} else { // 제일 상위에 있는 부모글과 방금 입력된 글의 부모글 넘버가 나르면
+			groupOrder = boardMapper.selectGroupOrder(boardForm.getBoardNo())+1; // 입력받은 글의 부모글의 바로 밑에 오도록
 			board.setGroupOrder(groupOrder);
-			boardMapper.updateGroupOrder(board);
-			boardMapper.updateGroupOrderRe(board);
+			boardMapper.updateGroupOrder(board); // 입력받은 게시글의  board origin_no, group_order, group_layer 업데이트
+			boardMapper.updateGroupOrderRe(board); // 방금 입력받은 게시글을 제외한 부모글이 같은 글들 group_order 전부 +1
 		}
 		// 방금 입력된 board origin_no, group_order, group_layer 초기화
 		//boardMapper.updateBoardInit();
